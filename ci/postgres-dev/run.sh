@@ -1,0 +1,1 @@
+docker run --name links/postgres -e POSTGRES_PASSWORD=postgressecretpassword -d links/postgres
