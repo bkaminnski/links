@@ -144,7 +144,7 @@
                         <password>sa</password>
                     </security>
                 </datasource>
-                <datasource jndi-name="java:jboss/datasources/PostgreSQLDS" use-java-context="true" pool-name="PostgreSQLDS">
+                <datasource jndi-name="java:jboss/datasources/links" use-java-context="true" pool-name="PostgreSQLDS">
                     <connection-url>jdbc:postgresql://postgres-dev:5432/links</connection-url>
                     <driver>postgresql</driver>
                     <security>
