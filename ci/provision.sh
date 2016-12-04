@@ -76,3 +76,10 @@ sudo yum -y install docker-engine
 sudo systemctl enable docker.service
 sudo systemctl start docker
 sudo usermod -aG docker $OS_USER_NAME
+
+
+# Clone GIT repository
+if [ ! -d "/home/$OS_USER_NAME/links" ]; then
+    runuser -l $OS_USER_NAME -c "mkdir /home/$OS_USER_NAME/links"
+    runuser -l $OS_USER_NAME -c "git clone https://github.com/bkaminnski/links.git /home/$OS_USER_NAME/links"
+fi
