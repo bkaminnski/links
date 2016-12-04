@@ -1,0 +1,6 @@
+#!/bin/bash
+
+OS_USER_NAME = $1
+OS_USER_PASSWORD = $2
+
+echo $OS_USER_NAME $OS_USER_PASSWORD
