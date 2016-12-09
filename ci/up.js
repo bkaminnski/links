@@ -3,7 +3,7 @@
 var dockerImages = new DockerImages();
 dockerImages.build('java', 'links/java');
 dockerImages.build('wildfly', 'links/wildfly');
-dockerImages.build('wildfly', 'links/wildfly-dev');
+dockerImages.build('wildfly-dev', 'links/wildfly-dev');
 dockerImages.build('postgres-dev', 'links/postgres-dev');
 
 var dockerContainers = new DockerContainers();
