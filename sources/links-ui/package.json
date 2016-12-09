@@ -5,7 +5,8 @@
   "main": "src/app.js",
   "scripts": {
     "start": "webpack-dev-server --hot",
-    "build": "webpack --progress --colors --watch"
+    "build-watch": "webpack --progress --colors --watch",
+    "build-once": "webpack --progress --colors"
   },
   "author": "",
   "license": "ISC",

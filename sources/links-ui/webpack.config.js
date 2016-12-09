@@ -1,12 +1,12 @@
 module.exports = {
   entry: './src/app.js',
   output: {
-    path: '../Links/src/main/webapp/app/',
+    path: '../links/src/main/webapp/app/',
     filename: 'app.js',
     publicPath: 'app'
   },
   devServer: {
-    contentBase: '../Links/src/main/webapp',
+    contentBase: '../links/src/main/webapp',
   },
   module: {
     loaders: [

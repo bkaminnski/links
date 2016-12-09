@@ -54,7 +54,7 @@ rm jdk-8u102-linux-x64.rpm
 
 
 # Install GIT
-sudo yum -y install git
+yum install -y git
 if [ "$GIT_USER_NAME" != "" ]; then
     runuser -l $OS_USER_NAME -c "git config --global user.name \"$GIT_USER_NAME\""
 fi
@@ -72,10 +72,14 @@ enabled=1
 gpgcheck=1
 gpgkey=https://yum.dockerproject.org/gpg
 EOF
-sudo yum -y install docker-engine
-sudo systemctl enable docker.service
-sudo systemctl start docker
-sudo usermod -aG docker $OS_USER_NAME
+yum install -y docker-engine
+systemctl enable docker.service
+systemctl start docker
+usermod -aG docker $OS_USER_NAME
+
+
+# Install npm
+yum install -y npm
 
 
 # Clone GIT repository
@@ -83,3 +87,6 @@ if [ ! -d "/home/$OS_USER_NAME/links" ]; then
     runuser -l $OS_USER_NAME -c "mkdir /home/$OS_USER_NAME/links"
     runuser -l $OS_USER_NAME -c "git clone https://github.com/bkaminnski/links.git /home/$OS_USER_NAME/links"
 fi
+
+
+

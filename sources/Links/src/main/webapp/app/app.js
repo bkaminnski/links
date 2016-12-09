@@ -21509,9 +21509,10 @@
 	        value: function links() {
 	            var result = new Promise(function (resolve, reject) {
 	                var request = new XMLHttpRequest();
-	                request.open("GET", "http://81.2.241.96:8080/Links/resources/links");
+	                request.open("GET", "http://89.36.219.7:8080/links/resources/links");
 	                request.onreadystatechange = function () {
 	                    var raw = request.responseText;
+	                    console.log('raw:' + raw);
 	                    var objectified = JSON.parse(raw);
 	                    resolve(objectified);
 	                };
