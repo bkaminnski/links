@@ -62,4 +62,3 @@ function DockerContainers() {
         return this.existingContainers.indexOf(container) >= 0;
     }
 }
-

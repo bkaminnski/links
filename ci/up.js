@@ -6,7 +6,7 @@ load("./scripts/dbScripts.js");
 var dbScripts = new DbScripts("../sources/", "./postgres-dev/docker-entrypoint-initdb.d/", ["sh", "sql"]);
 dbScripts.deleteScriptsInInitializationDirectory();
 dbScripts.copyScriptsFromSourcesToInitializationDirectory();
-/*
+
 var dockerImages = new DockerImages();
 dockerImages.build('java', 'links/java');
 dockerImages.build('wildfly', 'links/wildfly');
@@ -16,4 +16,3 @@ dockerImages.build('postgres-dev', 'links/postgres-dev');
 var dockerContainers = new DockerContainers();
 dockerContainers.run('postgres-dev', 'links/postgres-dev', '-p 5432:5432 -e POSTGRES_PASSWORD=postgressecretpassword');
 dockerContainers.run('wildfly-dev', 'links/wildfly-dev', '-p 8080:8080 -p 9990:9990 --link=postgres-dev');
-*/

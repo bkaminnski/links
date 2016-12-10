@@ -43,4 +43,3 @@ function DbScripts(sourceDirectoryWithDbProjects, targetDirectoryToInitializeDb,
         return this.dbScriptsExtensions.indexOf(extension) >= 0;
     }
 }
-
