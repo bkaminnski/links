@@ -1,4 +1,4 @@
-/sources/Links/target/
+/sources/links/target/
 nb-configuration.xml
 node_modules
 /ci/postgres-dev/docker-entrypoint-initdb.d/*.sh
