@@ -89,4 +89,8 @@ if [ ! -d "/home/$OS_USER_NAME/links" ]; then
 fi
 
 
+# Make tabstop=4 default value in VI
+tee /home/$OS_USER_NAME/.vimrc <<-'EOF'
+set softtabstop=4 shiftwidth=4 expandtab
+EOF
 
