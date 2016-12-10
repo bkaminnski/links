@@ -5,9 +5,9 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" links <<-EOSQL
 	CREATE TABLE public.link
 	(
 		id bigint NOT NULL,
-		description character varying(2000) COLLATE "default".pg_catalog,
-		keywords character varying(2000) COLLATE "default".pg_catalog,
-		url character varying(2000) COLLATE "default".pg_catalog,
+		description character varying(2000) COLLATE pg_catalog."default",
+		keywords character varying(2000) COLLATE pg_catalog."default",
+		url character varying(2000) COLLATE pg_catalog."default",
 		CONSTRAINT link_pkey PRIMARY KEY (id)
 	)
 	WITH (
@@ -17,9 +17,6 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" links <<-EOSQL
 
 	ALTER TABLE public.link
 		OWNER to links;
-		
-	ALTER TABLE public.link
-		ADD CONSTRAINT link_pkey PRIMARY KEY (id);
 		
 	CREATE SEQUENCE public.link_id_seq
 		INCREMENT 1
