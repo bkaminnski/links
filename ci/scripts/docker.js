@@ -1,3 +1,6 @@
+var Thread =  Java.type("java.lang.Thread");
+var Date =  Java.type("java.util.Date");
+
 function DockerImages() {
     this.existingImages = loadExistingImages();
 
@@ -60,5 +63,20 @@ function DockerContainers() {
 
     this.exists = function(container) {
         return this.existingContainers.indexOf(container) >= 0;
+    }
+
+    this.waitFor = function(container, logEntry) {
+        var lastLogLines = this.queryForLastLogs(container);
+        var timeStarted = new Date().getTime();
+        while (lastLogLines.indexOf(logEntry) === -1) {
+            Thread.sleep(500);
+            print('Waiting for ' + container + ' for ' + (new Date().getTime() - timeStarted) + ' millis');
+            lastLogLines = this.queryForLastLogs(container);
+        }
+    }
+
+    this.queryForLastLogs = function(container) {
+        $EXEC('docker logs --tail=100 ' + container);
+        return $OUT;
     }
 }
