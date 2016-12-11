@@ -15,9 +15,7 @@ function DockerImages() {
             return;
         }
         print('building ' + image + ' image...');
-        $ENV.PWD = './' + folder;
-        $EXEC('docker build -t ' + image + ' .');
-        print($OUT)
+        new Command('./' + folder, 'docker build -t ' + image + ' .').execute();
     }
 
     this.exists = function(image) {
@@ -47,8 +45,7 @@ function DockerContainers() {
 
         if (!this.exists(container)) {
             print('running ' + container + ' container...');
-            $EXEC('docker run --name ' + container + ' -d ' + parameters + ' ' + image);
-            print($OUT);
+            new Command('./', 'docker run --name ' + container + ' -d ' + parameters + ' ' + image).execute();
             return;
         }
 
@@ -66,6 +63,10 @@ function DockerContainers() {
     }
 
     this.waitFor = function(container, logEntry) {
+        if (this.isRunning(container)) {
+            return;
+        }
+
         var lastLogLines = this.queryForLastLogs(container);
         var timeStarted = new Date().getTime();
         while (lastLogLines.indexOf(logEntry) === -1) {

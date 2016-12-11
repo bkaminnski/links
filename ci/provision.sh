@@ -84,12 +84,11 @@ yum install -y npm
 
 # Install mvn
 wget http://ftp.ps.pl/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
-tar xzvf apache-maven-3.3.9-bin.tar.gz --directory /home/$OS_USER_NAME/
-rm apache-maven-3.3.9-bin.tar.gz
-chown -R $OS_USER_NAME:$OS_USER_NAME /home/$OS_USER_NAME/apache-maven-3.3.9
-echo "export JAVA_HOME=/usr/java/jdk1.8.0_102/" >> /home/$OS_USER_NAME/.bashrc
-echo "PATH=\$PATH:\$HOME/apache-maven-3.3.9/bin" >> /home/$OS_USER_NAME/.bashrc
-echo "export PATH" >> /home/$OS_USER_NAME/.bashrc
+tar xzvf apache-maven-3.3.9-bin.tar.gz --directory /usr
+rm -f apache-maven-3.3.9-bin.tar.gz
+echo "export JAVA_HOME=/usr/java/jdk1.8.0_102/" >> /etc/profile
+echo "PATH=\$PATH:/usr/apache-maven-3.3.9/bin" >> /etc/profile
+echo "export PATH" >> /etc/profile
 
 
 # Clone GIT repository
