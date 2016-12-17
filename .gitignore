@@ -4,3 +4,4 @@ node_modules
 /ci/postgres-dev/docker-entrypoint-initdb.d/*.sh
 /ci/postgres-dev/docker-entrypoint-initdb.d/*.sql
 .vagrant
+npm-debug.log
