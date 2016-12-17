@@ -46,6 +46,10 @@ fi
 yum update -y
 
 
+# Gain access to EPEL (Extra Packages for Enterprise Linux) repository
+yum install -y epel-release
+
+
 # Install Oracle JDK
 yum install -y wget
 wget --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm
