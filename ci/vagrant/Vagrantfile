@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+	config.vm.box = "centos/7"
+
+	config.vm.network "forwarded_port", guest: 8080, host: 8080
+	config.vm.network "forwarded_port", guest: 5432, host: 5432
+
+	config.vm.provider :virtualbox do |vb|
+		vb.customize ["modifyvm", :id, ]
+		vb.customize ["modifyvm", :id,
+			"--name", "links",
+			"--memory", "8192"]
+	end
+
+	config.vm.provision "shell", inline: <<-SHELL
+		curl -O https://raw.githubusercontent.com/bkaminnski/links/master/ci/provision.sh
+		chmod 755 ./provision.sh
+		./provision.sh --os_user_name baka --git_user_name "Bartosz Kamiński" --git_email bartosz.kaminski@zoho.com
+		runuser -l baka -c "cd /home/baka/links && ./up.sh"
+	SHELL
+end
