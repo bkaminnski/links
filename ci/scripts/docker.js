@@ -37,13 +37,16 @@ function DockerContainers() {
         return $OUT;
     }
 
-    this.run = function(container, image, parameters) {
+    this.run = function(container, image, parameters, preRun) {
         if (this.isRunning(container)) {
             print(container + ' container is already running');
             return;
         }
 
         if (!this.exists(container)) {
+            if (preRun != null) {
+                preRun();
+            }
             print('running ' + container + ' container...');
             new Command('./', 'docker run --name ' + container + ' -d ' + parameters + ' ' + image).execute();
             return;
