@@ -107,3 +107,21 @@ tee /home/$OS_USER_NAME/.vimrc <<-'EOF'
 set softtabstop=4 shiftwidth=4 expandtab
 EOF
 
+
+# Generate public/private keys pair for authentication
+if [ ! -f "/home/$OS_USER_NAME/.ssh/id_rsa" ]; then
+    ssh-keygen -t rsa -f /home/$OS_USER_NAME/.ssh/id_rsa -q -P ""
+    touch /home/$OS_USER_NAME/.ssh/authorized_keys 
+    cat /home/$OS_USER_NAME/.ssh/id_rsa.pub >> /home/$OS_USER_NAME/.ssh/authorized_keys
+    chmod 700 /home/$OS_USER_NAME/.ssh
+    chmod 600 /home/$OS_USER_NAME/.ssh/authorized_keys 
+    chown -Rf $OS_USER_NAME /home/$OS_USER_NAME/.ssh
+fi
+
+
+# In case of an environment set up in Vagrant - expose private key for easier access from host machine
+if [ -d "/vagrant" ]; then
+    cp /home/$OS_USER_NAME/.ssh/id_rsa /vagrant/.vagrant/machines/default/virtualbox/private_key_$OS_USER_NAME
+fi
+
+
