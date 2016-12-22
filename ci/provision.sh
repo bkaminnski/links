@@ -108,7 +108,7 @@ set softtabstop=4 shiftwidth=4 expandtab
 EOF
 
 
-# Generate public/private keys pair for authentication
+# Generate public/private keys for authentication
 if [ ! -f "/home/$OS_USER_NAME/.ssh/id_rsa" ]; then
     runuser -l $OS_USER_NAME -c "ssh-keygen -t rsa -f /home/$OS_USER_NAME/.ssh/id_rsa -q -P \"\""
     touch /home/$OS_USER_NAME/.ssh/authorized_keys 
@@ -125,3 +125,11 @@ if [ -d "/vagrant" ]; then
     cp /home/$OS_USER_NAME/.ssh/id_rsa /vagrant/ci/vagrant/.vagrant/machines/default/virtualbox/private_key_$OS_USER_NAME
 fi
 
+
+# Make up.js script on system startup
+echo "su - $OS_USER_NAME -c \"cd /home/$OS_USER_NAME/links/ci/ && ./up.js\"" >> /etc/rc.d/rc.local
+chmod +x /etc/rc.d/rc.local
+
+
+# Run up.js script to run docker containers, compile and deploy application
+su - $OS_USER_NAME -c "cd /home/$OS_USER_NAME/links/ci/ && ./up.js"
