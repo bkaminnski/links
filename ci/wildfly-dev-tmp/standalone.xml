@@ -144,10 +144,29 @@
                         <password>sa</password>
                     </security>
                 </datasource>
+                <datasource jndi-name="java:jboss/datasources/links" use-java-context="true" pool-name="PostgreSQLDS">
+                    <connection-url>jdbc:postgresql://postgres-dev:5432/links</connection-url>
+                    <driver>postgresql</driver>
+                    <security>
+                      <user-name>postgres</user-name>
+                      <password>postgressecretpassword</password>
+                    </security>
+                    <validation>
+                    	<check-valid-connection-sql>SELECT 1</check-valid-connection-sql>
+                    	<background-validation>true</background-validation>
+                	</validation>
+                	<pool>
+						<flush-strategy>IdleConnections</flush-strategy>
+					</pool>
+                </datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
                         <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
                     </driver>
+					<driver name="postgresql" module="postgresql">
+                    	<driver-class>org.postgresql.Driver</driver-class>
+                    	<xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
+	                </driver>     
                 </drivers>
             </datasources>
         </subsystem>
