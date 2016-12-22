@@ -1,6 +1,35 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+
+require 'getoptlong'
+
+opts = GetoptLong.new(
+  [ '--os_user_name', GetoptLong::REQUIRED_ARGUMENT  ],
+  [ '--git_user_name', GetoptLong::OPTIONAL_ARGUMENT ],
+  [ '--git_email', GetoptLong::OPTIONAL_ARGUMENT ]
+)
+
+osUserName=''
+gitUserName=''
+gitEmail=''
+
+opts.each do |opt, arg|
+  case opt
+    when '--os_user_name'
+      osUserName=arg
+    when '--git_user_name'
+      gitUserName=arg
+    when '--git_email'
+      gitEmail=arg
+  end
+end
+
+if osUserName == ''
+  puts "Call with --os_user_name <OS user name> parameter"
+  exit 0
+end
+
 Vagrant.configure(2) do |config|
 	config.vm.box = "centos/7"
 
@@ -20,7 +49,7 @@ Vagrant.configure(2) do |config|
 	config.vm.provision "shell", inline: <<-SHELL
 		curl -O https://raw.githubusercontent.com/bkaminnski/links/master/ci/provision.sh
 		chmod 755 ./provision.sh
-		./provision.sh --os_user_name baka --git_user_name "Bartosz Kamiński" --git_email bartosz.kaminski@zoho.com
-		su - baka -c "cd /home/baka/links/ci/ && ./up.js"
+		./provision.sh --os_user_name #{osUserName} --git_user_name "#{gitUserName}" --git_email #{gitEmail}
+		su - #{osUserName} -c "cd /home/#{osUserName}/links/ci/ && ./up.js"
 	SHELL
 end
