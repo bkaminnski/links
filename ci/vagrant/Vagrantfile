@@ -25,8 +25,10 @@ opts.each do |opt, arg|
   end
 end
 
-if osUserName == ''
-  puts "Call with --os_user_name <OS user name> parameter"
+provisioned = File.exist?(".vagrant/machines/default/virtualbox/action_provision")
+
+if ARGV[0] == 'up' && osUserName == '' && !provisioned
+  puts "To provision a new machine, call with --os_user_name=<OS user name> parameter"
   exit 0
 end
 
