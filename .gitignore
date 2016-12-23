@@ -5,3 +5,4 @@ node_modules
 /ci/wildfly-dev/docker-entrypoint-initmw.d/*.cli
 .vagrant
 npm-debug.log
+nbproject

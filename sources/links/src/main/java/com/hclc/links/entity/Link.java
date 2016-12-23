@@ -1,4 +1,4 @@
-package com.hclc;
+package com.hclc.links.entity;
 
 import java.io.Serializable;
 import javax.json.Json;
