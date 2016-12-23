@@ -4,16 +4,16 @@ ENV VERSION 10.1.0.Final
 ENV INSTALL_DIR /opt
 ENV WILDFLY_HOME ${INSTALL_DIR}/wildfly-${VERSION}
 ENV DEPLOYMENT_DIR ${WILDFLY_HOME}/standalone/deployments/
-ENV POSTGRES_MODULE ${WILDFLY_HOME}/modules/system/layers/base/postgresql/main
+ENV POSTGRES_DRIVER_NAME postgresql-9.4.1211.jar
+ENV POSTGRES_DRIVER_PATH /jdbc-drivers/${POSTGRES_DRIVER_NAME}
 RUN yum install -y unzip \
   && curl -O http://download.jboss.org/wildfly/${VERSION}/wildfly-${VERSION}.zip \
   && unzip wildfly-${VERSION}.zip -d ${INSTALL_DIR} \
   && rm wildfly-${VERSION}.zip \
   && rm ${WILDFLY_HOME}/bin/standalone.conf \
   && chmod a+x ${WILDFLY_HOME}/bin/standalone.sh \
-  && mkdir -p ${POSTGRES_MODULE} \
-  && curl -o ${POSTGRES_MODULE}/postgresql-9.4.1211.jar https://jdbc.postgresql.org/download/postgresql-9.4.1211.jar
+  && mkdir -p /jdbc-drivers \
+  && curl -o ${POSTGRES_DRIVER_PATH} https://jdbc.postgresql.org/download/${POSTGRES_DRIVER_NAME}
 ADD standalone.conf ${WILDFLY_HOME}/bin/
-ADD module.xml ${POSTGRES_MODULE}
 ENTRYPOINT ${WILDFLY_HOME}/bin/standalone.sh -c standalone-full.xml -b=0.0.0.0
 EXPOSE 8080 8787
