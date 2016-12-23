@@ -19,8 +19,8 @@ function Command(workDir, cmd) {
         var result = -1;
         try {
             var process = Runtime.getRuntime().exec(this.cmd, ['JAVA_HOME=' + $ENV.JAVA_HOME, 'PATH=' + $ENV.PATH], new File(this.workDir));
-            this.consoleLog(process.getInputStream());
-            this.consoleLog(process.getErrorStream());
+//            this.consoleLog(process.getInputStream());
+  //          this.consoleLog(process.getErrorStream());
             result = process.waitFor();
         } catch (exception) {
             print(exception);

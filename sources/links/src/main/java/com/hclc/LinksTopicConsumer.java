@@ -17,7 +17,7 @@ public class LinksTopicConsumer implements MessageListener {
 
     @PostConstruct
     public void method() {
-        Logger.getLogger(LinksTopicConsumer.class.getName()).log(Level.INFO, "***************** LinksTopicConsumer was created ");
+        Logger.getLogger(LinksTopicConsumer.class.getName()).log(Level.INFO, "***************** LinksTopicConsumer IN LINKS was created ");
     }
     
 
@@ -25,7 +25,7 @@ public class LinksTopicConsumer implements MessageListener {
     public void onMessage(Message message) {
         try {
             String payload = message.getBody(String.class);
-            Logger.getLogger(LinksTopicConsumer.class.getName()).log(Level.INFO, "###################################### Message received: " + payload);
+            Logger.getLogger(LinksTopicConsumer.class.getName()).log(Level.INFO, "###################################### Message received IN LINKS: " + payload);
         } catch (JMSException ex) {
             Logger.getLogger(LinksTopicConsumer.class.getName()).log(Level.SEVERE, null, ex);
         }

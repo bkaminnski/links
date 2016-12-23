@@ -8,6 +8,9 @@ new ParallelExecutor().withTimeoutInMillis(60000).execute(
         [
             new Command('../sources/links-ui/', 'npm run build-once'),
             new Command('../sources/links/', 'mvn clean install -P wildfly-local')
+        ],
+        [
+            new Command('../sources/description/', 'mvn clean install -P wildfly-local')
         ]
     ]
 );
