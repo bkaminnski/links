@@ -15,5 +15,5 @@ RUN yum install -y unzip \
   && curl -o ${POSTGRES_MODULE}/postgresql-9.4.1211.jar https://jdbc.postgresql.org/download/postgresql-9.4.1211.jar
 ADD standalone.conf ${WILDFLY_HOME}/bin/
 ADD module.xml ${POSTGRES_MODULE}
-ENTRYPOINT ${WILDFLY_HOME}/bin/standalone.sh -b=0.0.0.0
+ENTRYPOINT ${WILDFLY_HOME}/bin/standalone.sh -c standalone-full.xml -b=0.0.0.0
 EXPOSE 8080 8787

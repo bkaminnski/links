@@ -1,0 +1,3 @@
+embed-server --std-out=echo --server-config=standalone-full.xml
+jms-topic add --topic-address=testtopic --entries=topic/test,java:jboss/exported/jms/topic/test
+stop-embedded-server

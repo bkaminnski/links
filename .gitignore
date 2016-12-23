@@ -2,6 +2,6 @@
 nb-configuration.xml
 node_modules
 /ci/postgres-dev/docker-entrypoint-initdb.d/*.sh
-/ci/postgres-dev/docker-entrypoint-initdb.d/*.sql
+/ci/wildfly-dev/docker-entrypoint-initmw.d/*.cli
 .vagrant
 npm-debug.log

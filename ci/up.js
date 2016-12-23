@@ -1,20 +1,26 @@
 #!/usr/bin/jjs -fv
 
 load("./scripts/docker.js");
-load("./scripts/dbScripts.js");
+load("./scripts/scriptsCopier.js");
 load('./scripts/command.js');
 load('./scripts/parallelExecutor.js');
 
 var postgresPreRun = function() {
-    var dbScripts = new DbScripts("../sources/", "./postgres-dev/docker-entrypoint-initdb.d/", ["sh", "sql"]);
-    dbScripts.deleteScriptsInInitializationDirectory();
-    dbScripts.copyScriptsFromSourcesToInitializationDirectory();
+    var scriptsCopier = new ScriptsCopier("../sources/", "-db", ["sh"], "./postgres-dev/docker-entrypoint-initdb.d/");
+    scriptsCopier.deleteScriptsInTargetDirectory();
+    scriptsCopier.copyScriptsFromSourcesToTargetDirectory();
+};
+
+var wildflyPreRun = function() {
+    var scriptsCopier = new ScriptsCopier("../sources/", "-mw", ["cli"], "./wildfly-dev/docker-entrypoint-initmw.d/");
+    scriptsCopier.deleteScriptsInTargetDirectory();
+    scriptsCopier.copyScriptsFromSourcesToTargetDirectory();
 };
 
 var dockerImages = new DockerImages();
 dockerImages.build('java', 'links/java');
 dockerImages.build('wildfly', 'links/wildfly');
-dockerImages.build('wildfly-dev', 'links/wildfly-dev');
+dockerImages.build('wildfly-dev', 'links/wildfly-dev', wildflyPreRun);
 dockerImages.build('postgres-dev', 'links/postgres-dev', postgresPreRun);
 
 var dockerContainers = new DockerContainers();

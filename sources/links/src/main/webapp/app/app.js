@@ -890,12 +890,18 @@
 	 * will remain to ensure logic does not differ in production.
 	 */
 
-	function invariant(condition, format, a, b, c, d, e, f) {
-	  if (process.env.NODE_ENV !== 'production') {
+	var validateFormat = function validateFormat(format) {};
+
+	if (process.env.NODE_ENV !== 'production') {
+	  validateFormat = function validateFormat(format) {
 	    if (format === undefined) {
 	      throw new Error('invariant requires an error message argument');
 	    }
-	  }
+	  };
+	}
+
+	function invariant(condition, format, a, b, c, d, e, f) {
+	  validateFormat(format);
 
 	  if (!condition) {
 	    var error;
@@ -21549,7 +21555,7 @@
 	        value: function links() {
 	            var result = new Promise(function (resolve, reject) {
 	                var request = new XMLHttpRequest();
-	                request.open("GET", "http://89.36.219.7:8080/links/resources/links");
+	                request.open("GET", "http://localhost:8080/links/resources/links");
 	                request.onreadystatechange = function () {
 	                    var raw = request.responseText;
 	                    console.log('raw:' + raw);
