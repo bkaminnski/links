@@ -40,6 +40,7 @@ function Command(workDir, cmd) {
         if (java.lang.System.getProperty("os.name").indexOf('Windows') >= 0) {
             commandInterpreter = 'cmd.exe /C ';
         }
+print('interpreter: ' + commandInterpreter + this.cmd);
         return commandInterpreter + this.cmd;
     }
 

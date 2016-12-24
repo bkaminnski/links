@@ -90,6 +90,7 @@ yum install -y npm
 wget http://ftp.ps.pl/pub/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
 tar xzvf apache-maven-3.3.9-bin.tar.gz --directory /usr
 rm -f apache-maven-3.3.9-bin.tar.gz
+echo "export M2_HOME=/usr/apache-maven-3.3.9" >> /etc/profile
 echo "export JAVA_HOME=/usr/java/jdk1.8.0_102/" >> /etc/profile
 echo "PATH=\$PATH:/usr/apache-maven-3.3.9/bin" >> /etc/profile
 echo "export PATH" >> /etc/profile
