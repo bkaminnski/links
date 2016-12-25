@@ -32,7 +32,7 @@ function Command(workDir, cmd) {
     }
 
     this.executeSystemSpecific = function() {
-        return Runtime.getRuntime().exec(this.systemSpecificCommand(), ['JAVA_HOME=' + $ENV.JAVA_HOME, 'PATH=' + this.systemSpecificPath(), 'M2_HOME=' + $ENV.M2_HOME], new File(this.workDir))
+        return Runtime.getRuntime().exec(this.systemSpecificCommand(), this.environmentVariables(), new File(this.workDir))
     }
 
     this.systemSpecificCommand = function() {
@@ -41,6 +41,15 @@ function Command(workDir, cmd) {
             commandInterpreter = 'cmd.exe /C ';
         }
         return commandInterpreter + this.cmd;
+    }
+
+    this.environmentVariables = function() {
+        var copiedVariables = [];
+        for (variableName in $ENV) {
+            copiedVariables.push(variableName + '=' + $ENV[variableName]);
+            print(variableName + '=' + $ENV[variableName]);
+        }
+        return copiedVariables;
     }
 
     this.systemSpecificPath = function() {
