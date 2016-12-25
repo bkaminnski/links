@@ -40,7 +40,6 @@ function Command(workDir, cmd) {
         if (java.lang.System.getProperty("os.name").indexOf('Windows') >= 0) {
             commandInterpreter = 'cmd.exe /C ';
         }
-print('interpreter: ' + commandInterpreter + this.cmd);
         return commandInterpreter + this.cmd;
     }
 
@@ -48,7 +47,6 @@ print('interpreter: ' + commandInterpreter + this.cmd);
         var copiedVariables = [];
         for (variableName in $ENV) {
             copiedVariables.push(variableName + '=' + $ENV[variableName]);
-            print(variableName + '=' + $ENV[variableName]);
         }
         return copiedVariables;
     }
