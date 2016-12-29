@@ -1,5 +1,6 @@
 package com.hclc.links.fragments;
 
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -41,6 +42,7 @@ public class LinksFragmentsFinder implements MessageListener {
         context
                 .createProducer()
                 .setProperty("eventName", "giveMeLinkFragments")
+                .setProperty("trackingId", UUID.randomUUID().toString())
                 .send(topic, "");
         LOGGER.log(Level.INFO, "giveMeLinkFragments message was sent");
     }
