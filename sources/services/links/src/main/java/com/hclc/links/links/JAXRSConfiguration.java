@@ -1,4 +1,4 @@
-package com.hclc;
+package com.hclc.links.links;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

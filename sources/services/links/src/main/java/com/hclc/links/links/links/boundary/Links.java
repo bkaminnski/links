@@ -1,6 +1,6 @@
-package com.hclc.links.links.boundary;
+package com.hclc.links.links.links.boundary;
 
-import com.hclc.links.links.entity.Link;
+import com.hclc.links.links.links.entity.Link;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.json.Json;

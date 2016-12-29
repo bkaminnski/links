@@ -1,4 +1,4 @@
-package com.hclc.description;
+package com.hclc.links.description;
 
 import com.hclc.libs.accessibility.ServiceInfo;
 import javax.enterprise.inject.Produces;

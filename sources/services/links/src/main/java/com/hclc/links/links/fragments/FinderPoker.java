@@ -1,4 +1,4 @@
-package com.hclc.links.fragments;
+package com.hclc.links.links.fragments;
 
 import com.hclc.libs.events.LinksTopic;
 import com.hclc.libs.monitoring.ServiceLogger;

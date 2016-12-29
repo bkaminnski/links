@@ -1,4 +1,4 @@
-package com.hclc.description.fragments;
+package com.hclc.links.description.fragments;
 
 import static com.hclc.libs.events.IncomingEventProcessor.processIncomingEvent;
 import com.hclc.libs.events.LinksTopic;
