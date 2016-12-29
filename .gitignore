@@ -7,3 +7,8 @@ node_modules
 .vagrant
 npm-debug.log
 nbproject
+/sources/libs/accessibility/target/
+/sources/services/description/target/
+/sources/services/links/target/
+/sources/libs/monitoring/target/
+/sources/libs/events/target/
