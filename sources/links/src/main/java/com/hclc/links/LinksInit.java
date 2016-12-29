@@ -1,6 +1,6 @@
-package com.hclc;
+package com.hclc.links;
 
-import com.hclc.links.entity.Link;
+import com.hclc.links.links.entity.Link;
 import java.util.stream.Stream;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
