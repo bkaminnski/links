@@ -21845,7 +21845,7 @@
 	        value: function links() {
 	            var result = new Promise(function (resolve, reject) {
 	                var request = new XMLHttpRequest();
-	                request.open("GET", "http://localhost:8080/links/resources/links");
+	                request.open("GET", "/links/resources/links");
 	                request.onreadystatechange = function () {
 	                    var raw = request.responseText;
 	                    console.log('raw:' + raw);
