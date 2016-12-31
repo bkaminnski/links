@@ -1,0 +1,3 @@
+embed-server --std-out=echo --server-config=standalone-full.xml
+data-source add --jndi-name=java:jboss/datasources/description --name=descriptionDS --connection-url=jdbc:postgresql://postgres-dev:5432/description --driver-name=postgres --user-name=description --password=descriptionsecretpassword
+stop-embedded-server

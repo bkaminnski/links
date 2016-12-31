@@ -1,7 +1,8 @@
 #!/usr/bin/jjs -fv
 
-load('./scripts/command.js');
-load('./scripts/parallelExecutor.js');
+var timeStarted = new Date().getTime();
+
+load('./scripts/ups.js');
 
 new ParallelExecutor().withTimeoutInMillis(60000).execute(
 	[
@@ -17,4 +18,8 @@ new ParallelExecutor().withTimeoutInMillis(60000).execute(
 	]
 );
 
-load('./up.js');
+dbUp();
+mwUp();
+compileAndDeployMw();
+
+print('Script finished after ' + (new Date().getTime() - timeStarted) + ' millis');

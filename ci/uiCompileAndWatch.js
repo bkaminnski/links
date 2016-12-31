@@ -1,14 +1,9 @@
 #!/usr/bin/jjs -fv
 
-load('./scripts/command.js');
-load('./scripts/parallelExecutor.js');
+var timeStarted = new Date().getTime();
 
-new ParallelExecutor().withTimeoutInMillis(0).execute(
-    [
-        [
-            new Command('../sources/services/links-ui/', 'npm install'),
-            new Command('../sources/services/links-ui/', 'npm run build-watch')
-        ]
-    ]
-);
+load('./scripts/ups.js');
 
+compileUisWatch();
+
+print('Script finished after ' + (new Date().getTime() - timeStarted) + ' millis');
