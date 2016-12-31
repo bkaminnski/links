@@ -19,26 +19,23 @@ public class Link implements Serializable {
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "link_id_seq")
-    @Column(name = "id", updatable = false)
+    @Column(name = "link_id", updatable = false)
     private Long id;
 
-    @Column(length = 2000)
-    private String url, keywords, description;
+    @Column(name = "link_shared_id", length = 36)
+    private String sharedId;
 
-    public Link() {
-    }
+    @Column(name = "link_url", length = 2000)
+    private String url;
 
-    public Link(String url, String keywords, String description) {
-        this.url = url;
-        this.keywords = keywords;
-        this.description = description;
-    }
+    @Column(name = "link_keywords", length = 2000)
+    private String keywords;
 
     public JsonObjectBuilder toJson() {
         return Json
                 .createObjectBuilder()
+                .add("sharedId", sharedId)
                 .add("url", url)
-                .add("keywords", keywords)
-                .add("description", description);
+                .add("keywords", keywords);
     }
 }

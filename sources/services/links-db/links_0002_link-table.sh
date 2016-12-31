@@ -4,11 +4,11 @@ set -e
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" links <<-EOSQL    
 	CREATE TABLE public.link
 	(
-		id bigint NOT NULL,
-		description character varying(2000) COLLATE pg_catalog."default",
-		keywords character varying(2000) COLLATE pg_catalog."default",
-		url character varying(2000) COLLATE pg_catalog."default",
-		CONSTRAINT link_pkey PRIMARY KEY (id)
+		link_id bigint NOT NULL,
+		link_shared_id character varying(36) COLLATE pg_catalog."default",
+		link_keywords character varying(2000) COLLATE pg_catalog."default",
+		link_url character varying(2000) COLLATE pg_catalog."default",
+		CONSTRAINT link_pkey PRIMARY KEY (link_id)
 	)
 	WITH (
 		OIDS = FALSE
