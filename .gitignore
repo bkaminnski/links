@@ -13,3 +13,5 @@ nbproject
 /sources/libs/monitoring/target/
 /sources/libs/events/target/
 /sources/services/descriptions/target/
+/sources/services/descriptions-be/target/
+/sources/services/links-be/target/

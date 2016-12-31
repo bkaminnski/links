@@ -72,10 +72,10 @@ function compileAndDeployMw() {
 	new ParallelExecutor().withTimeoutInMillis(60000).execute(
 		[
 			[
-				new Command('../sources/services/links/', 'mvn clean install -P wildfly-local')
+				new Command('../sources/services/links-be/', 'mvn clean install -P wildfly-local')
 			],
 			[
-				new Command('../sources/services/descriptions/', 'mvn clean install -P wildfly-local')
+				new Command('../sources/services/descriptions-be/', 'mvn clean install -P wildfly-local')
 			]
 		]
 	);
