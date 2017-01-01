@@ -21,11 +21,15 @@ public class LinksTopic {
     @Inject
     ServiceInfo serviceInfo;
 
-    public void sendEventWithPayloadAndLog(String eventName, String payload, ServiceLogger serviceLogger) {
+    public void sendEventWithEmptyPayload(EventName eventName, ServiceLogger serviceLogger) {
+        sendEventWithPayload(eventName, "", serviceLogger);
+    }
+
+    public void sendEventWithPayload(EventName eventName, String payload, ServiceLogger serviceLogger) {
         String formattedNowInUtc = formattedNowInUtc();
         context
                 .createProducer()
-                .setProperty("eventName", eventName)
+                .setProperty("eventName", eventName.getEventName())
                 .setProperty("trackingId", TrackingIdHolder.get())
                 .setProperty("creationTimestamp", formattedNowInUtc)
                 .setProperty("creatingServiceName", serviceInfo.serviceName())

@@ -1,7 +1,6 @@
 package com.hclc.links.descriptions.slices;
 
 import static com.hclc.libs.events.IncomingEventProcessor.processIncomingEvent;
-import com.hclc.libs.events.LinksTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;

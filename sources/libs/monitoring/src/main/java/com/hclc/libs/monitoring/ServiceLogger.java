@@ -1,6 +1,7 @@
 package com.hclc.libs.monitoring;
 
 import com.hclc.libs.accessibility.ServiceInfo;
+import static java.util.logging.Level.FINE;
 import static java.util.logging.Level.INFO;
 import static java.util.logging.Level.SEVERE;
 import java.util.logging.Logger;
@@ -17,6 +18,10 @@ public class ServiceLogger {
 
     public void info(String msg) {
         logger.log(INFO, prependedWithTrackingIdAndServiceName(msg));
+    }
+
+    public void fine(String msg) {
+        logger.log(FINE, prependedWithTrackingIdAndServiceName(msg));
     }
 
     public void severe(Throwable thrown) {

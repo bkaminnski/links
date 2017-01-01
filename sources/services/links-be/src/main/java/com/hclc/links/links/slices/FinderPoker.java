@@ -2,6 +2,8 @@ package com.hclc.links.links.slices;
 
 import com.hclc.libs.events.LinksTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
+import com.hclc.links.links.EventsNames;
+import static com.hclc.links.links.EventsNames.wakeUp;
 import static java.lang.Thread.sleep;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
@@ -20,6 +22,8 @@ import javax.inject.Inject;
 @Lock(READ)
 public class FinderPoker {
 
+    private static final String NAME_OF_CLASS_TO_WAKE_UP = LinksSlicesFinder.class.getName();
+
     private final AtomicBoolean finderWokeUp = new AtomicBoolean(false);
 
     @Inject
@@ -33,7 +37,7 @@ public class FinderPoker {
 
     @Asynchronous
     public void pokeFinderUntilItWakesUp() {
-        serviceLogger.info("starting poking " + LinksSlicesFinder.class.getName());
+        serviceLogger.info("starting poking " + NAME_OF_CLASS_TO_WAKE_UP);
         try {
             while (!this.finderWokeUp.get()) {
                 this.sessionContext.getBusinessObject(FinderPoker.class).pokeFinder();
@@ -46,13 +50,13 @@ public class FinderPoker {
 
     @TransactionAttribute(REQUIRES_NEW)
     public void pokeFinder() {
-        linksTopic.sendEventWithPayloadAndLog("wakeUp", "", serviceLogger);
+        linksTopic.sendEventWithEmptyPayload(wakeUp, serviceLogger);
     }
 
     public void iWokeUpSoStopPoking() {
         boolean finderWasAwake = this.finderWokeUp.getAndSet(true);
         if (!finderWasAwake) {
-            serviceLogger.info(LinksSlicesFinder.class.getName() + " woke up, poking will now stop");
+            serviceLogger.info(NAME_OF_CLASS_TO_WAKE_UP + " woke up, poking will now stop");
         }
     }
 }

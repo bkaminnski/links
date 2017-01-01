@@ -1,8 +1,14 @@
 package com.hclc.libs.accessibility;
 
-public interface ServiceInfo {
+public abstract class ServiceInfo {
 
-    String serviceName();
-    String serviceExternalHost();
-    int serviceExternalPort();
+    public abstract String serviceName();
+
+    public abstract String serviceExternalHost();
+
+    public abstract int serviceExternalPort();
+
+    public String fullUrlTo(String resource) {
+        return "http://" + serviceExternalHost() + ":" + serviceExternalPort() + resource;
+    }
 }

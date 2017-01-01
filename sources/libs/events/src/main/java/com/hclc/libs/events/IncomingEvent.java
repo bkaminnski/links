@@ -1,15 +1,22 @@
 package com.hclc.libs.events;
 
+import java.io.StringReader;
 import java.time.ZonedDateTime;
+import javax.json.Json;
+import javax.json.JsonObject;
 
 public class IncomingEvent {
 
-    private final String eventName, trackingId, creatingServiceName, payload;
+    private final EventName eventName;
+
+    private final String trackingId, creatingServiceName, payload;
+
+    private JsonObject payloadAsJsonObject;
 
     private final ZonedDateTime creationTimestamp, receptionTimestamp;
 
-    private IncomingEvent(String eventName, String trackingId, String creatingServiceName, String creationTimestamp, ZonedDateTime receptionTimestamp, String payload) {
-        this.eventName = eventName;
+    private IncomingEvent(final String eventName, String trackingId, String creatingServiceName, String creationTimestamp, ZonedDateTime receptionTimestamp, String payload) {
+        this.eventName = new EventName(eventName);
         this.trackingId = trackingId;
         this.creatingServiceName = creatingServiceName;
         this.creationTimestamp = ZonedDateTime.parse(creationTimestamp);
@@ -17,7 +24,7 @@ public class IncomingEvent {
         this.payload = payload;
     }
 
-    public String getEventName() {
+    public EventName getEventName() {
         return eventName;
     }
 
@@ -31,6 +38,17 @@ public class IncomingEvent {
 
     public String getPayload() {
         return payload;
+    }
+
+    private JsonObject payloadAsJsonObject() {
+        if (payloadAsJsonObject == null) {
+            payloadAsJsonObject = Json.createReader(new StringReader(getPayload())).readObject();
+        }
+        return payloadAsJsonObject;
+    }
+
+    public String getStringPropertyFromJsonPayload(String propertyName) {
+        return payloadAsJsonObject().getString(propertyName);
     }
 
     public ZonedDateTime getCreationTimestamp() {
