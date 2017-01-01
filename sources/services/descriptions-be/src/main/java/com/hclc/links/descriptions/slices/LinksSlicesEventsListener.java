@@ -15,19 +15,19 @@ import javax.jms.MessageListener;
     @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/links")
     ,
     @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'giveMeLinksSlices'")})
-public class LinksSlicesResponder implements MessageListener {
+public class LinksSlicesEventsListener implements MessageListener {
 
     @Inject
     ServiceLogger serviceLogger;
 
     @Inject
-    LinksSlicesAnnouncer linksSlicesAnnouncer;
+    LinksSliceAnnouncer linksSliceAnnouncer;
 
     @Override
     public void onMessage(Message message) {
         try {
             processIncomingEvent(message, serviceLogger);
-            linksSlicesAnnouncer.announceLinksSlices();
+            linksSliceAnnouncer.announceLinksSliceAvailability();
         } catch (JMSException ex) {
             serviceLogger.severe(ex);
         }

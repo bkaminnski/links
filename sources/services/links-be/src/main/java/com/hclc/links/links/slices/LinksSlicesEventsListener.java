@@ -1,32 +1,32 @@
 package com.hclc.links.links.slices;
 
 import com.hclc.libs.events.IncomingEvent;
-import com.hclc.libs.events.IncomingEventProcessor;
 import static com.hclc.libs.events.IncomingEventProcessor.processIncomingEvent;
 import com.hclc.libs.events.LinksTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
 import static com.hclc.libs.monitoring.TrackingIdHolder.generateNewTrackingId;
 import static com.hclc.links.links.EventsNames.giveMeLinksSlices;
-import static com.hclc.links.links.EventsNames.thisIsMyLinksSlice;
 import javax.annotation.PostConstruct;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import static com.hclc.links.links.EventsNames.myLinksSliceIsAvailable;
+import static com.hclc.links.links.EventsNames.myLinksSliceIsUnavailable;
 
 @MessageDriven(activationConfig = {
     @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
     , @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/links")
-    , @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'thisIsMyLinksSlice' or eventName = 'wakeUp'")
+    , @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'myLinksSliceIsAvailable' or eventName = 'myLinksSliceIsUnavailable' or eventName = 'wakeUp'")
     , @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1")})
-public class LinksSlicesFinder implements MessageListener {
+public class LinksSlicesEventsListener implements MessageListener {
 
     @Inject
     ServiceLogger serviceLogger;
 
     @Inject
-    FinderPoker finderPoker;
+    EventsListenerPoker poker;
 
     @Inject
     LinksTopic linksTopic;
@@ -35,9 +35,9 @@ public class LinksSlicesFinder implements MessageListener {
     LinksSlicesRegister linksSlicesRegister;
 
     @PostConstruct
-    public void iAmReadyToReceiveLinksSlices() {
+    public void iAmReadyToReceiveEvents() {
         generateNewTrackingId();
-        finderPoker.iWokeUpSoStopPoking();
+        poker.iWokeUpSoStopPoking();
         linksTopic.sendEventWithEmptyPayload(giveMeLinksSlices, serviceLogger);
     }
 
@@ -45,17 +45,21 @@ public class LinksSlicesFinder implements MessageListener {
     public void onMessage(Message message) {
         try {
             IncomingEvent incomingEvent = processIncomingEvent(message, serviceLogger);
-            if (thisIsMyLinksSlice.equals(incomingEvent.getEventName())) {
-                storeUiUrlInSlicesRegister(incomingEvent);
-            }
+            updateLinksSlicesRegister(incomingEvent);
         } catch (Exception e) {
             serviceLogger.severe(e);
         }
     }
 
-    private void storeUiUrlInSlicesRegister(IncomingEvent incomingEvent) {
-        String uiUrl = incomingEvent.getStringPropertyFromJsonPayload("uiUrl");
-        serviceLogger.info("uiUrl: " + uiUrl);
-        linksSlicesRegister.storeUiUrlForService(uiUrl, incomingEvent.getCreatingServiceName());
+    private void updateLinksSlicesRegister(IncomingEvent incomingEvent) {
+        if (myLinksSliceIsAvailable.equals(incomingEvent.getEventName())) {
+            linksSlicesRegister.addUiUrlForService(uiUrl(incomingEvent), incomingEvent.getCreatingServiceName());
+        } else if (myLinksSliceIsUnavailable.equals(incomingEvent.getEventName())) {
+            linksSlicesRegister.removeUiUrlForService(incomingEvent.getCreatingServiceName());
+        }
+    }
+
+    private static String uiUrl(IncomingEvent incomingEvent) {
+        return incomingEvent.getStringPropertyFromJsonPayload("uiUrl");
     }
 }

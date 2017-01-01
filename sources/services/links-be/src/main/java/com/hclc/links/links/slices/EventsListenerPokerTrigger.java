@@ -7,13 +7,13 @@ import javax.inject.Inject;
 
 @Startup
 @Singleton
-public class FinderPokerTrigger {
+public class EventsListenerPokerTrigger {
 
     @Inject
-    FinderPoker finderPoker;
+    EventsListenerPoker eventsListenerPoker;
 
     @PostConstruct
     public void startPoking() {
-        finderPoker.pokeFinderUntilItWakesUp();
+        eventsListenerPoker.pokeUntilAwoken();
     }
 }

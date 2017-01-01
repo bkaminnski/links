@@ -20,11 +20,11 @@ import javax.inject.Inject;
 
 @Singleton
 @Lock(READ)
-public class FinderPoker {
+public class EventsListenerPoker {
 
-    private static final String NAME_OF_CLASS_TO_WAKE_UP = LinksSlicesFinder.class.getName();
+    private static final String NAME_OF_CLASS_TO_WAKE_UP = LinksSlicesEventsListener.class.getName();
 
-    private final AtomicBoolean finderWokeUp = new AtomicBoolean(false);
+    private final AtomicBoolean eventsListenerIsAwake = new AtomicBoolean(false);
 
     @Inject
     ServiceLogger serviceLogger;
@@ -36,26 +36,26 @@ public class FinderPoker {
     LinksTopic linksTopic;
 
     @Asynchronous
-    public void pokeFinderUntilItWakesUp() {
+    public void pokeUntilAwoken() {
         serviceLogger.info("starting poking " + NAME_OF_CLASS_TO_WAKE_UP);
         try {
-            while (!this.finderWokeUp.get()) {
-                this.sessionContext.getBusinessObject(FinderPoker.class).pokeFinder();
+            while (!this.eventsListenerIsAwake.get()) {
+                this.sessionContext.getBusinessObject(EventsListenerPoker.class).poke();
                 sleep(10);
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(FinderPoker.class.getName()).log(Level.SEVERE, "poking thread was interrupted", ex);
+            Logger.getLogger(EventsListenerPoker.class.getName()).log(Level.SEVERE, "poking thread was interrupted", ex);
         }
     }
 
     @TransactionAttribute(REQUIRES_NEW)
-    public void pokeFinder() {
+    public void poke() {
         linksTopic.sendEventWithEmptyPayload(wakeUp, serviceLogger);
     }
 
     public void iWokeUpSoStopPoking() {
-        boolean finderWasAwake = this.finderWokeUp.getAndSet(true);
-        if (!finderWasAwake) {
+        boolean eventsListenerWasAwake = this.eventsListenerIsAwake.getAndSet(true);
+        if (!eventsListenerWasAwake) {
             serviceLogger.info(NAME_OF_CLASS_TO_WAKE_UP + " woke up, poking will now stop");
         }
     }
