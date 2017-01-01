@@ -1,4 +1,4 @@
-package com.hclc.links.descriptions.fragments;
+package com.hclc.links.descriptions.slices;
 
 import com.hclc.libs.events.LinksTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 @Singleton
 @Startup
-public class LinksFragmentsAnnouncer {
+public class LinksSlicesAnnouncer {
 
     @Inject
     ServiceLogger serviceLogger;
@@ -19,8 +19,12 @@ public class LinksFragmentsAnnouncer {
     LinksTopic linksTopic;
 
     @PostConstruct
-    public void announceLinkFragments() {
+    public void announceLinksSlicesOnStartup() {
         generateNewTrackingId();
-        linksTopic.sendEventWithPayloadAndLog("thisIsMyLinkFragment", "", serviceLogger);
+        announceLinksSlices();
+    }
+
+    public void announceLinksSlices() {
+        linksTopic.sendEventWithPayloadAndLog("thisIsMyLinksSlice", "", serviceLogger);
     }
 }

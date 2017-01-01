@@ -1,4 +1,4 @@
-package com.hclc.links.descriptions.fragments;
+package com.hclc.links.descriptions.slices;
 
 import static com.hclc.libs.events.IncomingEventProcessor.processIncomingEvent;
 import com.hclc.libs.events.LinksTopic;
@@ -15,20 +15,20 @@ import javax.jms.MessageListener;
     , 
     @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/links")
     ,
-    @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'giveMeLinkFragments'")})
-public class LinksFragmentsResponder implements MessageListener {
+    @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'giveMeLinksSlices'")})
+public class LinksSlicesResponder implements MessageListener {
 
     @Inject
     ServiceLogger serviceLogger;
 
     @Inject
-    LinksTopic linksTopic;
+    LinksSlicesAnnouncer linksSlicesAnnouncer;
 
     @Override
     public void onMessage(Message message) {
         try {
             processIncomingEvent(message, serviceLogger);
-            linksTopic.sendEventWithPayloadAndLog("thisIsMyLinkFragment", "", serviceLogger);
+            linksSlicesAnnouncer.announceLinksSlices();
         } catch (JMSException ex) {
             serviceLogger.severe(ex);
         }

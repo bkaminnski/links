@@ -1,4 +1,4 @@
-package com.hclc.links.links.fragments;
+package com.hclc.links.links.slices;
 
 import com.hclc.libs.events.IncomingEventProcessor;
 import com.hclc.libs.events.LinksTopic;
@@ -15,9 +15,9 @@ import javax.jms.MessageListener;
 @MessageDriven(activationConfig = {
     @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
     , @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/links")
-    , @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'thisIsMyLinkFragment' or eventName = 'wakeUp'")
+    , @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'thisIsMyLinksSlice' or eventName = 'wakeUp'")
     , @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1")})
-public class LinksFragmentsFinder implements MessageListener {
+public class LinksSlicesFinder implements MessageListener {
 
     @Inject
     ServiceLogger serviceLogger;
@@ -29,10 +29,10 @@ public class LinksFragmentsFinder implements MessageListener {
     LinksTopic linksTopic;
 
     @PostConstruct
-    public void iAmReadyToReceiveLinkFragments() {
+    public void iAmReadyToReceiveLinksSlices() {
         generateNewTrackingId();
         finderPoker.iWokeUpSoStopPoking();
-        linksTopic.sendEventWithPayloadAndLog("giveMeLinkFragments", "", serviceLogger);
+        linksTopic.sendEventWithPayloadAndLog("giveMeLinksSlices", "", serviceLogger);
     }
 
     @Override

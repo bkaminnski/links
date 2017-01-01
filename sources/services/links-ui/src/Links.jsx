@@ -1,27 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Client from './Client.js';
+import LinksStateBuilder from './LinksStateBuilder.js';
 import Link from './Link.jsx';
 
 class Links extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.client = new Client();
-    this.state = { links: [] };
-    this.client.links().then(l => this.setState({ links: l }));
-  }
-  render() {
-    return (
-      <div>
-        {
-          this.state.links.map(l =>
-            <Link key={l.url} url={l.url} keywords={l.keywords} description={l.description} />
-          )
-        }
-      </div>
-    )
-  }
+    constructor() {
+        super();
+        this.linksStateBuilder = new LinksStateBuilder(this);
+        this.state = {links: []};
+    }
+
+    componentDidMount() {
+        this.linksStateBuilder.subscribeToEvents();
+        this.linksStateBuilder.loadLinks();
+    }
+
+    componentWillUnmount() {
+        this.linksStateBuilder.unsubscribeFromEvents();
+    }
+
+    render() {
+        return <div>{
+                        this.state.links.map(link =>
+                        <Link key={link.sharedId} link={link} />
+                        )
+            }</div>;
+    }
 }
 
 ReactDOM.render(<Links />, document.getElementById('links'));

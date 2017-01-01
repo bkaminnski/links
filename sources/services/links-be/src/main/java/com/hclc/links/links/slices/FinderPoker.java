@@ -1,4 +1,4 @@
-package com.hclc.links.links.fragments;
+package com.hclc.links.links.slices;
 
 import com.hclc.libs.events.LinksTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
@@ -33,7 +33,7 @@ public class FinderPoker {
 
     @Asynchronous
     public void pokeFinderUntilItWakesUp() {
-        serviceLogger.info("starting poking " + LinksFragmentsFinder.class.getName());
+        serviceLogger.info("starting poking " + LinksSlicesFinder.class.getName());
         try {
             while (!this.finderWokeUp.get()) {
                 this.sessionContext.getBusinessObject(FinderPoker.class).pokeFinder();
@@ -52,7 +52,7 @@ public class FinderPoker {
     public void iWokeUpSoStopPoking() {
         boolean finderWasAwake = this.finderWokeUp.getAndSet(true);
         if (!finderWasAwake) {
-            serviceLogger.info(LinksFragmentsFinder.class.getName() + " woke up, poking will now stop");
+            serviceLogger.info(LinksSlicesFinder.class.getName() + " woke up, poking will now stop");
         }
     }
 }

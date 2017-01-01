@@ -62,6 +62,10 @@ function compileUis(timeout, buildCommand) {
 			[
 				new Command('../sources/services/links-ui/', 'npm install'),
 				new Command('../sources/services/links-ui/', 'npm run ' + buildCommand)
+			],
+			[
+				new Command('../sources/services/descriptions-ui/', 'npm install'),
+				new Command('../sources/services/descriptions-ui/', 'npm run ' + buildCommand)
 			]
 		]
 	);
