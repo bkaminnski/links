@@ -43,12 +43,6 @@ function Command(workDir, cmd) {
         return commandInterpreter + this.cmd;
     }
 
-    this.systemSpecificPath = function() {
-        var variableNameInWindows = 'Path';
-        var variableNameInLinux = 'PATH';
-        return ($ENV[variableNameInWindows] == null ? $ENV[variableNameInLinux] : $ENV[variableNameInWindows]);
-    }
-
     this.consoleLog = function(stream, type) {
         var thisObj = this;
 		new Thread(function() {

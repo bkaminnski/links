@@ -8,7 +8,7 @@ class Links extends React.Component {
     constructor() {
         super();
         this.linksStateBuilder = new LinksStateBuilder(this);
-        this.state = {links: []};
+        this.state = { links: [] };
     }
 
     componentDidMount() {
@@ -22,10 +22,10 @@ class Links extends React.Component {
 
     render() {
         return <div>{
-                        this.state.links.map(link =>
-                        <Link key={link.sharedId} link={link} />
-                        )
-            }</div>;
+            this.state.links.map(link =>
+                <Link key={link.sharedId} link={link} />
+            )
+        }</div>;
     }
 }
 
