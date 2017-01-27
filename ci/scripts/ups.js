@@ -49,7 +49,7 @@ function compileLibs() {
 }
 
 function compileUisOnce() {
-	compileUis(60000, 'build-once');
+	compileUis(180000, 'build-once');
 }
 
 function compileUisWatch() {
@@ -66,6 +66,10 @@ function compileUis(timeout, buildCommand) {
 			[
 				new Command('../sources/services/descriptions-ui/', 'npm install'),
 				new Command('../sources/services/descriptions-ui/', 'npm run ' + buildCommand)
+			],
+			[
+				new Command('../sources/services/keywords-ui/', 'npm install'),
+				new Command('../sources/services/keywords-ui/', 'npm run ' + buildCommand)
 			]
 		]
 	);
@@ -80,6 +84,9 @@ function compileAndDeployMw() {
 			],
 			[
 				new Command('../sources/services/descriptions-be/', 'mvn clean install -P wildfly-local')
+			],
+			[
+				new Command('../sources/services/keywords-be/', 'mvn clean install -P wildfly-local')
 			]
 		]
 	);

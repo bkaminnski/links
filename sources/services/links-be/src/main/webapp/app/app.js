@@ -22007,17 +22007,6 @@
 	                        this.props.link.url
 	                    )
 	                ),
-	                _react2.default.createElement(
-	                    'div',
-	                    null,
-	                    _react2.default.createElement(
-	                        'b',
-	                        null,
-	                        'Keywords:'
-	                    ),
-	                    ' ',
-	                    this.props.link.keywords
-	                ),
 	                this.props.link.components,
 	                _react2.default.createElement('hr', null)
 	            );

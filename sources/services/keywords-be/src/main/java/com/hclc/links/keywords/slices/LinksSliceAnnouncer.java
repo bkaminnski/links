@@ -1,11 +1,11 @@
-package com.hclc.links.descriptions.slices;
+package com.hclc.links.keywords.slices;
 
 import com.hclc.libs.accessibility.ServiceInfo;
 import com.hclc.libs.events.LinksTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
 import static com.hclc.libs.monitoring.TrackingIdHolder.generateNewTrackingId;
-import static com.hclc.links.descriptions.EventsNames.myLinksSliceIsAvailable;
-import static com.hclc.links.descriptions.EventsNames.myLinksSliceIsUnavailable;
+import static com.hclc.links.keywords.EventsNames.myLinksSliceIsAvailable;
+import static com.hclc.links.keywords.EventsNames.myLinksSliceIsUnavailable;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;

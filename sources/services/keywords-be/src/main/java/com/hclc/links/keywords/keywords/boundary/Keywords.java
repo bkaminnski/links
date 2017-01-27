@@ -1,10 +1,7 @@
-package com.hclc.links.descriptions.descriptions.boundary;
+package com.hclc.links.keywords.keywords.boundary;
 
-import com.hclc.links.descriptions.descriptions.entity.Description;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,22 +10,23 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Stateless
 @Path(value = "keywords")
-public class Descriptions {
+public class Keywords {
 
     @PersistenceContext
     EntityManager em;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response descriptions() {
+    public Response keywords() {
         return Response.ok(
-                ((List<Description>) em.createQuery("select l from Description l")
+                ((List<com.hclc.links.keywords.keywords.entity.Keywords>) em.createQuery("select l from com.hclc.links.keywords.keywords.entity.Keywords l")
                         .getResultList())
                         .stream()
-                        .map(Description::toJson)
+                        .map(com.hclc.links.keywords.keywords.entity.Keywords::toJson)
                         .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add)
                         .build()
         ).build();

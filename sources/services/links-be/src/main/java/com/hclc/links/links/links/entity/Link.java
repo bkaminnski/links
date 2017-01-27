@@ -1,14 +1,9 @@
 package com.hclc.links.links.links.entity;
 
-import java.io.Serializable;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 public class Link implements Serializable {
@@ -28,14 +23,10 @@ public class Link implements Serializable {
     @Column(name = "link_url", length = 2000)
     private String url;
 
-    @Column(name = "link_keywords", length = 2000)
-    private String keywords;
-
     public JsonObjectBuilder toJson() {
         return Json
                 .createObjectBuilder()
                 .add("sharedId", sharedId)
-                .add("url", url)
-                .add("keywords", keywords);
+                .add("url", url);
     }
 }
