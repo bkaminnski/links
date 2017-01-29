@@ -23,6 +23,14 @@ public class Link implements Serializable {
     @Column(name = "link_url", length = 2000)
     private String url;
 
+    public Link() {
+    }
+
+    public Link(String sharedId, String url) {
+        this.sharedId = sharedId;
+        this.url = url;
+    }
+
     public JsonObjectBuilder toJson() {
         return Json
                 .createObjectBuilder()
