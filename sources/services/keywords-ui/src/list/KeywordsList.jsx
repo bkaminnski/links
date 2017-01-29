@@ -1,8 +1,8 @@
 import React from 'react';
-import Keywords from './Keywords.jsx';
-import KeywordsClient from './KeywordsClient.js';
+import KeywordsItem from './KeywordsItem.jsx';
+import KeywordsClient from '../KeywordsClient.js';
 
-export default class KeywordsSlice {
+export default class KeywordsList {
 
     constructor() {
         this.keywordsClient = new KeywordsClient();
@@ -21,7 +21,7 @@ export default class KeywordsSlice {
             priority: 100,
             fragments: keywords.map(keywords => ({
                 linkSharedId: keywords.linkSharedId,
-                component: <Keywords key={'keywords-' + keywords.linkSharedId} keywords={keywords.keywords} />
+                component: <KeywordsItem key={'keywords-' + keywords.linkSharedId} keywords={keywords.keywords} />
             }))
         };
     }
@@ -31,5 +31,5 @@ export default class KeywordsSlice {
     }
 }
 
-let keywordsSlice = new KeywordsSlice();
-keywordsSlice.loadTransformAndPublish();
+let keywordsList = new KeywordsList();
+keywordsList.loadTransformAndPublish();

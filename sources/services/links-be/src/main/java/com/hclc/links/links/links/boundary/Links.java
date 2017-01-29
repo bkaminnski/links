@@ -11,7 +11,6 @@ import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.UUID;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 

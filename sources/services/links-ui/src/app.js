@@ -1,1 +1,1 @@
-import Links from './Links.jsx';
+import LinksScreen from './LinksScreen.jsx';

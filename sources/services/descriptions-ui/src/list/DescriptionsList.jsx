@@ -1,8 +1,8 @@
 import React from 'react';
-import Description from './Description.jsx';
-import DescriptionsClient from './DescriptionsClient.js';
+import DescriptionItem from './DescriptionItem.jsx';
+import DescriptionsClient from '../DescriptionsClient.js';
 
-export default class DescriptionSlice {
+export default class DescriptionsList {
 
     constructor() {
         this.descriptionsClient = new DescriptionsClient();
@@ -21,7 +21,7 @@ export default class DescriptionSlice {
             priority: 200,
             fragments: descriptions.map(description => ({
                 linkSharedId: description.linkSharedId,
-                component: <Description key={'description-' + description.linkSharedId} description={description.description} />
+                component: <DescriptionItem key={'description-' + description.linkSharedId} description={description.description} />
             }))
         };
     }
@@ -31,5 +31,5 @@ export default class DescriptionSlice {
     }
 }
 
-let descriptionSlice = new DescriptionSlice();
-descriptionSlice.loadTransformAndPublish();
+let descriptionsList = new DescriptionsList();
+descriptionsList.loadTransformAndPublish();

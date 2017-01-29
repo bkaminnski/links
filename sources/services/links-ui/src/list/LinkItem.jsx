@@ -1,11 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import Url from './Url.jsx';
 
-export default class Link extends React.Component {
+export default class LinkItem extends React.Component {
     render() {
         return (
             <div>
-                <div><b>Url:</b> <a href={this.props.link.url}>{this.props.link.url}</a></div>
+                <Url url={this.props.link.url} />
                 {this.props.link.components}
                 <hr />
             </div>

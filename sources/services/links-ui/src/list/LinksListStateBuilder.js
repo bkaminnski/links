@@ -1,9 +1,9 @@
-import LinksClient from './LinksClient.js';
+import LinksClient from '../LinksClient.js';
 
-export default class LinksStateBuilder {
+export default class LinksListStateBuilder {
 
-    constructor(linksComponent) {
-        this.linksComponent = linksComponent;
+    constructor(linksListComponent) {
+        this.linksListComponent = linksListComponent;
         this.linksClient = new LinksClient();
         this.links = [];
         this.slices = [];
@@ -21,7 +21,7 @@ export default class LinksStateBuilder {
             .forEach(slice => slice.fragments.forEach(
                 fragment => linksMap[fragment.linkSharedId].components.push(fragment.component)
             ));
-        this.linksComponent.setState({ links: this.links });
+        this.linksListComponent.setState({ links: this.links });
     }
 
     loadLinks() {
@@ -34,17 +34,17 @@ export default class LinksStateBuilder {
     }
 
     subscribeToEvents() {
-        this.linksSliceWasLoadedSubscriptionToken = PubSub.subscribe('uiEvent.linksList.sliceWasLoaded', (msg, slice) => {
+        this.sliceWasLoadedSubscriptionToken = PubSub.subscribe('uiEvent.linksList.sliceWasLoaded', (msg, slice) => {
             this.slices.push(slice);
             this.rebuildState();
         });
-        this.linksReloadRequestedSubscriptionToken = PubSub.subscribe('uiEvent.linksList.loadSlice', (msg) => {
+        this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.linkCreation.linkWasCreated', (msg) => {
             this.loadLinks();
         });
     }
 
     unsubscribeFromEvents() {
-        PubSub.unsubscribe(this.linksSliceWasLoadedSubscriptionToken);
-        PubSub.unsubscribe(this.linksReloadRequestedSubscriptionToken);
+        PubSub.unsubscribe(this.sliceWasLoadedSubscriptionToken);
+        PubSub.unsubscribe(this.linkWasCreatedSubscriptionToken);
     }
 }

@@ -1,1 +1,1 @@
-import DescriptionsSlice from './DescriptionsSlice.jsx';
+import DescriptionsList from './list/DescriptionsList.jsx';

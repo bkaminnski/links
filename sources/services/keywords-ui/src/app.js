@@ -1,1 +1,1 @@
-import KeywordsSlice from './KeywordsSlice.jsx';
+import KeywordsList from './list/KeywordsList.jsx';

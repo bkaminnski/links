@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import LinksClient from './LinksClient.js';
+import LinksClient from '../LinksClient.js';
 
-export default class CreateLink extends React.Component {
+export default class LinkCreation extends React.Component {
     constructor() {
         super();
         this.linksClient = new LinksClient();
@@ -20,10 +19,9 @@ export default class CreateLink extends React.Component {
 
     submitItem(e) {
         e.preventDefault();
-        this.linksClient.createLink(this.refs.item.value).then((responseStatus) => {
-            console.log(responseStatus);
-            PubSub.publish('uiEvent.linksList.loadSlice');
+        let url = this.refs.item.value;
+        this.linksClient.createLink(url).then((responseStatus) => {
+            PubSub.publish('uiEvent.linkCreation.linkWasCreated');
         });
-        console.log(this.refs.item.value);
     }
 }
