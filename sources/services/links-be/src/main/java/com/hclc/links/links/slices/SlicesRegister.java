@@ -12,7 +12,7 @@ import javax.inject.Named;
 
 @Named
 @Singleton
-public class LinksSlicesRegister {
+public class SlicesRegister {
 
     @Inject
     ServiceLogger serviceLogger;

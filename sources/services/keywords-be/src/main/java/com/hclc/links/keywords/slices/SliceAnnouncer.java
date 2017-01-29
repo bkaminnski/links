@@ -4,8 +4,8 @@ import com.hclc.libs.accessibility.ServiceInfo;
 import com.hclc.libs.events.LinksTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
 import static com.hclc.libs.monitoring.TrackingIdHolder.generateNewTrackingId;
-import static com.hclc.links.keywords.EventsNames.myLinksSliceIsAvailable;
-import static com.hclc.links.keywords.EventsNames.myLinksSliceIsUnavailable;
+import static com.hclc.links.keywords.EventsNames.mySliceIsAvailable;
+import static com.hclc.links.keywords.EventsNames.mySliceIsUnavailable;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
@@ -15,7 +15,7 @@ import javax.json.Json;
 
 @Singleton
 @Startup
-public class LinksSliceAnnouncer {
+public class SliceAnnouncer {
 
     @Inject
     ServiceLogger serviceLogger;
@@ -27,23 +27,23 @@ public class LinksSliceAnnouncer {
     ServiceInfo serviceInfo;
 
     @PostConstruct
-    public void announceLinksSliceAvailabilityOnStartup() {
+    public void announceSliceAvailabilityOnStartup() {
         generateNewTrackingId();
-        announceLinksSliceAvailability();
+        announceSliceAvailability();
     }
 
-    public void announceLinksSliceAvailability() {
+    public void announceSliceAvailability() {
         String uiUrlPayload = Json.createObjectBuilder().add("uiUrl", serviceInfo.fullUrlTo("/keywords/app/app.js")).build().toString();
-        linksTopic.sendEventWithPayload(myLinksSliceIsAvailable, uiUrlPayload, serviceLogger);
+        linksTopic.sendEventWithPayload(mySliceIsAvailable, uiUrlPayload, serviceLogger);
     }
 
     @PreDestroy
-    public void announceLinksSliceUnavailibilityOnDestroy() {
+    public void announceSliceUnavailibilityOnDestroy() {
         generateNewTrackingId();
-        announceLinksSliceUnavailability();
+        announceSliceUnavailability();
     }
 
-    public void announceLinksSliceUnavailability() {
-        linksTopic.sendEventWithEmptyPayload(myLinksSliceIsUnavailable, serviceLogger);
+    public void announceSliceUnavailability() {
+        linksTopic.sendEventWithEmptyPayload(mySliceIsUnavailable, serviceLogger);
     }
 }

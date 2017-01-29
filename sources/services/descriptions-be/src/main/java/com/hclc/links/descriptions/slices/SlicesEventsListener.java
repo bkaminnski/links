@@ -14,20 +14,20 @@ import javax.jms.MessageListener;
     , 
     @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/links")
     ,
-    @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'giveMeLinksSlices'")})
-public class LinksSlicesEventsListener implements MessageListener {
+    @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'giveMeSlices'")})
+public class SlicesEventsListener implements MessageListener {
 
     @Inject
     ServiceLogger serviceLogger;
 
     @Inject
-    LinksSliceAnnouncer linksSliceAnnouncer;
+    SliceAnnouncer sliceAnnouncer;
 
     @Override
     public void onMessage(Message message) {
         try {
             processIncomingEvent(message, serviceLogger);
-            linksSliceAnnouncer.announceLinksSliceAvailability();
+            sliceAnnouncer.announceSliceAvailability();
         } catch (JMSException ex) {
             serviceLogger.severe(ex);
         }

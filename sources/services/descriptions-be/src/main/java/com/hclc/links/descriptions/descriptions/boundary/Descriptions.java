@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Stateless
-@Path(value = "keywords")
+@Path(value = "descriptions")
 public class Descriptions {
 
     @PersistenceContext

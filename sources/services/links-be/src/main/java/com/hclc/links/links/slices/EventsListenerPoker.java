@@ -22,7 +22,7 @@ import javax.inject.Inject;
 @Lock(READ)
 public class EventsListenerPoker {
 
-    private static final String NAME_OF_CLASS_TO_WAKE_UP = LinksSlicesEventsListener.class.getName();
+    private static final String NAME_OF_CLASS_TO_WAKE_UP = SlicesEventsListener.class.getName();
 
     private final AtomicBoolean eventsListenerIsAwake = new AtomicBoolean(false);
 
