@@ -76,6 +76,10 @@
 
 	var _Link2 = _interopRequireDefault(_Link);
 
+	var _CreateLink = __webpack_require__(187);
+
+	var _CreateLink2 = _interopRequireDefault(_CreateLink);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -114,6 +118,7 @@
 	            return _react2.default.createElement(
 	                'div',
 	                null,
+	                _react2.default.createElement(_CreateLink2.default, null),
 	                this.state.links.map(function (link) {
 	                    return _react2.default.createElement(_Link2.default, { key: link.sharedId, link: link });
 	                })
@@ -21891,15 +21896,19 @@
 	        value: function subscribeToEvents() {
 	            var _this2 = this;
 
-	            this.subscriptionToken = PubSub.subscribe('uiEvent.linksSlice.wasLoaded', function (msg, slice) {
+	            this.linksSliceWasLoadedSubscriptionToken = PubSub.subscribe('uiEvent.linksList.sliceWasLoaded', function (msg, slice) {
 	                _this2.slices.push(slice);
 	                _this2.rebuildState();
+	            });
+	            this.linksReloadRequestedSubscriptionToken = PubSub.subscribe('uiEvent.linksList.loadSlice', function (msg) {
+	                _this2.loadLinks();
 	            });
 	        }
 	    }, {
 	        key: 'unsubscribeFromEvents',
 	        value: function unsubscribeFromEvents() {
-	            PubSub.unsubscribe(this.subscriptionToken);
+	            PubSub.unsubscribe(this.linksSliceWasLoadedSubscriptionToken);
+	            PubSub.unsubscribe(this.linksReloadRequestedSubscriptionToken);
 	        }
 	    }]);
 
@@ -21928,6 +21937,28 @@
 	    }
 
 	    _createClass(Client, [{
+	        key: "createLink",
+	        value: function createLink(url) {
+	            var result = new Promise(function (resolve, reject) {
+	                var request = new XMLHttpRequest();
+	                request.open("POST", "http://localhost:8080/links/resources/links");
+	                request.setRequestHeader("Content-type", "application/json");
+	                request.onreadystatechange = function () {
+	                    if (request.readyState == 4 && request.status == 200) {
+	                        resolve(request.status);
+	                    }
+	                };
+	                request.send(JSON.stringify({
+	                    sharedId: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+	                        var r = Math.random() * 16 | 0,
+	                            v = c == 'x' ? r : r & 0x3 | 0x8;return v.toString(16);
+	                    }),
+	                    url: url
+	                }));
+	            });
+	            return result;
+	        }
+	    }, {
 	        key: "loadLinks",
 	        value: function loadLinks() {
 	            var result = new Promise(function (resolve, reject) {
@@ -22017,6 +22048,82 @@
 	}(_react2.default.Component);
 
 	exports.default = Link;
+
+/***/ },
+/* 187 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(33);
+
+	var _reactDom2 = _interopRequireDefault(_reactDom);
+
+	var _LinksClient = __webpack_require__(185);
+
+	var _LinksClient2 = _interopRequireDefault(_LinksClient);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CreateLink = function (_React$Component) {
+	    _inherits(CreateLink, _React$Component);
+
+	    function CreateLink() {
+	        _classCallCheck(this, CreateLink);
+
+	        var _this = _possibleConstructorReturn(this, (CreateLink.__proto__ || Object.getPrototypeOf(CreateLink)).call(this));
+
+	        _this.linksClient = new _LinksClient2.default();
+	        _this.submitItem = _this.submitItem.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(CreateLink, [{
+	        key: 'render',
+	        value: function render() {
+	            return _react2.default.createElement(
+	                'div',
+	                null,
+	                _react2.default.createElement(
+	                    'form',
+	                    { onSubmit: this.submitItem },
+	                    _react2.default.createElement('input', { type: 'text', ref: 'item' }),
+	                    _react2.default.createElement('input', { type: 'submit', value: 'Add to list' })
+	                )
+	            );
+	        }
+	    }, {
+	        key: 'submitItem',
+	        value: function submitItem(e) {
+	            e.preventDefault();
+	            this.linksClient.createLink(this.refs.item.value).then(function (responseStatus) {
+	                console.log(responseStatus);
+	                PubSub.publish('uiEvent.linksList.loadSlice');
+	            });
+	            console.log(this.refs.item.value);
+	        }
+	    }]);
+
+	    return CreateLink;
+	}(_react2.default.Component);
+
+	exports.default = CreateLink;
 
 /***/ }
 /******/ ]);

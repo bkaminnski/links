@@ -109,7 +109,7 @@
 	    }, {
 	        key: 'publish',
 	        value: function publish(slice) {
-	            PubSub.publish('uiEvent.linksSlice.wasLoaded', slice);
+	            PubSub.publish('uiEvent.linksList.sliceWasLoaded', slice);
 	        }
 	    }]);
 

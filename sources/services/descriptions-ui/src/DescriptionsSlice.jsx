@@ -27,7 +27,7 @@ export default class DescriptionSlice {
     }
 
     publish(slice) {
-        PubSub.publish('uiEvent.linksSlice.wasLoaded', slice)
+        PubSub.publish('uiEvent.linksList.sliceWasLoaded', slice)
     }
 }
 

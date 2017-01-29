@@ -34,13 +34,17 @@ export default class LinksStateBuilder {
     }
 
     subscribeToEvents() {
-        this.subscriptionToken = PubSub.subscribe('uiEvent.linksSlice.wasLoaded', (msg, slice) => {
+        this.linksSliceWasLoadedSubscriptionToken = PubSub.subscribe('uiEvent.linksList.sliceWasLoaded', (msg, slice) => {
             this.slices.push(slice);
             this.rebuildState();
+        });
+        this.linksReloadRequestedSubscriptionToken = PubSub.subscribe('uiEvent.linksList.loadSlice', (msg) => {
+            this.loadLinks();
         });
     }
 
     unsubscribeFromEvents() {
-        PubSub.unsubscribe(this.subscriptionToken);
+        PubSub.unsubscribe(this.linksSliceWasLoadedSubscriptionToken);
+        PubSub.unsubscribe(this.linksReloadRequestedSubscriptionToken);
     }
 }

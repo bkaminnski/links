@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import LinksStateBuilder from './LinksStateBuilder.js';
 import Link from './Link.jsx';
+import CreateLink from './CreateLink.jsx';
 
 class Links extends React.Component {
 
@@ -21,11 +22,14 @@ class Links extends React.Component {
     }
 
     render() {
-        return <div>{
-            this.state.links.map(link =>
-                <Link key={link.sharedId} link={link} />
-            )
-        }</div>;
+        return <div>
+            <CreateLink />
+            {
+                this.state.links.map(link =>
+                    <Link key={link.sharedId} link={link} />
+                )
+            }
+        </div>;
     }
 }
 
