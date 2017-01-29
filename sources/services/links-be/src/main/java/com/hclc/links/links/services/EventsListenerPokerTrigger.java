@@ -1,4 +1,4 @@
-package com.hclc.links.links.slices;
+package com.hclc.links.links.services;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;

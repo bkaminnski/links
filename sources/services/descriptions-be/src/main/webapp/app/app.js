@@ -46,14 +46,83 @@
 
 	'use strict';
 
-	var _DescriptionsList = __webpack_require__(35);
+	var _DescriptionsList = __webpack_require__(1);
 
 	var _DescriptionsList2 = _interopRequireDefault(_DescriptionsList);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 1 */,
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _DescriptionItem = __webpack_require__(33);
+
+	var _DescriptionItem2 = _interopRequireDefault(_DescriptionItem);
+
+	var _DescriptionsClient = __webpack_require__(34);
+
+	var _DescriptionsClient2 = _interopRequireDefault(_DescriptionsClient);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var DescriptionsList = function () {
+	    function DescriptionsList() {
+	        _classCallCheck(this, DescriptionsList);
+
+	        this.descriptionsClient = new _DescriptionsClient2.default();
+	    }
+
+	    _createClass(DescriptionsList, [{
+	        key: 'loadTransformAndPublish',
+	        value: function loadTransformAndPublish() {
+	            this.descriptionsClient.loadDescriptions().then(this.transformIntoSlice).then(this.publish);
+	        }
+	    }, {
+	        key: 'transformIntoSlice',
+	        value: function transformIntoSlice(descriptions) {
+	            return {
+	                name: 'description',
+	                priority: 200,
+	                fragments: descriptions.map(function (description) {
+	                    return {
+	                        linkSharedId: description.linkSharedId,
+	                        component: _react2.default.createElement(_DescriptionItem2.default, { key: 'description-' + description.linkSharedId, description: description.description })
+	                    };
+	                })
+	            };
+	        }
+	    }, {
+	        key: 'publish',
+	        value: function publish(slice) {
+	            PubSub.publish('uiEvent.linksList.sliceWasLoaded', slice);
+	        }
+	    }]);
+
+	    return DescriptionsList;
+	}();
+
+	exports.default = DescriptionsList;
+
+
+	var descriptionsList = new DescriptionsList();
+	descriptionsList.loadTransformAndPublish();
+
+/***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4106,119 +4175,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 33 */,
-/* 34 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Client = function () {
-	    function Client() {
-	        _classCallCheck(this, Client);
-	    }
-
-	    _createClass(Client, [{
-	        key: "loadDescriptions",
-	        value: function loadDescriptions() {
-	            var result = new Promise(function (resolve, reject) {
-	                var request = new XMLHttpRequest();
-	                request.open("GET", "http://localhost:8080/descriptions/resources/descriptions");
-	                request.onreadystatechange = function () {
-	                    if (request.readyState == 4 && request.status == 200) {
-	                        resolve(JSON.parse(request.responseText));
-	                    }
-	                };
-	                request.send();
-	            });
-	            return result;
-	        }
-	    }]);
-
-	    return Client;
-	}();
-
-	exports.default = Client;
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(2);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _DescriptionItem = __webpack_require__(36);
-
-	var _DescriptionItem2 = _interopRequireDefault(_DescriptionItem);
-
-	var _DescriptionsClient = __webpack_require__(34);
-
-	var _DescriptionsClient2 = _interopRequireDefault(_DescriptionsClient);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var DescriptionsList = function () {
-	    function DescriptionsList() {
-	        _classCallCheck(this, DescriptionsList);
-
-	        this.descriptionsClient = new _DescriptionsClient2.default();
-	    }
-
-	    _createClass(DescriptionsList, [{
-	        key: 'loadTransformAndPublish',
-	        value: function loadTransformAndPublish() {
-	            this.descriptionsClient.loadDescriptions().then(this.transformIntoSlice).then(this.publish);
-	        }
-	    }, {
-	        key: 'transformIntoSlice',
-	        value: function transformIntoSlice(descriptions) {
-	            return {
-	                name: 'description',
-	                priority: 200,
-	                fragments: descriptions.map(function (description) {
-	                    return {
-	                        linkSharedId: description.linkSharedId,
-	                        component: _react2.default.createElement(_DescriptionItem2.default, { key: 'description-' + description.linkSharedId, description: description.description })
-	                    };
-	                })
-	            };
-	        }
-	    }, {
-	        key: 'publish',
-	        value: function publish(slice) {
-	            PubSub.publish('uiEvent.linksList.sliceWasLoaded', slice);
-	        }
-	    }]);
-
-	    return DescriptionsList;
-	}();
-
-	exports.default = DescriptionsList;
-
-
-	var descriptionsList = new DescriptionsList();
-	descriptionsList.loadTransformAndPublish();
-
-/***/ },
-/* 36 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4271,6 +4228,47 @@
 	}(_react2.default.Component);
 
 	exports.default = DescriptionItem;
+
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Client = function () {
+	    function Client() {
+	        _classCallCheck(this, Client);
+	    }
+
+	    _createClass(Client, [{
+	        key: "loadDescriptions",
+	        value: function loadDescriptions() {
+	            var result = new Promise(function (resolve, reject) {
+	                var request = new XMLHttpRequest();
+	                request.open("GET", "http://localhost:8080/descriptions/resources/descriptions");
+	                request.onreadystatechange = function () {
+	                    if (request.readyState == 4 && request.status == 200) {
+	                        resolve(JSON.parse(request.responseText));
+	                    }
+	                };
+	                request.send();
+	            });
+	            return result;
+	        }
+	    }]);
+
+	    return Client;
+	}();
+
+	exports.default = Client;
 
 /***/ }
 /******/ ]);

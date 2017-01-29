@@ -5,7 +5,7 @@ import com.hclc.libs.events.EventName;
 public class EventsNames {
 
     public final static EventName wakeUp = new EventName("wakeUp");
-    public final static EventName giveMeSlices = new EventName("giveMeSlices");
-    public final static EventName mySliceIsAvailable = new EventName("mySliceIsAvailable");
-    public final static EventName mySliceIsUnavailable = new EventName("mySliceIsUnavailable");
+    public final static EventName giveMeServices = new EventName("giveMeServices");
+    public final static EventName myServiceIsAvailable = new EventName("myServiceIsAvailable");
+    public final static EventName myServiceIsUnavailable = new EventName("myServiceIsUnavailable");
 }

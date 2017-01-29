@@ -1,8 +1,8 @@
-package com.hclc.links.links.slices;
+package com.hclc.links.links.services;
 
 import com.hclc.libs.events.LinksTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
-import com.hclc.links.links.EventsNames;
+
 import static com.hclc.links.links.EventsNames.wakeUp;
 import static java.lang.Thread.sleep;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -22,7 +22,7 @@ import javax.inject.Inject;
 @Lock(READ)
 public class EventsListenerPoker {
 
-    private static final String NAME_OF_CLASS_TO_WAKE_UP = SlicesEventsListener.class.getName();
+    private static final String NAME_OF_CLASS_TO_WAKE_UP = ServicesEventsListener.class.getName();
 
     private final AtomicBoolean eventsListenerIsAwake = new AtomicBoolean(false);
 
