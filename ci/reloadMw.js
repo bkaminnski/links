@@ -4,9 +4,9 @@ var timeStarted = new Date().getTime();
 
 load('./scripts/ups.js');
 
-new Command('.', 'docker kill wildfly-dev').execute();
-new Command('.', 'docker rm wildfly-dev').execute();
-new Command('.', 'docker rmi links/wildfly-dev').execute();
+new Command('.', 'docker kill wildfly-configured').execute();
+new Command('.', 'docker rm wildfly-configured').execute();
+new Command('.', 'docker rmi wildfly-configured').execute();
 
 mwUp();
 compileAndDeployMw();

@@ -38,6 +38,6 @@ public class Links {
     @Consumes(APPLICATION_JSON)
     public Response create(CreateLinkCommand createLinkCommand) {
         em.persist(createLinkCommand.toLink());
-        return Response.ok().build();
+        return Response.noContent().build();
     }
 }

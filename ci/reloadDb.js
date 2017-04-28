@@ -7,13 +7,13 @@ load('./scripts/ups.js');
 new ParallelExecutor().withTimeoutInMillis(60000).execute(
 	[
 		[
-			new Command('.', 'docker kill wildfly-dev'),
-			new Command('.', 'docker rm wildfly-dev')
+			new Command('.', 'docker kill wildfly-configured'),
+			new Command('.', 'docker rm wildfly-configured')
 		],
 		[
-			new Command('.', 'docker kill postgres-dev'),
-			new Command('.', 'docker rm postgres-dev'),
-			new Command('.', 'docker rmi links/postgres-dev')
+			new Command('.', 'docker kill postgres-configured'),
+			new Command('.', 'docker rm postgres-configured'),
+			new Command('.', 'docker rmi postgres-configured')
 		]
 	]
 );

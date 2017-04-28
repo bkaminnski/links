@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" description <<-EOSQL    
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" descriptions <<-EOSQL    
 	CREATE TABLE public.description
 	(
 		desc_id bigint NOT NULL,
@@ -15,7 +15,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" description <<-EOSQL
 	TABLESPACE pg_default;
 
 	ALTER TABLE public.description
-		OWNER to description;
+		OWNER to descriptions;
 		
 	CREATE SEQUENCE public.desc_id_seq
 		INCREMENT 1
@@ -25,5 +25,5 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" description <<-EOSQL
 		CACHE 1;
 
 	ALTER SEQUENCE public.desc_id_seq
-		OWNER TO description;
+		OWNER TO descriptions;
 EOSQL

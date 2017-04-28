@@ -7,7 +7,7 @@ export default class Client {
             request.setRequestHeader("Content-type", "application/json");
             request.setRequestHeader("Accept", "*/*");
             request.onreadystatechange = function () {
-                if (request.readyState == 4 && request.status == 200) {
+                if (request.readyState == 4 && request.status == 204) {
                     resolve(request.status);
                 }
             }

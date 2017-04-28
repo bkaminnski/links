@@ -1,12 +1,14 @@
+var path = require('path');
+
 module.exports = {
   entry: './src/app.js',
   output: {
-    path: '../links-be/src/main/webapp/app/',
+    path: path.join(__dirname, '../links-be/src/main/webapp/app/'),
     filename: 'app.js',
     publicPath: 'app'
   },
   devServer: {
-    contentBase: '../links-be/src/main/webapp',
+    contentBase: path.join(__dirname, '../links-be/src/main/webapp'),
   },
   module: {
     loaders: [

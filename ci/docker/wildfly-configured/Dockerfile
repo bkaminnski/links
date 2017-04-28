@@ -1,4 +1,4 @@
-FROM links/wildfly
+FROM wildfly
 MAINTAINER Bartosz Kamiński, highcohesionloosecoupling.com
 RUN rm ${WILDFLY_HOME}/bin/standalone.conf \
   && ${WILDFLY_HOME}/bin/add-user.sh admin adminsecretpassword --silent

@@ -1,4 +1,4 @@
-FROM links/java
+FROM java
 MAINTAINER Bartosz Kamiński, highcohesionloosecoupling.com
 ENV VERSION 10.1.0.Final
 ENV INSTALL_DIR /opt
