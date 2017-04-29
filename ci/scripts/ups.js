@@ -56,6 +56,10 @@ function compileUis(timeout, buildCommand) {
 				new Command('../sources/services/application-ui/', 'npm run ' + buildCommand)
 			],
 			[
+				new Command('../sources/services/menu-and-content-ui/', 'npm install'),
+				new Command('../sources/services/menu-and-content-ui/', 'npm run ' + buildCommand)
+			],
+			[
 				new Command('../sources/services/links-ui/', 'npm install'),
 				new Command('../sources/services/links-ui/', 'npm run ' + buildCommand)
 			],
@@ -77,6 +81,9 @@ function compileAndDeployMw() {
 		[
 			[
 				new Command('../sources/services/application-be/', 'mvn clean install -P wildfly-local')
+			],
+			[
+				new Command('../sources/services/menu-and-content-be/', 'mvn clean install -P wildfly-local')
 			],
 			[
 				new Command('../sources/services/links-be/', 'mvn clean install -P wildfly-local')
