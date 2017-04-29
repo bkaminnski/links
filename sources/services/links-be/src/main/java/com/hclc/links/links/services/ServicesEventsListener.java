@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
@@ -27,40 +28,15 @@ public class ServicesEventsListener implements MessageListener {
     ServiceLogger serviceLogger;
 
     @Inject
-    EventsListenerPoker poker;
-
-    @Inject
-    LinksTopic linksTopic;
-
-    @Inject
-    ServicesRegistry servicesRegistry;
-
-    @PostConstruct
-    public void iAmReadyToReceiveEvents() {
-        generateNewTrackingId();
-        poker.iWokeUpSoStopPoking();
-        linksTopic.sendEventWithEmptyPayload(giveMeServices, serviceLogger);
-    }
+    ServiceAnnouncer serviceAnnouncer;
 
     @Override
     public void onMessage(Message message) {
         try {
-            IncomingEvent incomingEvent = processIncomingEvent(message, serviceLogger);
-            updateServicesRegister(incomingEvent);
-        } catch (Exception e) {
-            serviceLogger.severe(e);
+            processIncomingEvent(message, serviceLogger);
+            serviceAnnouncer.announceServiceAvailability();
+        } catch (JMSException ex) {
+            serviceLogger.severe(ex);
         }
-    }
-
-    private void updateServicesRegister(IncomingEvent incomingEvent) {
-        if (myServiceIsAvailable.equals(incomingEvent.getEventName())) {
-            servicesRegistry.addUiUrlForService(uiUrl(incomingEvent), incomingEvent.getCreatingServiceName());
-        } else if (myServiceIsUnavailable.equals(incomingEvent.getEventName())) {
-            servicesRegistry.removeUiUrlForService(incomingEvent.getCreatingServiceName());
-        }
-    }
-
-    private static String uiUrl(IncomingEvent incomingEvent) {
-        return incomingEvent.getStringPropertyFromJsonPayload("uiUrl");
     }
 }

@@ -1,4 +1,4 @@
-package com.hclc.links.links.services;
+package com.hclc.links.application.services;
 
 import com.hclc.libs.monitoring.ServiceLogger;
 

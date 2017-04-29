@@ -52,6 +52,10 @@ function compileUis(timeout, buildCommand) {
 	new ParallelExecutor().withTimeoutInMillis(timeout).execute(
 		[
 			[
+				new Command('../sources/services/application-ui/', 'npm install'),
+				new Command('../sources/services/application-ui/', 'npm run ' + buildCommand)
+			],
+			[
 				new Command('../sources/services/links-ui/', 'npm install'),
 				new Command('../sources/services/links-ui/', 'npm run ' + buildCommand)
 			],
@@ -71,6 +75,9 @@ function compileAndDeployMw() {
 	new Command('../sources/services', 'mvn install').execute();
 	new ParallelExecutor().withTimeoutInMillis(60000).execute(
 		[
+			[
+				new Command('../sources/services/application-be/', 'mvn clean install -P wildfly-local')
+			],
 			[
 				new Command('../sources/services/links-be/', 'mvn clean install -P wildfly-local')
 			],
