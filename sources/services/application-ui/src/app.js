@@ -1,3 +1,3 @@
 require('./style.scss');
 
-import Application from './Application.jsx';
+import ApplicationPage from './application/ApplicationPage.jsx';

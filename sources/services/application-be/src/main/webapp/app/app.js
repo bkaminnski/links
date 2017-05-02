@@ -9738,63 +9738,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(200);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(96);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Application = function (_React$Component) {
-    _inherits(Application, _React$Component);
-
-    function Application() {
-        _classCallCheck(this, Application);
-
-        return _possibleConstructorReturn(this, (Application.__proto__ || Object.getPrototypeOf(Application)).apply(this, arguments));
-    }
-
-    _createClass(Application, [{
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                'Application'
-            );
-        }
-    }]);
-
-    return Application;
-}(_react2.default.Component);
-
-exports.default = Application;
-
-
-_reactDom2.default.render(_react2.default.createElement(Application, null), document.getElementById('application'));
-
-/***/ }),
+/* 87 */,
 /* 88 */,
 /* 89 */,
 /* 90 */
@@ -9834,9 +9778,9 @@ if(false) {
 "use strict";
 
 
-var _Application = __webpack_require__(87);
+var _ApplicationPage = __webpack_require__(206);
 
-var _Application2 = _interopRequireDefault(_Application);
+var _ApplicationPage2 = _interopRequireDefault(_ApplicationPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -23453,6 +23397,125 @@ module.exports = __webpack_require__.p + "fa2772327f55d8198301fdb8bcfc8158.woff"
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "448c34a56d699c29117adc64c43affeb.woff2";
+
+/***/ }),
+/* 205 */,
+/* 206 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(200);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(96);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _ApplicationPageStore = __webpack_require__(207);
+
+var _ApplicationPageStore2 = _interopRequireDefault(_ApplicationPageStore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ApplicationPage = function (_React$Component) {
+    _inherits(ApplicationPage, _React$Component);
+
+    function ApplicationPage() {
+        _classCallCheck(this, ApplicationPage);
+
+        var _this = _possibleConstructorReturn(this, (ApplicationPage.__proto__ || Object.getPrototypeOf(ApplicationPage)).call(this));
+
+        _this.applicationPageStore = new _ApplicationPageStore2.default(_this);
+        _this.state = { layoutComponent: null };
+        return _this;
+    }
+
+    _createClass(ApplicationPage, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.applicationPageStore.subscribeToEvents();
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.applicationPageStore.unsubscribeFromEvents();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                this.state.layoutComponent
+            );
+        }
+    }]);
+
+    return ApplicationPage;
+}(_react2.default.Component);
+
+exports.default = ApplicationPage;
+
+
+_reactDom2.default.render(_react2.default.createElement(ApplicationPage, null), document.getElementById('applicationPage'));
+
+/***/ }),
+/* 207 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ApplicationPageStore = function () {
+    function ApplicationPageStore(applicationPageComponent) {
+        _classCallCheck(this, ApplicationPageStore);
+
+        this.applicationPageComponent = applicationPageComponent;
+    }
+
+    _createClass(ApplicationPageStore, [{
+        key: 'subscribeToEvents',
+        value: function subscribeToEvents() {
+            var _this = this;
+
+            this.applicationLayoutIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.applicationLayout.isAvailable', function (msg, layoutComponent) {
+                _this.applicationPageComponent.setState({ layoutComponent: layoutComponent });
+            });
+        }
+    }, {
+        key: 'unsubscribeFromEvents',
+        value: function unsubscribeFromEvents() {
+            PubSub.unsubscribe(this.applicationLayoutIsAvailableSubscriptionToken);
+        }
+    }]);
+
+    return ApplicationPageStore;
+}();
+
+exports.default = ApplicationPageStore;
 
 /***/ })
 ],[91]);
