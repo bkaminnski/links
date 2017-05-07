@@ -1,5 +1,5 @@
 {
-  "name": "menu-and-content",
+  "name": "about",
   "version": "1.0.0",
   "description": "",
   "main": "src/app.js",
@@ -18,7 +18,6 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "webpack": "^2.4.1",
-    "webpack-dev-server": "^2.4.4",
-    "webpack-node-externals": "^1.5.4"
+    "webpack-dev-server": "^2.4.4"
   }
 }

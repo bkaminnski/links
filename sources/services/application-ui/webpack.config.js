@@ -4,19 +4,18 @@ var path = require('path');
 module.exports = {
   entry: {
     app: "./src/app.js",
-    vendor: ["pubsub-js", "jquery", "bootstrap-sass"],
+    vendor: ["react", "react-dom", "pubsub-js", "jquery", "bootstrap-sass"],
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({ name: "vendor", filename: "vendor.bundle.js" }),
-    new webpack.ProvidePlugin({ $: 'jquery', jQuery: 'jquery' })
+    new webpack.ProvidePlugin({
+      $: 'jquery', jQuery: 'jquery'
+    })
   ],
   output: {
     path: path.join(__dirname, '../application-be/src/main/webapp/app/'),
     filename: 'app.js',
     publicPath: 'app'
-  },
-  devServer: {
-    contentBase: path.join(__dirname, '../application-be/src/main/webapp'),
   },
   module: {
     loaders: [
@@ -51,6 +50,14 @@ module.exports = {
       {
         test: /\.svg$/,
         loader: "file-loader"
+      },
+      {
+        test: require.resolve("react"),
+        loader: "expose-loader?React"
+      },
+      {
+        test: require.resolve("react-dom"),
+        loader: "expose-loader?ReactDOM"
       }
     ]
   }

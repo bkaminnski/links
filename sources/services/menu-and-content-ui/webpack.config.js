@@ -7,8 +7,9 @@ module.exports = {
     filename: 'app.js',
     publicPath: 'app'
   },
-  devServer: {
-    contentBase: path.join(__dirname, '../menu-and-content-be/src/main/webapp'),
+  externals: {
+    "react": "React",
+    "react-dom": 'ReactDOM'
   },
   module: {
     loaders: [
@@ -21,5 +22,5 @@ module.exports = {
         }
       }
     ]
-  },
+  }
 };
