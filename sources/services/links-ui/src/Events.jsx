@@ -1,5 +1,5 @@
 import React from 'react';
-import LinksScreen from './LinksScreen.jsx';
+import LinksPage from './LinksPage.jsx';
 
 export default class Events {
 
@@ -21,7 +21,7 @@ export default class Events {
     }
 
     publishContent() {
-        PubSub.publish('uiEvent.content.isAvailable', <LinksScreen />);
+        PubSub.publish('uiEvent.content.isAvailable', <LinksPage />);
     }
 }
 
