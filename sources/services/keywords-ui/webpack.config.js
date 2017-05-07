@@ -1,12 +1,15 @@
+var path = require('path');
+
 module.exports = {
   entry: './src/app.js',
   output: {
-    path: '../keywords-be/src/main/webapp/app/',
+    path: path.join(__dirname, '../keywords-be/src/main/webapp/app/'),
     filename: 'app.js',
     publicPath: 'app'
   },
-  devServer: {
-    contentBase: '../keywords-be/src/main/webapp',
+  externals: {
+    "react": "React",
+    "react-dom": 'ReactDOM'
   },
   module: {
     loaders: [
@@ -19,5 +22,5 @@ module.exports = {
         }
       }
     ]
-  },
+  }
 };
