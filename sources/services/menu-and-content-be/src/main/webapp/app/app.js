@@ -73,79 +73,21 @@
 module.exports = React;
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _Menu = __webpack_require__(5);
-
-var _Menu2 = _interopRequireDefault(_Menu);
-
-var _ContentContainer = __webpack_require__(3);
-
-var _ContentContainer2 = _interopRequireDefault(_ContentContainer);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var MenuAndContent = function (_React$Component) {
-    _inherits(MenuAndContent, _React$Component);
-
-    function MenuAndContent() {
-        _classCallCheck(this, MenuAndContent);
-
-        return _possibleConstructorReturn(this, (MenuAndContent.__proto__ || Object.getPrototypeOf(MenuAndContent)).apply(this, arguments));
-    }
-
-    _createClass(MenuAndContent, [{
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_Menu2.default, null),
-                _react2.default.createElement(_ContentContainer2.default, null)
-            );
-        }
-    }]);
-
-    return MenuAndContent;
-}(_react2.default.Component);
-
-exports.default = MenuAndContent;
-
-
-PubSub.publish('uiEvent.applicationLayout.isAvailable', _react2.default.createElement(MenuAndContent, null));
-
-/***/ }),
+/* 1 */,
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _MenuAndContent = __webpack_require__(1);
+var _ApplicationLayoutEvents = __webpack_require__(8);
 
-var _MenuAndContent2 = _interopRequireDefault(_MenuAndContent);
+var _ApplicationLayoutEvents2 = _interopRequireDefault(_ApplicationLayoutEvents);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var applicationLayoutEvents = new _ApplicationLayoutEvents2.default();
+applicationLayoutEvents.publishAvailable();
 
 /***/ }),
 /* 3 */
@@ -503,6 +445,103 @@ var MenuStore = function () {
 }();
 
 exports.default = MenuStore;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _MenuAndContent = __webpack_require__(9);
+
+var _MenuAndContent2 = _interopRequireDefault(_MenuAndContent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ApplicationLayoutEvents = function () {
+    function ApplicationLayoutEvents() {
+        _classCallCheck(this, ApplicationLayoutEvents);
+    }
+
+    _createClass(ApplicationLayoutEvents, [{
+        key: 'publishAvailable',
+        value: function publishAvailable() {
+            PubSub.publish('uiEvent.applicationLayout.isAvailable', React.createElement(_MenuAndContent2.default, null));
+        }
+    }]);
+
+    return ApplicationLayoutEvents;
+}();
+
+exports.default = ApplicationLayoutEvents;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Menu = __webpack_require__(5);
+
+var _Menu2 = _interopRequireDefault(_Menu);
+
+var _ContentContainer = __webpack_require__(3);
+
+var _ContentContainer2 = _interopRequireDefault(_ContentContainer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MenuAndContent = function (_React$Component) {
+    _inherits(MenuAndContent, _React$Component);
+
+    function MenuAndContent() {
+        _classCallCheck(this, MenuAndContent);
+
+        return _possibleConstructorReturn(this, (MenuAndContent.__proto__ || Object.getPrototypeOf(MenuAndContent)).apply(this, arguments));
+    }
+
+    _createClass(MenuAndContent, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(_Menu2.default, null),
+                _react2.default.createElement(_ContentContainer2.default, null)
+            );
+        }
+    }]);
+
+    return MenuAndContent;
+}(_react2.default.Component);
+
+exports.default = MenuAndContent;
 
 /***/ })
 /******/ ]);

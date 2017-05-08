@@ -1,6 +1,6 @@
 import React from 'react';
-import Menu from './menu/Menu.jsx'
-import ContentContainer from './content/ContentContainer.jsx'
+import Menu from '../menu/Menu.jsx'
+import ContentContainer from '../content/ContentContainer.jsx'
 
 export default class MenuAndContent extends React.Component {
 
@@ -12,4 +12,3 @@ export default class MenuAndContent extends React.Component {
     }
 }
 
-PubSub.publish('uiEvent.applicationLayout.isAvailable', <MenuAndContent />)
