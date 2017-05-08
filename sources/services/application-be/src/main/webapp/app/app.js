@@ -424,14 +424,7 @@ module.exports = __webpack_require__.p + "448c34a56d699c29117adc64c43affeb.woff2
 
 /***/ }),
 
-/***/ 57:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "f4769f9bdb7466be65088239c12046d1.eot";
-
-/***/ }),
-
-/***/ 90:
+/***/ 210:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -447,11 +440,7 @@ var _react = __webpack_require__(54);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(55);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _ApplicationPageStore = __webpack_require__(95);
+var _ApplicationPageStore = __webpack_require__(211);
 
 var _ApplicationPageStore2 = _interopRequireDefault(_ApplicationPageStore);
 
@@ -502,8 +491,56 @@ var ApplicationPage = function (_React$Component) {
 
 exports.default = ApplicationPage;
 
+/***/ }),
 
-_reactDom2.default.render(_react2.default.createElement(ApplicationPage, null), document.getElementById('applicationPage'));
+/***/ 211:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ApplicationPageStore = function () {
+    function ApplicationPageStore(applicationPageComponent) {
+        _classCallCheck(this, ApplicationPageStore);
+
+        this.applicationPageComponent = applicationPageComponent;
+    }
+
+    _createClass(ApplicationPageStore, [{
+        key: 'subscribeToEvents',
+        value: function subscribeToEvents() {
+            var _this = this;
+
+            this.applicationLayoutIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.applicationLayout.isAvailable', function (msg, layoutComponent) {
+                _this.applicationPageComponent.setState({ layoutComponent: layoutComponent });
+            });
+        }
+    }, {
+        key: 'unsubscribeFromEvents',
+        value: function unsubscribeFromEvents() {
+            PubSub.unsubscribe(this.applicationLayoutIsAvailableSubscriptionToken);
+        }
+    }]);
+
+    return ApplicationPageStore;
+}();
+
+exports.default = ApplicationPageStore;
+
+/***/ }),
+
+/***/ 57:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "f4769f9bdb7466be65088239c12046d1.eot";
 
 /***/ }),
 
@@ -545,7 +582,11 @@ if(false) {
 "use strict";
 
 
-var _ApplicationPage = __webpack_require__(90);
+var _reactDom = __webpack_require__(55);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _ApplicationPage = __webpack_require__(210);
 
 var _ApplicationPage2 = _interopRequireDefault(_ApplicationPage);
 
@@ -553,49 +594,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 __webpack_require__(93);
 
-/***/ }),
 
-/***/ 95:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ApplicationPageStore = function () {
-    function ApplicationPageStore(applicationPageComponent) {
-        _classCallCheck(this, ApplicationPageStore);
-
-        this.applicationPageComponent = applicationPageComponent;
-    }
-
-    _createClass(ApplicationPageStore, [{
-        key: 'subscribeToEvents',
-        value: function subscribeToEvents() {
-            var _this = this;
-
-            this.applicationLayoutIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.applicationLayout.isAvailable', function (msg, layoutComponent) {
-                _this.applicationPageComponent.setState({ layoutComponent: layoutComponent });
-            });
-        }
-    }, {
-        key: 'unsubscribeFromEvents',
-        value: function unsubscribeFromEvents() {
-            PubSub.unsubscribe(this.applicationLayoutIsAvailableSubscriptionToken);
-        }
-    }]);
-
-    return ApplicationPageStore;
-}();
-
-exports.default = ApplicationPageStore;
+_reactDom2.default.render(React.createElement(_ApplicationPage2.default, null), document.getElementById('applicationPage'));
 
 /***/ }),
 

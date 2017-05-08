@@ -1,3 +1,5 @@
 require('./style.scss');
+import ReactDOM from 'react-dom';
+import ApplicationPage from './page/ApplicationPage.jsx';
 
-import ApplicationPage from './application/ApplicationPage.jsx';
+ReactDOM.render(<ApplicationPage />, document.getElementById('applicationPage'));

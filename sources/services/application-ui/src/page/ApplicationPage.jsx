@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ApplicationPageStore from './ApplicationPageStore.js';
 
 export default class ApplicationPage extends React.Component {
@@ -26,5 +25,3 @@ export default class ApplicationPage extends React.Component {
         )
     }
 }
-
-ReactDOM.render(<ApplicationPage />, document.getElementById('applicationPage'));
