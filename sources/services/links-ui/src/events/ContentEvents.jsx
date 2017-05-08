@@ -1,4 +1,4 @@
-import LinksPage from '../LinksPage.jsx';
+import LinksPage from '../page/LinksPage.jsx';
 
 export default class ContentEvents {
 
