@@ -1,6 +1,6 @@
 import LinksClient from '../LinksClient.js';
 
-export default class LinksListStateBuilder {
+export default class LinksListStore {
 
     constructor(linksListComponent) {
         this.linksListComponent = linksListComponent;

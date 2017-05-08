@@ -398,9 +398,9 @@ var _react = __webpack_require__(3);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _LinksListStateBuilder = __webpack_require__(8);
+var _LinksListStore = __webpack_require__(11);
 
-var _LinksListStateBuilder2 = _interopRequireDefault(_LinksListStateBuilder);
+var _LinksListStore2 = _interopRequireDefault(_LinksListStore);
 
 var _LinkItem = __webpack_require__(6);
 
@@ -422,7 +422,7 @@ var LinksList = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (LinksList.__proto__ || Object.getPrototypeOf(LinksList)).call(this));
 
-        _this.linksListStateBuilder = new _LinksListStateBuilder2.default(_this);
+        _this.linksListStore = new _LinksListStore2.default(_this);
         _this.state = { links: [] };
         return _this;
     }
@@ -430,13 +430,13 @@ var LinksList = function (_React$Component) {
     _createClass(LinksList, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.linksListStateBuilder.subscribeToEvents();
-            this.linksListStateBuilder.loadLinks();
+            this.linksListStore.subscribeToEvents();
+            this.linksListStore.loadLinks();
         }
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
-            this.linksListStateBuilder.unsubscribeFromEvents();
+            this.linksListStore.unsubscribeFromEvents();
         }
     }, {
         key: 'render',
@@ -457,90 +457,7 @@ var LinksList = function (_React$Component) {
 exports.default = LinksList;
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _LinksClient = __webpack_require__(4);
-
-var _LinksClient2 = _interopRequireDefault(_LinksClient);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var LinksListStateBuilder = function () {
-    function LinksListStateBuilder(linksListComponent) {
-        _classCallCheck(this, LinksListStateBuilder);
-
-        this.linksListComponent = linksListComponent;
-        this.linksClient = new _LinksClient2.default();
-        this.links = [];
-        this.slices = [];
-    }
-
-    _createClass(LinksListStateBuilder, [{
-        key: 'rebuildState',
-        value: function rebuildState() {
-            var linksMap = {};
-            this.links.forEach(function (link) {
-                link.components = [];
-                linksMap[link.sharedId] = link;
-            });
-            this.slices.sort(function (s1, s2) {
-                return s1.priority - s2.priority;
-            }).forEach(function (slice) {
-                return slice.fragments.forEach(function (fragment) {
-                    return linksMap[fragment.linkSharedId].components.push(fragment.component);
-                });
-            });
-            this.linksListComponent.setState({ links: this.links });
-        }
-    }, {
-        key: 'loadLinks',
-        value: function loadLinks() {
-            var _this = this;
-
-            this.linksClient.loadLinks().then(function (links) {
-                _this.links = links;
-                _this.rebuildState();
-            });
-        }
-    }, {
-        key: 'subscribeToEvents',
-        value: function subscribeToEvents() {
-            var _this2 = this;
-
-            this.sliceWasLoadedSubscriptionToken = PubSub.subscribe('uiEvent.linksList.sliceWasLoaded', function (msg, slice) {
-                _this2.slices.push(slice);
-                _this2.rebuildState();
-            });
-            this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.linkCreation.linkWasCreated', function (msg) {
-                _this2.loadLinks();
-            });
-        }
-    }, {
-        key: 'unsubscribeFromEvents',
-        value: function unsubscribeFromEvents() {
-            PubSub.unsubscribe(this.sliceWasLoadedSubscriptionToken);
-            PubSub.unsubscribe(this.linkWasCreatedSubscriptionToken);
-        }
-    }]);
-
-    return LinksListStateBuilder;
-}();
-
-exports.default = LinksListStateBuilder;
-
-/***/ }),
+/* 8 */,
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -658,6 +575,90 @@ var LinksPage = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = LinksPage;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _LinksClient = __webpack_require__(4);
+
+var _LinksClient2 = _interopRequireDefault(_LinksClient);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LinksListStore = function () {
+    function LinksListStore(linksListComponent) {
+        _classCallCheck(this, LinksListStore);
+
+        this.linksListComponent = linksListComponent;
+        this.linksClient = new _LinksClient2.default();
+        this.links = [];
+        this.slices = [];
+    }
+
+    _createClass(LinksListStore, [{
+        key: 'rebuildState',
+        value: function rebuildState() {
+            var linksMap = {};
+            this.links.forEach(function (link) {
+                link.components = [];
+                linksMap[link.sharedId] = link;
+            });
+            this.slices.sort(function (s1, s2) {
+                return s1.priority - s2.priority;
+            }).forEach(function (slice) {
+                return slice.fragments.forEach(function (fragment) {
+                    return linksMap[fragment.linkSharedId].components.push(fragment.component);
+                });
+            });
+            this.linksListComponent.setState({ links: this.links });
+        }
+    }, {
+        key: 'loadLinks',
+        value: function loadLinks() {
+            var _this = this;
+
+            this.linksClient.loadLinks().then(function (links) {
+                _this.links = links;
+                _this.rebuildState();
+            });
+        }
+    }, {
+        key: 'subscribeToEvents',
+        value: function subscribeToEvents() {
+            var _this2 = this;
+
+            this.sliceWasLoadedSubscriptionToken = PubSub.subscribe('uiEvent.linksList.sliceWasLoaded', function (msg, slice) {
+                _this2.slices.push(slice);
+                _this2.rebuildState();
+            });
+            this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.linkCreation.linkWasCreated', function (msg) {
+                _this2.loadLinks();
+            });
+        }
+    }, {
+        key: 'unsubscribeFromEvents',
+        value: function unsubscribeFromEvents() {
+            PubSub.unsubscribe(this.sliceWasLoadedSubscriptionToken);
+            PubSub.unsubscribe(this.linkWasCreatedSubscriptionToken);
+        }
+    }]);
+
+    return LinksListStore;
+}();
+
+exports.default = LinksListStore;
 
 /***/ })
 /******/ ]);

@@ -1,22 +1,22 @@
 import React from 'react';
-import LinksListStateBuilder from './LinksListStateBuilder.js';
+import LinksListStore from './LinksListStore.js';
 import LinkItem from './LinkItem.jsx';
 
 export default class LinksList extends React.Component {
 
     constructor() {
         super();
-        this.linksListStateBuilder = new LinksListStateBuilder(this);
+        this.linksListStore = new LinksListStore(this);
         this.state = { links: [] };
     }
 
     componentDidMount() {
-        this.linksListStateBuilder.subscribeToEvents();
-        this.linksListStateBuilder.loadLinks();
+        this.linksListStore.subscribeToEvents();
+        this.linksListStore.loadLinks();
     }
 
     componentWillUnmount() {
-        this.linksListStateBuilder.unsubscribeFromEvents();
+        this.linksListStore.unsubscribeFromEvents();
     }
 
     render() {
