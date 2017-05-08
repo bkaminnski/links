@@ -552,13 +552,6 @@ var _ApplicationPage2 = _interopRequireDefault(_ApplicationPage);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 __webpack_require__(93);
-/*
-import React from 'react';
-window.React = React;
-
-import ReactDOM from 'react-dom';
-window.ReactDOM = ReactDOM;
-*/
 
 /***/ }),
 
