@@ -608,23 +608,6 @@ var LinksListStore = function () {
     }
 
     _createClass(LinksListStore, [{
-        key: 'rebuildState',
-        value: function rebuildState() {
-            var linksMap = {};
-            this.links.forEach(function (link) {
-                link.components = [];
-                linksMap[link.sharedId] = link;
-            });
-            this.slices.sort(function (s1, s2) {
-                return s1.priority - s2.priority;
-            }).forEach(function (slice) {
-                return slice.fragments.forEach(function (fragment) {
-                    return linksMap[fragment.linkSharedId].components.push(fragment.component);
-                });
-            });
-            this.linksListComponent.setState({ links: this.links });
-        }
-    }, {
         key: 'loadLinks',
         value: function loadLinks() {
             var _this = this;
@@ -646,6 +629,23 @@ var LinksListStore = function () {
             this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.linkCreation.linkWasCreated', function (msg) {
                 _this2.loadLinks();
             });
+        }
+    }, {
+        key: 'rebuildState',
+        value: function rebuildState() {
+            var linksMap = {};
+            this.links.forEach(function (link) {
+                link.components = [];
+                linksMap[link.sharedId] = link;
+            });
+            this.slices.sort(function (s1, s2) {
+                return s1.priority - s2.priority;
+            }).forEach(function (slice) {
+                return slice.fragments.forEach(function (fragment) {
+                    return linksMap[fragment.linkSharedId].components.push(fragment.component);
+                });
+            });
+            this.linksListComponent.setState({ links: this.links });
         }
     }, {
         key: 'unsubscribeFromEvents',

@@ -9,21 +9,6 @@ export default class LinksListStore {
         this.slices = [];
     }
 
-    rebuildState() {
-        let linksMap = {};
-        this.links
-            .forEach(link => {
-                link.components = [];
-                linksMap[link.sharedId] = link;
-            });
-        this.slices
-            .sort((s1, s2) => s1.priority - s2.priority)
-            .forEach(slice => slice.fragments.forEach(
-                fragment => linksMap[fragment.linkSharedId].components.push(fragment.component)
-            ));
-        this.linksListComponent.setState({ links: this.links });
-    }
-
     loadLinks() {
         this.linksClient
             .loadLinks()
@@ -41,6 +26,21 @@ export default class LinksListStore {
         this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.linkCreation.linkWasCreated', (msg) => {
             this.loadLinks();
         });
+    }
+
+    rebuildState() {
+        let linksMap = {};
+        this.links
+            .forEach(link => {
+                link.components = [];
+                linksMap[link.sharedId] = link;
+            });
+        this.slices
+            .sort((s1, s2) => s1.priority - s2.priority)
+            .forEach(slice => slice.fragments.forEach(
+                fragment => linksMap[fragment.linkSharedId].components.push(fragment.component)
+            ));
+        this.linksListComponent.setState({ links: this.links });
     }
 
     unsubscribeFromEvents() {
