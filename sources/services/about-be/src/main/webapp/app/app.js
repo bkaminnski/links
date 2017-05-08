@@ -63,14 +63,55 @@
 /******/ 	__webpack_require__.p = "app";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = React;
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _AboutPage = __webpack_require__(3);
+
+var _AboutPage2 = _interopRequireDefault(_AboutPage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ContentEvents = function () {
+    function ContentEvents() {
+        _classCallCheck(this, ContentEvents);
+    }
+
+    _createClass(ContentEvents, [{
+        key: 'subscribeToRequested',
+        value: function subscribeToRequested() {
+            var _this = this;
+
+            this.menuItemRequestedSubscriptionToken = PubSub.subscribe('uiEvent.content.requested.about', function (msg) {
+                _this.publishAvailable();
+            });
+        }
+    }, {
+        key: 'publishAvailable',
+        value: function publishAvailable() {
+            PubSub.publish('uiEvent.content.isAvailable', React.createElement(_AboutPage2.default, null));
+        }
+    }]);
+
+    return ContentEvents;
+}();
+
+exports.default = ContentEvents;
 
 /***/ }),
 /* 1 */
@@ -85,63 +126,64 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _AboutPage = __webpack_require__(2);
-
-var _AboutPage2 = _interopRequireDefault(_AboutPage);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Events = function () {
-    function Events() {
-        _classCallCheck(this, Events);
+var MenuItemsEvents = function () {
+    function MenuItemsEvents() {
+        _classCallCheck(this, MenuItemsEvents);
     }
 
-    _createClass(Events, [{
-        key: 'subscribe',
-        value: function subscribe() {
+    _createClass(MenuItemsEvents, [{
+        key: 'subscribeToRequested',
+        value: function subscribeToRequested() {
             var _this = this;
 
             this.menuItemRequestedSubscriptionToken = PubSub.subscribe('uiEvent.menuItems.requested', function (msg) {
-                _this.publishMenuItem();
-            });
-            this.menuItemRequestedSubscriptionToken = PubSub.subscribe('uiEvent.content.requested.about', function (msg) {
-                _this.publishContent();
+                _this.publishAvailable();
             });
         }
     }, {
-        key: 'publishMenuItem',
-        value: function publishMenuItem() {
+        key: 'publishAvailable',
+        value: function publishAvailable() {
             PubSub.publish('uiEvent.menuItem.isAvailable', {
                 code: 'about',
                 label: 'About',
                 priority: 10000
             });
         }
-    }, {
-        key: 'publishContent',
-        value: function publishContent() {
-            PubSub.publish('uiEvent.content.isAvailable', _react2.default.createElement(_AboutPage2.default, null));
-        }
     }]);
 
-    return Events;
+    return MenuItemsEvents;
 }();
 
-exports.default = Events;
-
-
-var events = new Events();
-events.subscribe();
-events.publishMenuItem();
+exports.default = MenuItemsEvents;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _MenuItemsEvents = __webpack_require__(1);
+
+var _MenuItemsEvents2 = _interopRequireDefault(_MenuItemsEvents);
+
+var _ContentEvents = __webpack_require__(0);
+
+var _ContentEvents2 = _interopRequireDefault(_ContentEvents);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var contentEvents = new _ContentEvents2.default();
+contentEvents.subscribeToRequested();
+
+var menuItemsEvents = new _MenuItemsEvents2.default();
+menuItemsEvents.subscribeToRequested();
+menuItemsEvents.publishAvailable();
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -153,7 +195,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(0);
+var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -191,17 +233,10 @@ var LinksScreen = function (_React$Component) {
 exports.default = LinksScreen;
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 4 */
+/***/ (function(module, exports) {
 
-"use strict";
-
-
-var _Events = __webpack_require__(1);
-
-var _Events2 = _interopRequireDefault(_Events);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+module.exports = React;
 
 /***/ })
 /******/ ]);
