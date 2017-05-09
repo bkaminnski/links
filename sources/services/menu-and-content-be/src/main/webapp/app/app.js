@@ -73,14 +73,51 @@
 module.exports = React;
 
 /***/ }),
-/* 1 */,
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _MenuAndContent = __webpack_require__(8);
+
+var _MenuAndContent2 = _interopRequireDefault(_MenuAndContent);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ApplicationLayoutEvents = function () {
+    function ApplicationLayoutEvents() {
+        _classCallCheck(this, ApplicationLayoutEvents);
+    }
+
+    _createClass(ApplicationLayoutEvents, [{
+        key: 'publishAvailable',
+        value: function publishAvailable() {
+            PubSub.publish('uiEvent.applicationLayout.available', React.createElement(_MenuAndContent2.default, null));
+        }
+    }]);
+
+    return ApplicationLayoutEvents;
+}();
+
+exports.default = ApplicationLayoutEvents;
+
+/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _ApplicationLayoutEvents = __webpack_require__(8);
+var _ApplicationLayoutEvents = __webpack_require__(1);
 
 var _ApplicationLayoutEvents2 = _interopRequireDefault(_ApplicationLayoutEvents);
 
@@ -291,7 +328,7 @@ var Menu = function (_React$Component) {
                         _react2.default.createElement(
                             'a',
                             { className: 'navbar-brand', href: '#' },
-                            'A Place For Logo'
+                            _react2.default.createElement('span', { className: 'glyphicon glyphicon-link', 'aria-hidden': 'true' })
                         )
                     ),
                     _react2.default.createElement(
@@ -448,44 +485,6 @@ exports.default = MenuStore;
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _MenuAndContent = __webpack_require__(9);
-
-var _MenuAndContent2 = _interopRequireDefault(_MenuAndContent);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ApplicationLayoutEvents = function () {
-    function ApplicationLayoutEvents() {
-        _classCallCheck(this, ApplicationLayoutEvents);
-    }
-
-    _createClass(ApplicationLayoutEvents, [{
-        key: 'publishAvailable',
-        value: function publishAvailable() {
-            PubSub.publish('uiEvent.applicationLayout.available', React.createElement(_MenuAndContent2.default, null));
-        }
-    }]);
-
-    return ApplicationLayoutEvents;
-}();
-
-exports.default = ApplicationLayoutEvents;
-
-/***/ }),
-/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

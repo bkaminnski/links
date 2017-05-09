@@ -15,7 +15,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '../application-be/src/main/webapp/app/'),
     filename: 'app.js',
-    publicPath: 'app'
+    publicPath: 'app/'
   },
   module: {
     loaders: [

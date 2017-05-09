@@ -33,7 +33,7 @@ export default class Menu extends React.Component {
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                     </button>
-                    <a className="navbar-brand" href="#">A Place For Logo</a>
+                    <a className="navbar-brand" href="#"><span className="glyphicon glyphicon-link" aria-hidden="true"></span></a>
                 </div>
                 <div id="navbar" className="collapse navbar-collapse">
                     <ul className="nav navbar-nav">
