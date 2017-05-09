@@ -1,1 +1,4 @@
-import KeywordsList from './list/KeywordsList.jsx';
+import LinksListSlicesEvents from './events/LinksListSlicesEvents.jsx';
+
+let linksListSlicesEvents = new LinksListSlicesEvents();
+linksListSlicesEvents.subscribeToRequested();

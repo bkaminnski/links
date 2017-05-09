@@ -184,7 +184,7 @@ var ContentContainerStore = function () {
         value: function subscribeToEvents() {
             var _this = this;
 
-            this.contentIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.content.isAvailable', function (msg, contentComponent) {
+            this.contentIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.content.available', function (msg, contentComponent) {
                 _this.contentContainerComponent.setState({ contentComponent: contentComponent });
             });
         }
@@ -407,7 +407,7 @@ var MenuStore = function () {
         value: function subscribeToEvents() {
             var _this = this;
 
-            this.menuItemIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.menuItem.isAvailable', function (msg, menuItem) {
+            this.menuItemIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.menuItem.available', function (msg, menuItem) {
                 _this.menuItemsMap.set(menuItem.code, menuItem);
                 _this.rebuildState();
             });
@@ -475,7 +475,7 @@ var ApplicationLayoutEvents = function () {
     _createClass(ApplicationLayoutEvents, [{
         key: 'publishAvailable',
         value: function publishAvailable() {
-            PubSub.publish('uiEvent.applicationLayout.isAvailable', React.createElement(_MenuAndContent2.default, null));
+            PubSub.publish('uiEvent.applicationLayout.available', React.createElement(_MenuAndContent2.default, null));
         }
     }]);
 

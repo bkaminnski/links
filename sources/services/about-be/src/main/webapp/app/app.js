@@ -104,7 +104,7 @@ var ContentEvents = function () {
     }, {
         key: 'publishAvailable',
         value: function publishAvailable() {
-            PubSub.publish('uiEvent.content.isAvailable', React.createElement(_AboutPage2.default, null));
+            PubSub.publish('uiEvent.content.available', React.createElement(_AboutPage2.default, null));
         }
     }]);
 
@@ -145,7 +145,7 @@ var MenuItemsEvents = function () {
     }, {
         key: 'publishAvailable',
         value: function publishAvailable() {
-            PubSub.publish('uiEvent.menuItem.isAvailable', {
+            PubSub.publish('uiEvent.menuItem.available', {
                 code: 'about',
                 label: 'About',
                 priority: 10000

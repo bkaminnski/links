@@ -3,12 +3,12 @@ import LinksPage from '../page/LinksPage.jsx';
 export default class ContentEvents {
 
     subscribeToRequested() {
-        this.menuItemRequestedSubscriptionToken = PubSub.subscribe('uiEvent.content.requested.links', msg => {
+        this.contentRequestedSubscriptionToken = PubSub.subscribe('uiEvent.content.requested.links', msg => {
             this.publishAvailable();
         });
     }
 
     publishAvailable() {
-        PubSub.publish('uiEvent.content.isAvailable', <LinksPage />);
+        PubSub.publish('uiEvent.content.available', <LinksPage />);
     }
 }

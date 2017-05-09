@@ -9,6 +9,6 @@ export default class ContentEvents {
     }
 
     publishAvailable() {
-        PubSub.publish('uiEvent.content.isAvailable', <AboutPage />);
+        PubSub.publish('uiEvent.content.available', <AboutPage />);
     }
 }

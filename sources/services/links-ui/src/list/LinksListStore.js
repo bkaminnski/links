@@ -19,13 +19,14 @@ export default class LinksListStore {
     }
 
     subscribeToEvents() {
-        this.sliceWasLoadedSubscriptionToken = PubSub.subscribe('uiEvent.linksList.sliceWasLoaded', (msg, slice) => {
+        this.linksListSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.linksListSlice.available', (msg, slice) => {
             this.slices.push(slice);
             this.rebuildState();
         });
         this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.linkCreation.linkWasCreated', (msg) => {
             this.loadLinks();
         });
+        PubSub.publish('uiEvent.linksListSlices.requested');
     }
 
     rebuildState() {
@@ -44,7 +45,7 @@ export default class LinksListStore {
     }
 
     unsubscribeFromEvents() {
-        PubSub.unsubscribe(this.sliceWasLoadedSubscriptionToken);
+        PubSub.unsubscribe(this.linksListSliceAvailableSubscriptionToken);
         PubSub.unsubscribe(this.linkWasCreatedSubscriptionToken);
     }
 }

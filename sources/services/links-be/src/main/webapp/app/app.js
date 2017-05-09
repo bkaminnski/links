@@ -97,14 +97,14 @@ var ContentEvents = function () {
         value: function subscribeToRequested() {
             var _this = this;
 
-            this.menuItemRequestedSubscriptionToken = PubSub.subscribe('uiEvent.content.requested.links', function (msg) {
+            this.contentRequestedSubscriptionToken = PubSub.subscribe('uiEvent.content.requested.links', function (msg) {
                 _this.publishAvailable();
             });
         }
     }, {
         key: 'publishAvailable',
         value: function publishAvailable() {
-            PubSub.publish('uiEvent.content.isAvailable', React.createElement(_LinksPage2.default, null));
+            PubSub.publish('uiEvent.content.available', React.createElement(_LinksPage2.default, null));
         }
     }]);
 
@@ -145,7 +145,7 @@ var MenuItemsEvents = function () {
     }, {
         key: 'publishAvailable',
         value: function publishAvailable() {
-            PubSub.publish('uiEvent.menuItem.isAvailable', {
+            PubSub.publish('uiEvent.menuItem.available', {
                 code: 'links',
                 label: 'Links',
                 priority: 100
@@ -622,13 +622,14 @@ var LinksListStore = function () {
         value: function subscribeToEvents() {
             var _this2 = this;
 
-            this.sliceWasLoadedSubscriptionToken = PubSub.subscribe('uiEvent.linksList.sliceWasLoaded', function (msg, slice) {
+            this.linksListSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.linksListSlice.available', function (msg, slice) {
                 _this2.slices.push(slice);
                 _this2.rebuildState();
             });
             this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.linkCreation.linkWasCreated', function (msg) {
                 _this2.loadLinks();
             });
+            PubSub.publish('uiEvent.linksListSlices.requested');
         }
     }, {
         key: 'rebuildState',
@@ -650,7 +651,7 @@ var LinksListStore = function () {
     }, {
         key: 'unsubscribeFromEvents',
         value: function unsubscribeFromEvents() {
-            PubSub.unsubscribe(this.sliceWasLoadedSubscriptionToken);
+            PubSub.unsubscribe(this.linksListSliceAvailableSubscriptionToken);
             PubSub.unsubscribe(this.linkWasCreatedSubscriptionToken);
         }
     }]);

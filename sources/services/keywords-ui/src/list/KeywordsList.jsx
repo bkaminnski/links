@@ -27,9 +27,6 @@ export default class KeywordsList {
     }
 
     publish(slice) {
-        PubSub.publish('uiEvent.linksList.sliceWasLoaded', slice)
+        PubSub.publish('uiEvent.linksListSlice.available', slice)
     }
 }
-
-let keywordsList = new KeywordsList();
-keywordsList.loadTransformAndPublish();

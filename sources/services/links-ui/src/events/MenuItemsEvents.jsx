@@ -7,7 +7,7 @@ export default class MenuItemsEvents {
     }
 
     publishAvailable() {
-        PubSub.publish('uiEvent.menuItem.isAvailable', {
+        PubSub.publish('uiEvent.menuItem.available', {
             code: 'links',
             label: 'Links',
             priority: 100

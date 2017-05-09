@@ -7,7 +7,7 @@ export default class MenuStore {
     }
 
     subscribeToEvents() {
-        this.menuItemIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.menuItem.isAvailable', (msg, menuItem) => {
+        this.menuItemIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.menuItem.available', (msg, menuItem) => {
             this.menuItemsMap.set(menuItem.code, menuItem);
             this.rebuildState();
         });

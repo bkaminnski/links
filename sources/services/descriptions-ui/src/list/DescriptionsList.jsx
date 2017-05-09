@@ -27,9 +27,6 @@ export default class DescriptionsList {
     }
 
     publish(slice) {
-        PubSub.publish('uiEvent.linksList.sliceWasLoaded', slice)
+        PubSub.publish('uiEvent.linksListSlice.available', slice)
     }
 }
-
-let descriptionsList = new DescriptionsList();
-descriptionsList.loadTransformAndPublish();

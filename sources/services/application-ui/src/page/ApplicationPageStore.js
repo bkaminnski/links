@@ -5,7 +5,7 @@ export default class ApplicationPageStore {
     }
 
     subscribeToEvents() {
-        this.applicationLayoutIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.applicationLayout.isAvailable', (msg, layoutComponent) => {
+        this.applicationLayoutIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.applicationLayout.available', (msg, layoutComponent) => {
             this.applicationPageComponent.setState({ layoutComponent: layoutComponent });
         });
     }

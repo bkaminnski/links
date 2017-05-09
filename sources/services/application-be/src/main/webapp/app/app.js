@@ -553,6 +553,11 @@ __webpack_require__(93);
 
 _reactDom2.default.render(React.createElement(_ApplicationPage2.default, null), document.getElementById('applicationPage'));
 
+PubSub.subscribe('uiEvent', function (msg, param1) {
+    console.log(msg);
+    console.log(param1);
+});
+
 /***/ }),
 
 /***/ 95:
@@ -581,7 +586,7 @@ var ApplicationPageStore = function () {
         value: function subscribeToEvents() {
             var _this = this;
 
-            this.applicationLayoutIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.applicationLayout.isAvailable', function (msg, layoutComponent) {
+            this.applicationLayoutIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.applicationLayout.available', function (msg, layoutComponent) {
                 _this.applicationPageComponent.setState({ layoutComponent: layoutComponent });
             });
         }
