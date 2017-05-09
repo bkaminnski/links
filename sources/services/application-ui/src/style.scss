@@ -1,2 +1,9 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import "~bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+
+.top-buffer { margin-top: 10px; }
+
+.bottom-buffer { margin-bottom: 10px; }
+
+.bottom-buffer-double { margin-bottom: 20px; }

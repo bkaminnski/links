@@ -4,10 +4,11 @@ import Url from './Url.jsx';
 export default class LinkItem extends React.Component {
     render() {
         return (
-            <div>
-                <Url url={this.props.link.url} />
-                {this.props.link.components}
-                <hr />
+            <div className="list-group">
+                <a href={this.props.link.url} className="list-group-item">
+                    <Url url={this.props.link.url} />
+                    {this.props.link.components}
+                </a>
             </div>
         )
     }

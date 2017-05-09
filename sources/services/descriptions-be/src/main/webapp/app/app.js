@@ -174,7 +174,7 @@
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -204,17 +204,11 @@
 	    }
 
 	    _createClass(DescriptionItem, [{
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(
-	                    'b',
-	                    null,
-	                    'Description:'
-	                ),
-	                ' ',
+	                "p",
+	                { className: "list-group-item-text top-buffer" },
 	                this.props.description
 	            );
 	        }

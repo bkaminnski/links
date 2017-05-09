@@ -16,7 +16,7 @@ export default class LinkCreation extends React.Component {
     render() {
         return <div>
             <form onSubmit={this.submitItem}>
-                <div className="input-group">
+                <div className="input-group bottom-buffer-double">
                     <span className="input-group-addon" id="url-addon1">URL</span>
                     <input type="text" ref={(input) => { this.urlInput = input; }} className="form-control" placeholder="http://paste-a-link-here.com" aria-describedby="url-addon1" />
                     <span className="input-group-btn">

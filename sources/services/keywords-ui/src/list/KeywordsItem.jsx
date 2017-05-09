@@ -3,6 +3,6 @@ import React from 'react';
 export default class KeywordsItem extends React.Component {
 
     render() {
-        return <div><b>Keywords:</b> {this.props.keywords}</div>;
+        return <p className="list-group-item-text top-buffer"><kbd>{this.props.keywords}</kbd></p>;
     }
 }

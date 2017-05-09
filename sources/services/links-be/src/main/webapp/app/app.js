@@ -314,7 +314,7 @@ var LinkCreation = function (_React$Component) {
                     { onSubmit: this.submitItem },
                     _react2.default.createElement(
                         'div',
-                        { className: 'input-group' },
+                        { className: 'input-group bottom-buffer-double' },
                         _react2.default.createElement(
                             'span',
                             { className: 'input-group-addon', id: 'url-addon1' },
@@ -396,10 +396,13 @@ var LinkItem = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
-                _react2.default.createElement(_Url2.default, { url: this.props.link.url }),
-                this.props.link.components,
-                _react2.default.createElement('hr', null)
+                { className: 'list-group' },
+                _react2.default.createElement(
+                    'a',
+                    { href: this.props.link.url, className: 'list-group-item' },
+                    _react2.default.createElement(_Url2.default, { url: this.props.link.url }),
+                    this.props.link.components
+                )
             );
         }
     }]);
@@ -604,22 +607,12 @@ var Url = function (_React$Component) {
     }
 
     _createClass(Url, [{
-        key: 'render',
+        key: "render",
         value: function render() {
             return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'b',
-                    null,
-                    'Url:'
-                ),
-                ' ',
-                _react2.default.createElement(
-                    'a',
-                    { href: this.props.url },
-                    this.props.url
-                )
+                "h4",
+                { className: "list-group-item-heading" },
+                this.props.url
             );
         }
     }]);
