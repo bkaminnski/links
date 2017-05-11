@@ -1,0 +1,1 @@
+console.log('unique-ids service is available');
