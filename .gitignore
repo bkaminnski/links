@@ -5,15 +5,7 @@ node_modules
 .vagrant
 npm-debug.log
 nbproject
-/sources/libs/accessibility/target/
-/sources/libs/monitoring/target/
-/sources/libs/events/target/
-/sources/services/descriptions-be/target/
-/sources/services/links-be/target/
-/sources/services/keywords-be/target/
-/sources/services/menu-and-content-be/target/
-/sources/services/application-be/target/
-/sources/services/about-be/target/
 *.iml
 .idea
 .settings
+target
