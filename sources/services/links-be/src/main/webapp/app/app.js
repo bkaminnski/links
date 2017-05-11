@@ -399,7 +399,7 @@ var LinkItem = function (_React$Component) {
                 { className: 'list-group' },
                 _react2.default.createElement(
                     'a',
-                    { href: this.props.link.url, className: 'list-group-item' },
+                    { href: this.props.link.url, className: 'list-group-item', target: '_blank' },
                     _react2.default.createElement(_Url2.default, { url: this.props.link.url }),
                     this.props.link.components
                 )
