@@ -5,7 +5,9 @@ module.exports = {
   output: {
     path: path.join(__dirname, '../unique-ids-be/src/main/webapp/app/'),
     filename: 'app.js',
-    publicPath: 'app'
+    publicPath: 'app',
+    libraryTarget: "var",
+    library: "uniqueIds"
   },
   externals: {
     "react": "React",

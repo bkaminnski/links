@@ -1,3 +1,5 @@
 import UniqueIds from './uniqueids/UniqueIds.js';
 
-window.uniqueIds = new UniqueIds();
+let uniqueIds = new UniqueIds();
+
+module.exports = uniqueIds;

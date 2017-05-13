@@ -44,14 +44,13 @@ public class UniqueIdsGenerator {
         return idsPortion;
     }
 
-
     @PostConstruct
     public void startGeneration() {
         generationFuture = managedExecutorService.submit(() -> generate());
     }
 
     @PreDestroy
-    public void stopGenerating() {
+    public void stopGeneration() {
         Logger.getLogger(UniqueIdsGenerator.class.getName()).log(Level.INFO, "generation will now stop");
         continueGeneration.set(false);
         generationFuture.cancel(true);
