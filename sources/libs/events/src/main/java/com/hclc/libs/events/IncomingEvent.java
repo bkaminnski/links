@@ -1,9 +1,9 @@
 package com.hclc.libs.events;
 
-import java.io.StringReader;
-import java.time.ZonedDateTime;
 import javax.json.Json;
 import javax.json.JsonObject;
+import java.io.StringReader;
+import java.time.ZonedDateTime;
 
 public class IncomingEvent {
 
@@ -49,6 +49,10 @@ public class IncomingEvent {
 
     public String getStringPropertyFromJsonPayload(String propertyName) {
         return payloadAsJsonObject().getString(propertyName);
+    }
+
+    public Integer getIntegerPropertyFromJsonPayload(String propertyName) {
+        return payloadAsJsonObject().getJsonNumber(propertyName) == null ? null : payloadAsJsonObject().getInt(propertyName);
     }
 
     public ZonedDateTime getCreationTimestamp() {

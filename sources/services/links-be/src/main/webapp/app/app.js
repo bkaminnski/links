@@ -87,14 +87,14 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Client = function () {
-    function Client() {
-        _classCallCheck(this, Client);
+var LinksClient = function () {
+    function LinksClient() {
+        _classCallCheck(this, LinksClient);
     }
 
-    _createClass(Client, [{
+    _createClass(LinksClient, [{
         key: "createLink",
-        value: function createLink(url) {
+        value: function createLink(url, uniqueId) {
             var result = new Promise(function (resolve, reject) {
                 var request = new XMLHttpRequest();
                 request.open("POST", "http://localhost:8080/links/resources/links");
@@ -106,10 +106,7 @@ var Client = function () {
                     }
                 };
                 request.send(JSON.stringify({
-                    sharedId: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                        var r = Math.random() * 16 | 0,
-                            v = c == 'x' ? r : r & 0x3 | 0x8;return v.toString(16);
-                    }),
+                    sharedId: uniqueId,
                     url: url
                 }));
             });
@@ -132,10 +129,10 @@ var Client = function () {
         }
     }]);
 
-    return Client;
+    return LinksClient;
 }();
 
-exports.default = Client;
+exports.default = LinksClient;
 
 /***/ }),
 /* 2 */
@@ -339,11 +336,15 @@ var LinkCreation = function (_React$Component) {
     }, {
         key: 'submitItem',
         value: function submitItem(e) {
+            var _this3 = this;
+
             e.preventDefault();
             var url = this.urlInput.value;
             this.urlInput.value = '';
-            this.linksClient.createLink(url).then(function (responseStatus) {
-                PubSub.publish('uiEvent.linkCreation.linkWasCreated');
+            uniqueIds.withNext(function (uniqueId) {
+                _this3.linksClient.createLink(url, uniqueId).then(function (responseStatus) {
+                    PubSub.publish('uiEvent.linkCreation.linkWasCreated');
+                });
             });
         }
     }]);

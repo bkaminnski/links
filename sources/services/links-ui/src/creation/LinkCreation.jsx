@@ -2,6 +2,7 @@ import React from 'react';
 import LinksClient from '../LinksClient.js';
 
 export default class LinkCreation extends React.Component {
+
     constructor() {
         super();
         this.linksClient = new LinksClient();
@@ -31,8 +32,10 @@ export default class LinkCreation extends React.Component {
         e.preventDefault();
         let url = this.urlInput.value;
         this.urlInput.value = '';
-        this.linksClient.createLink(url).then((responseStatus) => {
-            PubSub.publish('uiEvent.linkCreation.linkWasCreated');
+        uniqueIds.withNext(uniqueId => {
+            this.linksClient.createLink(url, uniqueId).then((responseStatus) => {
+                PubSub.publish('uiEvent.linkCreation.linkWasCreated');
+            });
         });
     }
 }

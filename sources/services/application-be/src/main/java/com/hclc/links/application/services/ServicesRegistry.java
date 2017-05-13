@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.*;
 
+import static java.util.stream.Collectors.toList;
+
 @Named
 @Singleton
 public class ServicesRegistry {
@@ -14,19 +16,19 @@ public class ServicesRegistry {
     @Inject
     ServiceLogger serviceLogger;
 
-    private final Map<String, String> uiUrlsForServices = new HashMap<>();
+    private final Map<String, UiService> uiUrlsForServices = new HashMap<>();
 
-    public void addUiUrlForService(String uiUrl, String serviceName) {
-        uiUrlsForServices.put(serviceName, uiUrl);
+    public void addUiService(String serviceName, String uiUrl, Integer priority) {
+        uiUrlsForServices.put(serviceName, new UiService(serviceName, uiUrl, priority));
         serviceLogger.info("uiUrl " + uiUrl + " was added to services registry for service " + serviceName);
     }
 
     public void removeUiUrlForService(String serviceName) {
-        String uiUrl = uiUrlsForServices.remove(serviceName);
-        serviceLogger.info("uiUrl " + uiUrl + " was removed from services registry for service " + serviceName);
+        UiService uiService = uiUrlsForServices.remove(serviceName);
+        serviceLogger.info("uiUrl " + uiService.getUrl() + " was removed from services registry for service " + serviceName);
     }
 
     public Collection<String> getUiUrls() {
-        return Collections.unmodifiableList(new ArrayList<>(uiUrlsForServices.values()));
+        return Collections.unmodifiableList(new ArrayList<>(uiUrlsForServices.values().stream().sorted().map(UiService::getUrl).collect(toList())));
     }
 }

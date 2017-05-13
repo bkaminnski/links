@@ -54,7 +54,7 @@ public class ServicesEventsListener implements MessageListener {
 
     private void updateServicesRegister(IncomingEvent incomingEvent) {
         if (EventsNames.myServiceIsAvailable.equals(incomingEvent.getEventName())) {
-            servicesRegistry.addUiUrlForService(uiUrl(incomingEvent), incomingEvent.getCreatingServiceName());
+            servicesRegistry.addUiService(incomingEvent.getCreatingServiceName(), uiUrl(incomingEvent), priority(incomingEvent));
         } else if (EventsNames.myServiceIsUnavailable.equals(incomingEvent.getEventName())) {
             servicesRegistry.removeUiUrlForService(incomingEvent.getCreatingServiceName());
         }
@@ -62,5 +62,9 @@ public class ServicesEventsListener implements MessageListener {
 
     private static String uiUrl(IncomingEvent incomingEvent) {
         return incomingEvent.getStringPropertyFromJsonPayload("uiUrl");
+    }
+
+    private static Integer priority(IncomingEvent incomingEvent) {
+        return incomingEvent.getIntegerPropertyFromJsonPayload("priority");
     }
 }
