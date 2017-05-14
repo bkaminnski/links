@@ -15,8 +15,8 @@ export default class LinkCreationForm extends React.Component {
         return <div className="bottom-buffer-double">
             <form onSubmit={this.onSubmit}>
                 <Url
-                    key={'url-' + this.state.key}
-                    ref={(url) => { this.store.addRefToAttributeComponent('url', url); }}
+                    key={this.state.keyPrefix + '-url'}
+                    ref={(url) => { this.store.addAttributeComponent('url', url); }}
                     attributeName="url"
                     initialValue=""
                     onChange={this.onChange}
@@ -34,9 +34,15 @@ export default class LinkCreationForm extends React.Component {
 
     onSubmit(e) {
         e.preventDefault();
-        if (this.store.validateAndFocusOnFirstInvalidComponent()) {
+        if (this.store.allAttributesAreValid()) {
             this.store.createLink();
             this.store.reset();
+        } else {
+            this.store.focusOnFirstInvalidComponent();
         }
+    }
+
+    reset() {
+        this.store.reset();
     }
 }

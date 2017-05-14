@@ -1,65 +1,51 @@
+import AttributesStore from './AttributesStore.js';
 import LinksClient from '../LinksClient.js';
 
 export default class LinkCreationFormStore {
 
-    constructor(linkCreationFormComponent) {
-        this.component = linkCreationFormComponent;
-        this.component.state = this.initialStateWithKey(0);
+    constructor(formComponent) {
         this.linksClient = new LinksClient();
-        this.attributesComponents = {};
+        this.attributesStore = new AttributesStore(formComponent);
+        this.formComponent = formComponent;
+        this.formComponent.state = this.initialState();
     }
 
-    initialStateWithKey(key) {
-        return {
-            attributes: {
-                url: {
-                    value: '',
-                    valid: false,
-                    ref: null
-                }
-            },
-            valid: false,
-            key: key
+    initialState() {
+        let initialState = this.attributesStore.initialState();
+        initialState.attributes = {
+            url: {
+                value: '',
+                valid: false
+            }
         };
-    }
-
-    onChange(attributeName, attributeValue, attributeValid) {
-        let attributes = this.component.state.attributes;
-        attributes[attributeName].value = attributeValue;
-        attributes[attributeName].valid = attributeValid;
-        this.component.setState({ attributes: attributes, valid: this.validateWithoutChangingFocus() });
-    }
-
-    validateWithoutChangingFocus() {
-        return !Object
-            .values(this.component.state.attributes)
-            .some(a => !a.valid);
-    }
-
-    validateAndFocusOnFirstInvalidComponent() {
-        let attributes = this.component.state.attributes;
-        return !Object.keys(this.component.state.attributes)
-            .filter(a => !attributes[a].valid)
-            .map(a => this.attributesComponents[a])
-            .some((ac) => {
-                ac.showErrorAndFocus();
-                return true;
-            });
+        return initialState;
     }
 
     createLink() {
         uniqueIds.withNext(uniqueId => {
-            this.linksClient.createLink(this.component.state.attributes.url.value, uniqueId).then((responseStatus) => {
+            this.linksClient.createLink(this.formComponent.state.attributes.url.value, uniqueId).then((responseStatus) => {
                 PubSub.publish('uiEvent.linkCreation.linkWasCreated');
             });
         });
     }
 
     reset() {
-        this.component.setState(this.initialStateWithKey(this.component.state.key + 1));
+        this.formComponent.setState(this.initialState());
     }
 
-    addRefToAttributeComponent(attributeName, attributeComponent) {
-        this.attributesComponents[attributeName] = attributeComponent;
+    onChange(attributeName, attributeValue, attributeValid) {
+        this.attributesStore.onChange(attributeName, attributeValue, attributeValid);
+    }
+
+    addAttributeComponent(attributeName, attributeComponent) {
+        this.attributesStore.addAttributeComponent(attributeName, attributeComponent);
+    }
+
+    allAttributesAreValid() {
+        return this.attributesStore.allAttributesAreValid();
+    }
+
+    focusOnFirstInvalidAttributeComponent() {
+        this.attributesStore.focusOnFirstInvalidAttributeComponent();
     }
 }

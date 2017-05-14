@@ -23,12 +23,12 @@ export default class Url extends React.Component {
     }
 
     render() {
-        let errorClassName = this.shouldShowError() ? ' has-feedback has-error' : '';
+        let inputGroupErrorClassName = this.shouldShowError() ? ' has-feedback has-error' : '';
         let ariaDescribedBy = this.shouldShowError() ? 'invalid-url-description' : 'url-label';
         let errorIcon = this.shouldShowError() ? <span className="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" /> : null;
         let errorDescription = this.shouldShowError() ? <span id="invalid-url-description" className="sr-only">Invalid URL</span> : null;
 
-        return <div className={'input-group bottom-buffer' + errorClassName}>
+        return <div className={'input-group bottom-buffer' + inputGroupErrorClassName}>
             <span className="input-group-addon" id="url-label">URL</span>
             <input
                 type="text"
