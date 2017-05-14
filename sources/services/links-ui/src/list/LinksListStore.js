@@ -3,7 +3,8 @@ import LinksClient from '../LinksClient.js';
 export default class LinksListStore {
 
     constructor(linksListComponent) {
-        this.linksListComponent = linksListComponent;
+        this.component = linksListComponent;
+        this.component.state = { links: [] };
         this.linksClient = new LinksClient();
         this.links = [];
         this.slices = [];
@@ -41,7 +42,7 @@ export default class LinksListStore {
             .forEach(slice => slice.fragments.forEach(
                 fragment => linksMap[fragment.linkSharedId].components.push(fragment.component)
             ));
-        this.linksListComponent.setState({ links: this.links });
+        this.component.setState({ links: this.links });
     }
 
     unsubscribeFromEvents() {

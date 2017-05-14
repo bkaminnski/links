@@ -3,6 +3,7 @@ package com.hclc.links.links.links.entity;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
@@ -18,9 +19,11 @@ public class Link implements Serializable {
     private Long id;
 
     @Column(name = "link_shared_id", length = 36)
+    @NotNull
     private String sharedId;
 
     @Column(name = "link_url", length = 2000)
+    @NotNull
     private String url;
 
     public Link() {
