@@ -388,6 +388,7 @@ var LinkCreationForm = function (_React$Component) {
                     'form',
                     { onSubmit: this.onSubmit },
                     _react2.default.createElement(_Url2.default, {
+                        id: this.state.keyPrefix + '-url',
                         key: this.state.keyPrefix + '-url',
                         ref: function ref(url) {
                             _this2.store.addAttributeComponent('url', url);
@@ -540,6 +541,10 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _InputGroup = __webpack_require__(14);
+
+var _InputGroup2 = _interopRequireDefault(_InputGroup);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -556,84 +561,42 @@ var Url = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Url.__proto__ || Object.getPrototypeOf(Url)).call(this));
 
-        _this.onChange = _this.onChange.bind(_this);
-        _this.shouldShowError = _this.shouldShowError.bind(_this);
-        _this.state = {
-            value: null,
-            valid: false,
-            touched: false
-        };
+        _this.validate = _this.validate.bind(_this);
         return _this;
     }
 
     _createClass(Url, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.urlInput.focus();
+            this.inputGroup.focus();
         }
     }, {
         key: 'showErrorAndFocus',
         value: function showErrorAndFocus() {
-            var _this2 = this;
-
-            this.setState({ touched: true }, function () {
-                _this2.urlInput.focus();
-            });
+            this.inputGroup.showErrorAndFocus();
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this2 = this;
 
-            var inputGroupErrorClassName = this.shouldShowError() ? ' has-feedback has-error' : '';
-            var ariaDescribedBy = this.shouldShowError() ? 'invalid-url-description' : 'url-label';
-            var errorIcon = this.shouldShowError() ? _react2.default.createElement('span', { className: 'glyphicon glyphicon-remove form-control-feedback', 'aria-hidden': 'true' }) : null;
-            var errorDescription = this.shouldShowError() ? _react2.default.createElement(
-                'span',
-                { id: 'invalid-url-description', className: 'sr-only' },
-                'Invalid URL'
-            ) : null;
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'input-group bottom-buffer' + inputGroupErrorClassName },
-                _react2.default.createElement(
-                    'span',
-                    { className: 'input-group-addon', id: 'url-label' },
-                    'URL'
-                ),
-                _react2.default.createElement('input', {
-                    type: 'text',
-                    ref: function ref(input) {
-                        _this3.urlInput = input;
-                    },
-                    onChange: this.onChange,
-                    value: this.state.value == null ? this.props.initialValue : this.state.value,
-                    className: 'form-control',
-                    placeholder: 'http://paste-a-link-here.com',
-                    'aria-describedby': ariaDescribedBy
-                }),
-                errorIcon,
-                errorDescription
-            );
-        }
-    }, {
-        key: 'shouldShowError',
-        value: function shouldShowError() {
-            return !this.state.valid && this.state.touched;
-        }
-    }, {
-        key: 'onChange',
-        value: function onChange(e) {
-            var _this4 = this;
-
-            this.setState({ value: e.target.value, valid: this.validate(e.target.value), touched: true }, function () {
-                _this4.props.onChange(_this4.props.attributeName, _this4.state.value, _this4.state.valid);
+            return _react2.default.createElement(_InputGroup2.default, {
+                id: this.props.id,
+                ref: function ref(inputGroup) {
+                    _this2.inputGroup = inputGroup;
+                },
+                attributeName: this.props.attributeName,
+                initialValue: this.props.initialValue,
+                onChange: this.props.onChange,
+                validate: this.validate,
+                label: 'URL',
+                placeholder: 'http://paste-a-link-here.com'
             });
         }
     }, {
         key: 'validate',
-        value: function validate(url) {
+        value: function validate(e) {
+            var url = e.target.value;
             return url != '' && /^.+((\.\w{2,})|(localhost)).*$/.test(url);
         }
     }]);
@@ -971,6 +934,122 @@ var LinksPage = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = LinksPage;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var InputGroup = function (_React$Component) {
+    _inherits(InputGroup, _React$Component);
+
+    function InputGroup() {
+        _classCallCheck(this, InputGroup);
+
+        var _this = _possibleConstructorReturn(this, (InputGroup.__proto__ || Object.getPrototypeOf(InputGroup)).call(this));
+
+        _this.onChange = _this.onChange.bind(_this);
+        _this.shouldShowError = _this.shouldShowError.bind(_this);
+        _this.state = {
+            value: null,
+            valid: false,
+            touched: false
+        };
+        return _this;
+    }
+
+    _createClass(InputGroup, [{
+        key: 'focus',
+        value: function focus() {
+            this.input.focus();
+        }
+    }, {
+        key: 'showErrorAndFocus',
+        value: function showErrorAndFocus() {
+            var _this2 = this;
+
+            this.setState({ touched: true }, function () {
+                _this2.input.focus();
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            var inputGroupErrorClassName = this.shouldShowError() ? ' has-feedback has-error' : '';
+            var ariaDescribedBy = this.props.id + this.shouldShowError() ? '-invalid-description' : '-label';
+            var errorIcon = this.shouldShowError() ? _react2.default.createElement('span', { className: 'glyphicon glyphicon-remove form-control-feedback', 'aria-hidden': 'true' }) : null;
+            var errorDescription = this.shouldShowError() ? _react2.default.createElement(
+                'span',
+                { id: this.props.id + '-invalid-description', className: 'sr-only' },
+                'Invalid ',
+                this.props.label
+            ) : null;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'input-group bottom-buffer' + inputGroupErrorClassName },
+                _react2.default.createElement(
+                    'span',
+                    { className: 'input-group-addon', id: this.props.id + '-label' },
+                    this.props.label
+                ),
+                _react2.default.createElement('input', {
+                    type: 'text',
+                    ref: function ref(input) {
+                        _this3.input = input;
+                    },
+                    onChange: this.onChange,
+                    value: this.state.value == null ? this.props.initialValue : this.state.value,
+                    className: 'form-control',
+                    placeholder: this.props.placeholder,
+                    'aria-describedby': ariaDescribedBy
+                }),
+                errorIcon,
+                errorDescription
+            );
+        }
+    }, {
+        key: 'shouldShowError',
+        value: function shouldShowError() {
+            return !this.state.valid && this.state.touched;
+        }
+    }, {
+        key: 'onChange',
+        value: function onChange(e) {
+            var _this4 = this;
+
+            this.setState({ value: e.target.value, valid: this.props.validate(e), touched: true }, function () {
+                _this4.props.onChange(_this4.props.attributeName, _this4.state.value, _this4.state.valid);
+            });
+        }
+    }]);
+
+    return InputGroup;
+}(_react2.default.Component);
+
+exports.default = InputGroup;
 
 /***/ })
 /******/ ]);

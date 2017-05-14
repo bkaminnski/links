@@ -15,6 +15,7 @@ export default class LinkCreationForm extends React.Component {
         return <div className="bottom-buffer-double">
             <form onSubmit={this.onSubmit}>
                 <Url
+                    id={this.state.keyPrefix + '-url'}
                     key={this.state.keyPrefix + '-url'}
                     ref={(url) => { this.store.addAttributeComponent('url', url); }}
                     attributeName="url"
