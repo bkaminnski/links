@@ -36,13 +36,8 @@ export default class LinkCreationForm extends React.Component {
         e.preventDefault();
         if (this.store.allAttributesAreValid()) {
             this.store.createLink();
-            this.store.reset();
         } else {
-            this.store.focusOnFirstInvalidComponent();
+            this.store.focusOnFirstInvalidAttributeComponent();
         }
-    }
-
-    reset() {
-        this.store.reset();
     }
 }

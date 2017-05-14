@@ -419,15 +419,9 @@ var LinkCreationForm = function (_React$Component) {
             e.preventDefault();
             if (this.store.allAttributesAreValid()) {
                 this.store.createLink();
-                this.store.reset();
             } else {
-                this.store.focusOnFirstInvalidComponent();
+                this.store.focusOnFirstInvalidAttributeComponent();
             }
-        }
-    }, {
-        key: 'reset',
-        value: function reset() {
-            this.store.reset();
         }
     }]);
 
@@ -490,7 +484,10 @@ var LinkCreationFormStore = function () {
 
             uniqueIds.withNext(function (uniqueId) {
                 _this.linksClient.createLink(_this.formComponent.state.attributes.url.value, uniqueId).then(function (responseStatus) {
-                    PubSub.publish('uiEvent.linkCreation.linkWasCreated');
+                    if (responseStatus == 204) {
+                        _this.reset();
+                        PubSub.publish('uiEvent.linkCreation.linkWasCreated');
+                    }
                 });
             });
         }

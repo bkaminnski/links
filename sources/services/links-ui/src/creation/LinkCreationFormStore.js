@@ -24,7 +24,10 @@ export default class LinkCreationFormStore {
     createLink() {
         uniqueIds.withNext(uniqueId => {
             this.linksClient.createLink(this.formComponent.state.attributes.url.value, uniqueId).then((responseStatus) => {
-                PubSub.publish('uiEvent.linkCreation.linkWasCreated');
+                if (responseStatus == 204) {
+                    this.reset();
+                    PubSub.publish('uiEvent.linkCreation.linkWasCreated');
+                }
             });
         });
     }
