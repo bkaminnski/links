@@ -3,6 +3,8 @@ export default class TopicMessagesListStore {
     constructor(topicMessagesList) {
         this.component = topicMessagesList;
         this.component.state = { topicMessages: [] };
+        this.topicMessages = [];
+        this.bufferTimeout = null;
     }
 
     subscribeToEvents() {
@@ -12,9 +14,8 @@ export default class TopicMessagesListStore {
     }
 
     addTopicMessage(topicMessage) {
-        let topicMessages = this.component.state.topicMessages;
-        topicMessages.unshift(topicMessage);
-        this.component.setState({ topicMessages: topicMessages });
+        this.topicMessages.unshift(topicMessage);
+        this.component.setState({ topicMessages: this.topicMessages });
     }
 
     unsubscribeFromEvents() {

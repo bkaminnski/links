@@ -390,6 +390,8 @@ var TopicMessagesListStore = function () {
 
         this.component = topicMessagesList;
         this.component.state = { topicMessages: [] };
+        this.topicMessages = [];
+        this.bufferTimeout = null;
     }
 
     _createClass(TopicMessagesListStore, [{
@@ -404,9 +406,8 @@ var TopicMessagesListStore = function () {
     }, {
         key: 'addTopicMessage',
         value: function addTopicMessage(topicMessage) {
-            var topicMessages = this.component.state.topicMessages;
-            topicMessages.unshift(topicMessage);
-            this.component.setState({ topicMessages: topicMessages });
+            this.topicMessages.unshift(topicMessage);
+            this.component.setState({ topicMessages: this.topicMessages });
         }
     }, {
         key: 'unsubscribeFromEvents',
