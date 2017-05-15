@@ -707,7 +707,6 @@ var LinksList = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (LinksList.__proto__ || Object.getPrototypeOf(LinksList)).call(this));
 
         _this.linksListStore = new _LinksListStore2.default(_this);
-        _this.state = { links: [] };
         return _this;
     }
 

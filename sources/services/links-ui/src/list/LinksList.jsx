@@ -7,7 +7,6 @@ export default class LinksList extends React.Component {
     constructor() {
         super();
         this.linksListStore = new LinksListStore(this);
-        this.state = { links: [] };
     }
 
     componentDidMount() {
