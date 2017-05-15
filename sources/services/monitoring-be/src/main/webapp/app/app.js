@@ -199,6 +199,10 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _TopicMessagesList = __webpack_require__(5);
+
+var _TopicMessagesList2 = _interopRequireDefault(_TopicMessagesList);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -222,7 +226,7 @@ var MonitoringPage = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                'This is a monitoring page.'
+                _react2.default.createElement(_TopicMessagesList2.default, null)
             );
         }
     }]);
@@ -237,6 +241,263 @@ exports.default = MonitoringPage;
 /***/ (function(module, exports) {
 
 module.exports = React;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _TopicMessagesListStore = __webpack_require__(6);
+
+var _TopicMessagesListStore2 = _interopRequireDefault(_TopicMessagesListStore);
+
+var _TopicMessageRow = __webpack_require__(7);
+
+var _TopicMessageRow2 = _interopRequireDefault(_TopicMessageRow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TopicMessagesList = function (_React$Component) {
+    _inherits(TopicMessagesList, _React$Component);
+
+    function TopicMessagesList() {
+        _classCallCheck(this, TopicMessagesList);
+
+        var _this = _possibleConstructorReturn(this, (TopicMessagesList.__proto__ || Object.getPrototypeOf(TopicMessagesList)).call(this));
+
+        _this.topicMessagesListStore = new _TopicMessagesListStore2.default(_this);
+        return _this;
+    }
+
+    _createClass(TopicMessagesList, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.topicMessagesListStore.subscribeToEvents();
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.topicMessagesListStore.unsubscribeFromEvents();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'panel panel-default' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'panel-heading' },
+                    'Backend topic messages - live preview'
+                ),
+                _react2.default.createElement(
+                    'table',
+                    { className: 'table table-striped' },
+                    _react2.default.createElement(
+                        'thead',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                'Message ID'
+                            ),
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                'Tracking ID'
+                            ),
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                'Source service'
+                            ),
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                'Timestamp'
+                            ),
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                'Event name'
+                            ),
+                            _react2.default.createElement(
+                                'th',
+                                null,
+                                'Payload'
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        this.state.topicMessages.map(function (topicMessage) {
+                            return _react2.default.createElement(_TopicMessageRow2.default, {
+                                key: topicMessage.messageId,
+                                topicMessage: topicMessage
+                            });
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return TopicMessagesList;
+}(_react2.default.Component);
+
+exports.default = TopicMessagesList;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var TopicMessagesListStore = function () {
+    function TopicMessagesListStore(topicMessagesList) {
+        _classCallCheck(this, TopicMessagesListStore);
+
+        this.component = topicMessagesList;
+        this.component.state = { topicMessages: [] };
+    }
+
+    _createClass(TopicMessagesListStore, [{
+        key: 'subscribeToEvents',
+        value: function subscribeToEvents() {
+            var _this = this;
+
+            this.topicMessageAvailableSubscriptionToken = PubSub.subscribe('uiEvent.topicMessage.available', function (msg, topicMessage) {
+                _this.addTopicMessage(topicMessage);
+            });
+        }
+    }, {
+        key: 'addTopicMessage',
+        value: function addTopicMessage(topicMessage) {
+            var topicMessages = this.component.state.topicMessages;
+            topicMessages.unshift(topicMessage);
+            this.component.setState({ topicMessages: topicMessages });
+        }
+    }, {
+        key: 'unsubscribeFromEvents',
+        value: function unsubscribeFromEvents() {
+            PubSub.unsubscribe(this.topicMessageAvailableSubscriptionToken);
+        }
+    }]);
+
+    return TopicMessagesListStore;
+}();
+
+exports.default = TopicMessagesListStore;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TopicMessageRow = function (_React$Component) {
+    _inherits(TopicMessageRow, _React$Component);
+
+    function TopicMessageRow() {
+        _classCallCheck(this, TopicMessageRow);
+
+        return _possibleConstructorReturn(this, (TopicMessageRow.__proto__ || Object.getPrototypeOf(TopicMessageRow)).apply(this, arguments));
+    }
+
+    _createClass(TopicMessageRow, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'tr',
+                null,
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.messageId
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.trackingid
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.creationServiceName
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.creationTimestamp
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.eventName
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.payload
+                )
+            );
+        }
+    }]);
+
+    return TopicMessageRow;
+}(_react2.default.Component);
+
+exports.default = TopicMessageRow;
 
 /***/ })
 /******/ ]);

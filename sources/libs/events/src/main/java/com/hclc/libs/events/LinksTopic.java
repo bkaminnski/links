@@ -5,6 +5,7 @@ import com.hclc.libs.monitoring.ServiceLogger;
 import com.hclc.libs.monitoring.TrackingIdHolder;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.jms.JMSContext;
@@ -29,6 +30,7 @@ public class LinksTopic {
         String formattedNowInUtc = formattedNowInUtc();
         context
                 .createProducer()
+                .setProperty("messageId", UUID.randomUUID().toString())
                 .setProperty("eventName", eventName.getEventName())
                 .setProperty("trackingId", TrackingIdHolder.get())
                 .setProperty("creationTimestamp", formattedNowInUtc)
