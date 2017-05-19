@@ -1,13 +1,16 @@
 package com.hclc.libs.events;
 
-import static com.hclc.libs.events.IncomingEvent.incomingEvent;
 import com.hclc.libs.monitoring.ServiceLogger;
 import com.hclc.libs.monitoring.TrackingIdHolder;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import static java.time.ZonedDateTime.now;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.UUID;
+
+import static com.hclc.libs.events.IncomingEvent.incomingEvent;
+import static java.time.ZonedDateTime.now;
 
 public class IncomingEventProcessor {
 
@@ -15,6 +18,7 @@ public class IncomingEventProcessor {
         ZonedDateTime receptionTimestamp = now(ZoneOffset.UTC);
         IncomingEvent incomingEvent = incomingEvent()
                 .withEventName(message.getStringProperty("eventName"))
+                .withMessageId(UUID.randomUUID().toString())
                 .withTrackingId(message.getStringProperty("trackingId"))
                 .withCreatingServiceName(message.getStringProperty("creatingServiceName"))
                 .withCreationTimestamp(message.getStringProperty("creationTimestamp"))

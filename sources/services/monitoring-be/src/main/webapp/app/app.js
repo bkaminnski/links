@@ -63,11 +63,17 @@
 /******/ 	__webpack_require__.p = "app";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+module.exports = React;
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -79,7 +85,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _MonitoringPage = __webpack_require__(3);
+var _MonitoringPage = __webpack_require__(4);
 
 var _MonitoringPage2 = _interopRequireDefault(_MonitoringPage);
 
@@ -114,7 +120,7 @@ var ContentEvents = function () {
 exports.default = ContentEvents;
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -159,17 +165,17 @@ var MenuItemsEvents = function () {
 exports.default = MenuItemsEvents;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _MenuItemsEvents = __webpack_require__(1);
+var _MenuItemsEvents = __webpack_require__(2);
 
 var _MenuItemsEvents2 = _interopRequireDefault(_MenuItemsEvents);
 
-var _ContentEvents = __webpack_require__(0);
+var _ContentEvents = __webpack_require__(1);
 
 var _ContentEvents2 = _interopRequireDefault(_ContentEvents);
 
@@ -183,7 +189,7 @@ menuItemsEvents.subscribeToRequested();
 menuItemsEvents.publishAvailable();
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -195,11 +201,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(4);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _TopicMessagesList = __webpack_require__(5);
+var _TopicMessagesList = __webpack_require__(6);
 
 var _TopicMessagesList2 = _interopRequireDefault(_TopicMessagesList);
 
@@ -237,12 +243,6 @@ var MonitoringPage = function (_React$Component) {
 exports.default = MonitoringPage;
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports) {
-
-module.exports = React;
-
-/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -255,15 +255,99 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(4);
+var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _TopicMessagesListStore = __webpack_require__(6);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var TopicMessageRow = function (_React$Component) {
+    _inherits(TopicMessageRow, _React$Component);
+
+    function TopicMessageRow() {
+        _classCallCheck(this, TopicMessageRow);
+
+        return _possibleConstructorReturn(this, (TopicMessageRow.__proto__ || Object.getPrototypeOf(TopicMessageRow)).apply(this, arguments));
+    }
+
+    _createClass(TopicMessageRow, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'tr',
+                null,
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.messageId
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.eventName
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.trackingid
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.creatingServiceName
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.creationTimestamp
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.receptionTimestamp
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    this.props.topicMessage.payload
+                )
+            );
+        }
+    }]);
+
+    return TopicMessageRow;
+}(_react2.default.Component);
+
+exports.default = TopicMessageRow;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _TopicMessagesListStore = __webpack_require__(7);
 
 var _TopicMessagesListStore2 = _interopRequireDefault(_TopicMessagesListStore);
 
-var _TopicMessageRow = __webpack_require__(7);
+var _TopicMessageRow = __webpack_require__(5);
 
 var _TopicMessageRow2 = _interopRequireDefault(_TopicMessageRow);
 
@@ -325,22 +409,27 @@ var TopicMessagesList = function (_React$Component) {
                             _react2.default.createElement(
                                 'th',
                                 null,
+                                'Event name'
+                            ),
+                            _react2.default.createElement(
+                                'th',
+                                null,
                                 'Tracking ID'
                             ),
                             _react2.default.createElement(
                                 'th',
                                 null,
-                                'Source service'
+                                'Creating service name'
                             ),
                             _react2.default.createElement(
                                 'th',
                                 null,
-                                'Timestamp'
+                                'Creation timestamp'
                             ),
                             _react2.default.createElement(
                                 'th',
                                 null,
-                                'Event name'
+                                'Reception timestamp'
                             ),
                             _react2.default.createElement(
                                 'th',
@@ -370,7 +459,7 @@ var TopicMessagesList = function (_React$Component) {
 exports.default = TopicMessagesList;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -420,85 +509,6 @@ var TopicMessagesListStore = function () {
 }();
 
 exports.default = TopicMessagesListStore;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(4);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var TopicMessageRow = function (_React$Component) {
-    _inherits(TopicMessageRow, _React$Component);
-
-    function TopicMessageRow() {
-        _classCallCheck(this, TopicMessageRow);
-
-        return _possibleConstructorReturn(this, (TopicMessageRow.__proto__ || Object.getPrototypeOf(TopicMessageRow)).apply(this, arguments));
-    }
-
-    _createClass(TopicMessageRow, [{
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement(
-                'tr',
-                null,
-                _react2.default.createElement(
-                    'td',
-                    null,
-                    this.props.topicMessage.messageId
-                ),
-                _react2.default.createElement(
-                    'td',
-                    null,
-                    this.props.topicMessage.trackingid
-                ),
-                _react2.default.createElement(
-                    'td',
-                    null,
-                    this.props.topicMessage.creationServiceName
-                ),
-                _react2.default.createElement(
-                    'td',
-                    null,
-                    this.props.topicMessage.creationTimestamp
-                ),
-                _react2.default.createElement(
-                    'td',
-                    null,
-                    this.props.topicMessage.eventName
-                ),
-                _react2.default.createElement(
-                    'td',
-                    null,
-                    this.props.topicMessage.payload
-                )
-            );
-        }
-    }]);
-
-    return TopicMessageRow;
-}(_react2.default.Component);
-
-exports.default = TopicMessageRow;
 
 /***/ })
 /******/ ]);

@@ -2,6 +2,7 @@ package com.hclc.libs.events;
 
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import java.io.StringReader;
 import java.time.ZonedDateTime;
 
@@ -9,14 +10,15 @@ public class IncomingEvent {
 
     private final EventName eventName;
 
-    private final String trackingId, creatingServiceName, payload;
+    private final String messageId, trackingId, creatingServiceName, payload;
 
     private JsonObject payloadAsJsonObject;
 
     private final ZonedDateTime creationTimestamp, receptionTimestamp;
 
-    private IncomingEvent(final String eventName, String trackingId, String creatingServiceName, String creationTimestamp, ZonedDateTime receptionTimestamp, String payload) {
+    private IncomingEvent(final String eventName, String messageId, String trackingId, String creatingServiceName, String creationTimestamp, ZonedDateTime receptionTimestamp, String payload) {
         this.eventName = new EventName(eventName);
+        this.messageId = messageId;
         this.trackingId = trackingId;
         this.creatingServiceName = creatingServiceName;
         this.creationTimestamp = ZonedDateTime.parse(creationTimestamp);
@@ -64,12 +66,29 @@ public class IncomingEvent {
     }
 
     public static IncomingEventBuilder incomingEvent() {
-        return eventName -> trackingId -> creatingServiceName -> creationTimestamp -> receptionTimestamp -> payload -> new IncomingEvent(eventName, trackingId, creatingServiceName, creationTimestamp, receptionTimestamp, payload);
+        return eventName -> messageId -> trackingId -> creatingServiceName -> creationTimestamp -> receptionTimestamp -> payload -> new IncomingEvent(eventName, messageId, trackingId, creatingServiceName, creationTimestamp, receptionTimestamp, payload);
+    }
+
+    public JsonObjectBuilder toJson() {
+        return Json
+                .createObjectBuilder()
+                .add("eventName", eventName.toString())
+                .add("messageId", messageId)
+                .add("trackingId", trackingId)
+                .add("creatingServiceName", creatingServiceName)
+                .add("creationTimestamp", creationTimestamp.toString())
+                .add("receptionTimestamp", receptionTimestamp.toString());
+                //.add("payload", payloadAsJsonObject);
     }
 
     interface IncomingEventBuilder {
 
-        TrackingId withEventName(String eventName);
+        MessageId withEventName(String eventName);
+    }
+
+    interface MessageId {
+
+        TrackingId withMessageId(String messageId);
     }
 
     interface TrackingId {

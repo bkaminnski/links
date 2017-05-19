@@ -24,10 +24,11 @@ export default class TopicMessagesList extends React.Component {
                 <thead>
                     <tr>
                         <th>Message ID</th>
-                        <th>Tracking ID</th>
-                        <th>Source service</th>
-                        <th>Timestamp</th>
                         <th>Event name</th>
+                        <th>Tracking ID</th>
+                        <th>Creating service name</th>
+                        <th>Creation timestamp</th>
+                        <th>Reception timestamp</th>
                         <th>Payload</th>
                     </tr>
                 </thead>

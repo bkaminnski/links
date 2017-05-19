@@ -14,6 +14,8 @@ import javax.jms.MessageListener;
 
 import static com.hclc.libs.events.IncomingEventProcessor.processIncomingEvent;
 import static com.hclc.libs.monitoring.TrackingIdHolder.generateNewTrackingId;
+import static com.hclc.links.application.EventsNames.myServiceIsAvailable;
+import static com.hclc.links.application.EventsNames.myServiceIsUnavailable;
 
 @MessageDriven(activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
@@ -53,9 +55,9 @@ public class ServicesEventsListener implements MessageListener {
     }
 
     private void updateServicesRegister(IncomingEvent incomingEvent) {
-        if (EventsNames.myServiceIsAvailable.equals(incomingEvent.getEventName())) {
+        if (myServiceIsAvailable.equals(incomingEvent.getEventName())) {
             servicesRegistry.addUiService(incomingEvent.getCreatingServiceName(), uiUrl(incomingEvent), priority(incomingEvent));
-        } else if (EventsNames.myServiceIsUnavailable.equals(incomingEvent.getEventName())) {
+        } else if (myServiceIsUnavailable.equals(incomingEvent.getEventName())) {
             servicesRegistry.removeUiUrlForService(incomingEvent.getCreatingServiceName());
         }
     }

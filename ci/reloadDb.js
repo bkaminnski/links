@@ -4,19 +4,11 @@ var timeStarted = new Date().getTime();
 
 load('./scripts/ups.js');
 
-new ParallelExecutor().withTimeoutInMillis(60000).execute(
-	[
-		[
-			new Command('.', 'docker kill wildfly-configured'),
-			new Command('.', 'docker rm wildfly-configured')
-		],
-		[
-			new Command('.', 'docker kill postgres-configured'),
-			new Command('.', 'docker rm postgres-configured'),
-			new Command('.', 'docker rmi postgres-configured')
-		]
-	]
-);
+new Command('.', 'docker kill wildfly-configured').execute();
+new Command('.', 'docker rm wildfly-configured').execute();
+new Command('.', 'docker kill postgres-configured').execute();
+new Command('.', 'docker rm postgres-configured').execute();
+new Command('.', 'docker rmi postgres-configured').execute();
 
 dbUp();
 mwUp();
