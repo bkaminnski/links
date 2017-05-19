@@ -77,7 +77,7 @@ function compileUis(timeout, buildCommand) {
 }
 
 function compileAndDeployMw() {
-	new Command('../sources/services', 'mvn install').execute();
+	new Command('../sources/services', 'mvn clean install').execute();
 	new Command('../sources/services/application-be/', 'mvn clean install -P wildfly-local').execute();
 	new Command('../sources/services/unique-ids-be/', 'mvn clean install -P wildfly-local').execute();
 	new Command('../sources/services/push-be/', 'mvn clean install -P wildfly-local').execute();

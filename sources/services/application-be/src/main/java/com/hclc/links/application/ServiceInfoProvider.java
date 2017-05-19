@@ -1,6 +1,7 @@
 package com.hclc.links.application;
 
 import com.hclc.libs.accessibility.ServiceInfo;
+
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 
@@ -11,22 +12,12 @@ public class ServiceInfoProvider {
         public String serviceName() {
             return "application";
         }
-
-        @Override
-        public String serviceExternalHost() {
-            return "localhost";
-        }
-
-        @Override
-        public int serviceExternalPort() {
-            return 8080;
-        }
     };
 
     public static ServiceInfo provideServiceInfo() {
         return INSTANCE;
     }
-    
+
     @Produces
     ServiceInfo produceServiceInfo(InjectionPoint injectionPoint) {
         return INSTANCE;

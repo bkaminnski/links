@@ -11,16 +11,6 @@ public class ServiceInfoProvider {
         public String serviceName() {
             return "description";
         }
-
-        @Override
-        public String serviceExternalHost() {
-            return "localhost";
-        }
-
-        @Override
-        public int serviceExternalPort() {
-            return 8080;
-        }
     };
 
     public static ServiceInfo provideServiceInfo() {
