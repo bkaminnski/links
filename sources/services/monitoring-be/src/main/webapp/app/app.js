@@ -295,7 +295,7 @@ var TopicMessageRow = function (_React$Component) {
                 _react2.default.createElement(
                     'td',
                     null,
-                    this.props.topicMessage.trackingid
+                    this.props.topicMessage.trackingId
                 ),
                 _react2.default.createElement(
                     'td',

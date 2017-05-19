@@ -5,7 +5,7 @@ export default class TopicMessageRow extends React.Component {
         return <tr>
             <td>{this.props.topicMessage.messageId}</td>
             <td>{this.props.topicMessage.eventName}</td>
-            <td>{this.props.topicMessage.trackingid}</td>
+            <td>{this.props.topicMessage.trackingId}</td>
             <td>{this.props.topicMessage.creatingServiceName}</td>
             <td>{this.props.topicMessage.creationTimestamp}</td>
             <td>{this.props.topicMessage.receptionTimestamp}</td>
