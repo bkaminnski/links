@@ -77,8 +77,8 @@ public class IncomingEvent {
                 .add("trackingId", trackingId)
                 .add("creatingServiceName", creatingServiceName)
                 .add("creationTimestamp", creationTimestamp.toString())
-                .add("receptionTimestamp", receptionTimestamp.toString());
-                //.add("payload", payloadAsJsonObject);
+                .add("receptionTimestamp", receptionTimestamp.toString())
+                .add("payload", payload == null ? "" : payload);
     }
 
     interface IncomingEventBuilder {
