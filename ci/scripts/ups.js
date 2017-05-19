@@ -86,5 +86,5 @@ function compileAndDeployMw() {
 	new Command('../sources/services/links-be/', 'mvn clean install -P wildfly-local').execute();
 	new Command('../sources/services/about-be/', 'mvn clean install -P wildfly-local').execute();
 	new Command('../sources/services/descriptions-be/', 'mvn clean install -P wildfly-local').execute();
-	new Command('../sources/services/keywords-be/', 'mvn clean install -P wildfly-local').execute(); ół
+	new Command('../sources/services/keywords-be/', 'mvn clean install -P wildfly-local').execute();
 }
