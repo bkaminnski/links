@@ -2,6 +2,7 @@
 
 load("./scripts/docker.js");
 load("./scripts/scriptsCopier.js");
+load("./scripts/parallelExecutor.js");
 load('./scripts/command.js');
 
 function dbUp() {
@@ -48,43 +49,79 @@ function compileUisWatch() {
 }
 
 function compileUis(timeout, buildCommand) {
-	new Command('../sources/services/application-ui/', 'npm install').execute()
-	new Command('../sources/services/application-ui/', 'npm run ' + buildCommand).execute()
-
-	new Command('../sources/services/unique-ids-ui/', 'npm install').execute()
-	new Command('../sources/services/unique-ids-ui/', 'npm run ' + buildCommand).execute()
-
-	new Command('../sources/services/push-ui/', 'npm install').execute()
-	new Command('../sources/services/push-ui/', 'npm run ' + buildCommand).execute()
-
-	new Command('../sources/services/monitoring-ui/', 'npm install').execute()
-	new Command('../sources/services/monitoring-ui/', 'npm run ' + buildCommand).execute()
-
-	new Command('../sources/services/menu-and-content-ui/', 'npm install').execute()
-	new Command('../sources/services/menu-and-content-ui/', 'npm run ' + buildCommand).execute()
-
-	new Command('../sources/services/links-ui/', 'npm install').execute()
-	new Command('../sources/services/links-ui/', 'npm run ' + buildCommand).execute()
-
-	new Command('../sources/services/about-ui/', 'npm install').execute()
-	new Command('../sources/services/about-ui/', 'npm run ' + buildCommand).execute()
-
-	new Command('../sources/services/descriptions-ui/', 'npm install').execute()
-	new Command('../sources/services/descriptions-ui/', 'npm run ' + buildCommand).execute()
-
-	new Command('../sources/services/keywords-ui/', 'npm install').execute()
-	new Command('../sources/services/keywords-ui/', 'npm run ' + buildCommand).execute()
+	new ParallelExecutor().withTimeoutInMillis(timeout).execute(
+		[
+			[
+				new Command('../sources/services/application-ui/', 'npm install'),
+				new Command('../sources/services/application-ui/', 'npm run ' + buildCommand)
+			],
+			[
+				new Command('../sources/services/unique-ids-ui/', 'npm install'),
+				new Command('../sources/services/unique-ids-ui/', 'npm run ' + buildCommand)
+			],
+			[
+				new Command('../sources/services/push-ui/', 'npm install'),
+				new Command('../sources/services/push-ui/', 'npm run ' + buildCommand)
+			],
+			[
+				new Command('../sources/services/monitoring-ui/', 'npm install'),
+				new Command('../sources/services/monitoring-ui/', 'npm run ' + buildCommand)
+			],
+			[
+				new Command('../sources/services/menu-and-content-ui/', 'npm install'),
+				new Command('../sources/services/menu-and-content-ui/', 'npm run ' + buildCommand)
+			],
+			[
+				new Command('../sources/services/links-ui/', 'npm install'),
+				new Command('../sources/services/links-ui/', 'npm run ' + buildCommand)
+			],
+			[
+				new Command('../sources/services/about-ui/', 'npm install'),
+				new Command('../sources/services/about-ui/', 'npm run ' + buildCommand)
+			],
+			[
+				new Command('../sources/services/descriptions-ui/', 'npm install'),
+				new Command('../sources/services/descriptions-ui/', 'npm run ' + buildCommand)
+			],
+			[
+				new Command('../sources/services/keywords-ui/', 'npm install'),
+				new Command('../sources/services/keywords-ui/', 'npm run ' + buildCommand)
+			]
+		]
+	);
 }
 
 function compileAndDeployMw() {
-	new Command('../sources/services', 'mvn clean install').execute();
-	new Command('../sources/services/application-be/', 'mvn clean install -P wildfly-local').execute();
-	new Command('../sources/services/unique-ids-be/', 'mvn clean install -P wildfly-local').execute();
-	new Command('../sources/services/push-be/', 'mvn clean install -P wildfly-local').execute();
-	new Command('../sources/services/monitoring-be/', 'mvn clean install -P wildfly-local').execute();
-	new Command('../sources/services/menu-and-content-be/', 'mvn clean install -P wildfly-local').execute();
-	new Command('../sources/services/links-be/', 'mvn clean install -P wildfly-local').execute();
-	new Command('../sources/services/about-be/', 'mvn clean install -P wildfly-local').execute();
-	new Command('../sources/services/descriptions-be/', 'mvn clean install -P wildfly-local').execute();
-	new Command('../sources/services/keywords-be/', 'mvn clean install -P wildfly-local').execute();
+	new Command('../sources/services', 'mvn install').execute();
+	new ParallelExecutor().withTimeoutInMillis(60000).execute(
+		[
+			[
+				new Command('../sources/services/application-be/', 'mvn clean install -P wildfly-local')
+			],
+			[
+				new Command('../sources/services/unique-ids-be/', 'mvn clean install -P wildfly-local')
+			],
+			[
+				new Command('../sources/services/push-be/', 'mvn clean install -P wildfly-local')
+			],
+			[
+				new Command('../sources/services/monitoring-be/', 'mvn clean install -P wildfly-local')
+			],
+			[
+				new Command('../sources/services/menu-and-content-be/', 'mvn clean install -P wildfly-local')
+			],
+			[
+				new Command('../sources/services/links-be/', 'mvn clean install -P wildfly-local')
+			],
+			[
+				new Command('../sources/services/about-be/', 'mvn clean install -P wildfly-local')
+			],
+			[
+				new Command('../sources/services/descriptions-be/', 'mvn clean install -P wildfly-local')
+			],
+			[
+				new Command('../sources/services/keywords-be/', 'mvn clean install -P wildfly-local')
+			]
+		]
+	);
 }

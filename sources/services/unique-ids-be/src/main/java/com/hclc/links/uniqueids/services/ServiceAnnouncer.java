@@ -35,12 +35,12 @@ public class ServiceAnnouncer {
     }
 
     public void announceServiceAvailability() {
-        String uiUrlPayload = Json.createObjectBuilder()
-                .add("uiUrl", serviceInfo.fullUrlTo("/unique-ids/app/app.js"))
+        String payload = Json.createObjectBuilder()
+                .add("url", serviceInfo.url())
                 .add("priority", 10)
                 .build()
                 .toString();
-        linksTopic.sendEventWithPayload(myServiceIsAvailable, uiUrlPayload, serviceLogger);
+        linksTopic.sendEventWithPayload(myServiceIsAvailable, payload, serviceLogger);
     }
 
     @PreDestroy

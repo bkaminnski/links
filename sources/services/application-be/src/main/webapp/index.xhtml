@@ -1,18 +1,22 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets" xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <head>
-        <title>ApplicationPage</title>
-    </head>
-    <body>
-        <div id="applicationPage"></div>
-		<!--
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react.js"></script>
-		-->
-        <script src="./app/vendor.bundle.js"></script>
-        <script src="./app/app.js"></script>
-        <ui:repeat value="#{servicesRegistry.uiUrls}" var="uiUrl">
-            <script src="#{uiUrl}"></script>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<head>
+    <title>ApplicationPage</title>
+</head>
+<body>
+    <div id="applicationPage"></div>
+    <script src="./app/vendor.bundle.js"></script>
+    <script src="./app/app.js"></script>
+    <script>
+        var services = new Map();
+        <ui:repeat value="#{servicesRegistry.services}" var="service">
+            services.set('#{service.name}', '#{service.url}');
         </ui:repeat>
-    </body>
+    </script>
+    <ui:repeat value="#{servicesRegistry.services}" var="service">
+        <script src="#{service.url}/app/app.js"></script>
+    </ui:repeat>
+</body>
 </html>

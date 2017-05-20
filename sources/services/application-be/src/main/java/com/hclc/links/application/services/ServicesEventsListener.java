@@ -56,14 +56,14 @@ public class ServicesEventsListener implements MessageListener {
 
     private void updateServicesRegister(IncomingEvent incomingEvent) {
         if (myServiceIsAvailable.equals(incomingEvent.getEventName())) {
-            servicesRegistry.addUiService(incomingEvent.getCreatingServiceName(), uiUrl(incomingEvent), priority(incomingEvent));
+            servicesRegistry.addService(incomingEvent.getCreatingServiceName(), url(incomingEvent), priority(incomingEvent));
         } else if (myServiceIsUnavailable.equals(incomingEvent.getEventName())) {
-            servicesRegistry.removeUiUrlForService(incomingEvent.getCreatingServiceName());
+            servicesRegistry.removeUrlForService(incomingEvent.getCreatingServiceName());
         }
     }
 
-    private static String uiUrl(IncomingEvent incomingEvent) {
-        return incomingEvent.getStringPropertyFromJsonPayload("uiUrl");
+    private static String url(IncomingEvent incomingEvent) {
+        return incomingEvent.getStringPropertyFromJsonPayload("url");
     }
 
     private static Integer priority(IncomingEvent incomingEvent) {

@@ -93,11 +93,11 @@ var LinksClient = function () {
     }
 
     _createClass(LinksClient, [{
-        key: "createLink",
+        key: 'createLink',
         value: function createLink(url, uniqueId) {
             var result = new Promise(function (resolve, reject) {
                 var request = new XMLHttpRequest();
-                request.open("POST", "http://localhost:8080/links/resources/links");
+                request.open("POST", services.get('links') + '/resources/links');
                 request.setRequestHeader("Content-type", "application/json");
                 request.setRequestHeader("Accept", "*/*");
                 request.onreadystatechange = function () {
@@ -113,11 +113,11 @@ var LinksClient = function () {
             return result;
         }
     }, {
-        key: "loadLinks",
+        key: 'loadLinks',
         value: function loadLinks() {
             var result = new Promise(function (resolve, reject) {
                 var request = new XMLHttpRequest();
-                request.open("GET", "http://localhost:8080/links/resources/links");
+                request.open("GET", services.get('links') + '/resources/links');
                 request.onreadystatechange = function () {
                     if (request.readyState == 4 && request.status == 200) {
                         resolve(JSON.parse(request.responseText));

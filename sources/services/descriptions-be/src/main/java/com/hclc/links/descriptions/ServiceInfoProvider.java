@@ -9,7 +9,7 @@ public class ServiceInfoProvider {
     private final static ServiceInfo INSTANCE = new ServiceInfo() {
         @Override
         public String serviceName() {
-            return "description";
+            return "descriptions";
         }
     };
 

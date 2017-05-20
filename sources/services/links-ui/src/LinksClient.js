@@ -3,7 +3,7 @@ export default class LinksClient {
     createLink(url, uniqueId) {
         let result = new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
-            request.open("POST", "http://localhost:8080/links/resources/links");
+            request.open("POST", services.get('links') + '/resources/links');
             request.setRequestHeader("Content-type", "application/json");
             request.setRequestHeader("Accept", "*/*");
             request.onreadystatechange = function () {
@@ -22,7 +22,7 @@ export default class LinksClient {
     loadLinks() {
         let result = new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();
-            request.open("GET", "http://localhost:8080/links/resources/links");
+            request.open("GET", services.get('links') + '/resources/links');
             request.onreadystatechange = function () {
                 if (request.readyState == 4 && request.status == 200) {
                     resolve(JSON.parse(request.responseText));

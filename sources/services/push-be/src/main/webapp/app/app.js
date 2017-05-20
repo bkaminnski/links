@@ -73,16 +73,11 @@
 "use strict";
 
 
-console.log('push service is available');
-
-var webSocket = new WebSocket("ws://localhost:8080/push/push");
+var webSocket = new WebSocket(services.get('push').replace(/^http/, 'ws') + '/push');
 webSocket.onmessage = function (event) {
     var dataObject = JSON.parse(event.data);
     var uiEventName = dataObject.uiEventName;
     var uiEventPayload = dataObject.uiEventPayload;
-    console.log('uiEventName, uiEventPayload');
-    console.log(uiEventName);
-    console.log(uiEventPayload);
     PubSub.publish(uiEventName, uiEventPayload);
 };
 

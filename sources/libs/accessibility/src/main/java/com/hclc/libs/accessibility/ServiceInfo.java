@@ -31,7 +31,7 @@ public abstract class ServiceInfo {
         throw new RuntimeException(SERVICES_EXTERNAL_HOST + " and " + SERVICES_EXTERNAL_PORT + " system properties have to be set to a valid host name and port accessible from outside");
     }
 
-    public String fullUrlTo(String resource) {
-        return "http://" + serviceExternalHost() + ":" + serviceExternalPort() + resource;
+    public String url() {
+        return "http://" + serviceExternalHost() + ":" + serviceExternalPort() + "/" + serviceName();
     }
 }
