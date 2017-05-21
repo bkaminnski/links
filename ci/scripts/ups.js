@@ -64,6 +64,10 @@ function compileUis(timeout, buildCommand) {
 				new Command('../sources/services/push-ui/', 'npm run ' + buildCommand)
 			],
 			[
+				new Command('../sources/services/users-ui/', 'npm install'),
+				new Command('../sources/services/users-ui/', 'npm run ' + buildCommand)
+			],
+			[
 				new Command('../sources/services/monitoring-ui/', 'npm install'),
 				new Command('../sources/services/monitoring-ui/', 'npm run ' + buildCommand)
 			],
@@ -103,6 +107,9 @@ function compileAndDeployMw() {
 			],
 			[
 				new Command('../sources/services/push-be/', 'mvn clean install -P wildfly-local')
+			],
+			[
+				new Command('../sources/services/users-be/', 'mvn clean install -P wildfly-local')
 			],
 			[
 				new Command('../sources/services/monitoring-be/', 'mvn clean install -P wildfly-local')

@@ -1,10 +1,10 @@
 import React from 'react';
 
-export default class AboutPage extends React.Component {
+export default class LoginPage extends React.Component {
     render() {
         return (
             <div>
-                This is Links project.
+                This is login page
             </div>
         )
     }
