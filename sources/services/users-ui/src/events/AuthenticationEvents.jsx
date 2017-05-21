@@ -1,4 +1,4 @@
-import LoginPage from '../page/LoginPage.jsx';
+import LoginPage from '../login/LoginPage.jsx';
 
 export default class AuthenticationEvents {
 
