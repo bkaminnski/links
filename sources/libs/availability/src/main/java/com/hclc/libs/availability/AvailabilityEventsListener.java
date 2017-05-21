@@ -1,4 +1,4 @@
-package com.hclc.links.keywords.services;
+package com.hclc.libs.availability;
 
 import com.hclc.libs.monitoring.ServiceLogger;
 
@@ -15,20 +15,21 @@ import static com.hclc.libs.events.IncomingEventProcessor.processIncomingEvent;
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
         , @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/links")
         , @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'giveMeServices'")
+        , @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1")
 })
-public class ServicesEventsListener implements MessageListener {
+public class AvailabilityEventsListener implements MessageListener {
 
     @Inject
     ServiceLogger serviceLogger;
 
     @Inject
-    ServiceAnnouncer serviceAnnouncer;
+    AvailabilityAnnouncer availabilityAnnouncer;
 
     @Override
     public void onMessage(Message message) {
         try {
             processIncomingEvent(message, serviceLogger);
-            serviceAnnouncer.announceServiceAvailability();
+            availabilityAnnouncer.announceServiceAvailability();
         } catch (JMSException ex) {
             serviceLogger.severe(ex);
         }

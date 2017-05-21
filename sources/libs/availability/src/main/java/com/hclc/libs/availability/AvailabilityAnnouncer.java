@@ -1,4 +1,4 @@
-package com.hclc.links.about.services;
+package com.hclc.libs.availability;
 
 import com.hclc.libs.accessibility.ServiceInfo;
 import com.hclc.libs.events.LinksTopic;
@@ -11,13 +11,13 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.json.Json;
 
+import static com.hclc.libs.availability.EventsNames.myServiceIsAvailable;
+import static com.hclc.libs.availability.EventsNames.myServiceIsUnavailable;
 import static com.hclc.libs.monitoring.TrackingIdHolder.generateNewTrackingId;
-import static com.hclc.links.about.EventsNames.myServiceIsAvailable;
-import static com.hclc.links.about.EventsNames.myServiceIsUnavailable;
 
 @Singleton
 @Startup
-public class ServiceAnnouncer {
+public class AvailabilityAnnouncer {
 
     @Inject
     ServiceLogger serviceLogger;
@@ -35,12 +35,16 @@ public class ServiceAnnouncer {
     }
 
     public void announceServiceAvailability() {
-        String payload = Json.createObjectBuilder().add("url", serviceInfo.url()).build().toString();
+        String payload = Json.createObjectBuilder()
+                .add("url", serviceInfo.url())
+                .add("priority", serviceInfo.priority())
+                .build()
+                .toString();
         linksTopic.sendEventWithPayload(myServiceIsAvailable, payload, serviceLogger);
     }
 
     @PreDestroy
-    public void announceServiceUnavailibilityOnDestroy() {
+    public void announceServiceUnavailabilityOnDestroy() {
         generateNewTrackingId();
         announceServiceUnavailability();
     }

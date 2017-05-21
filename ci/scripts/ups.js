@@ -38,6 +38,7 @@ function compileLibs() {
 	new Command('../sources/libs/accessibility', 'mvn clean install').execute();
 	new Command('../sources/libs/monitoring', 'mvn clean install').execute();
 	new Command('../sources/libs/events', 'mvn clean install').execute();
+	new Command('../sources/libs/availibility', 'mvn clean install').execute();
 }
 
 function compileUisOnce() {

@@ -34,4 +34,8 @@ public abstract class ServiceInfo {
     public String url() {
         return "http://" + serviceExternalHost() + ":" + serviceExternalPort() + "/" + serviceName();
     }
+
+    public int priority() {
+        return Integer.MAX_VALUE;
+    }
 }

@@ -1,4 +1,4 @@
-package com.hclc.links.push;
+package com.hclc.libs.availability;
 
 import com.hclc.libs.events.EventName;
 

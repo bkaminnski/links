@@ -12,6 +12,11 @@ public class ServiceInfoProvider {
         public String serviceName() {
             return "users";
         }
+
+        @Override
+        public int priority() {
+            return 3000;
+        }
     };
 
     public static ServiceInfo provideServiceInfo() {
