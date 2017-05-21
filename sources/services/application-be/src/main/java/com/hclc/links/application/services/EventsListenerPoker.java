@@ -1,6 +1,6 @@
 package com.hclc.links.application.services;
 
-import com.hclc.libs.events.LinksTopic;
+import com.hclc.libs.events.BackendTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
 
 import static com.hclc.links.application.EventsNames.wakeUp;
@@ -33,7 +33,7 @@ public class EventsListenerPoker {
     SessionContext sessionContext;
 
     @Inject
-    LinksTopic linksTopic;
+    BackendTopic backendTopic;
 
     @Asynchronous
     public void pokeUntilAwoken() {
@@ -50,7 +50,7 @@ public class EventsListenerPoker {
 
     @TransactionAttribute(REQUIRES_NEW)
     public void poke() {
-        linksTopic.sendEventWithEmptyPayload(wakeUp, serviceLogger);
+        backendTopic.sendEventWithEmptyPayload(wakeUp, serviceLogger);
     }
 
     public void iWokeUpSoStopPoking() {

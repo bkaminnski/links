@@ -11,9 +11,9 @@ import javax.inject.Inject;
 import javax.jms.JMSContext;
 import javax.jms.Topic;
 
-public class LinksTopic {
+public class BackendTopic {
 
-    @Resource(lookup = "java:jboss/exported/jms/topic/links")
+    @Resource(lookup = "java:jboss/exported/jms/topic/backend")
     private Topic topic;
 
     @Inject

@@ -5,6 +5,6 @@ module add --name=org.postgres --resources=/jdbc-drivers/postgresql-9.4.1211.jar
 
 data-source add --jndi-name=java:jboss/datasources/application --name=applicationDS --connection-url=jdbc:postgresql://postgres-configured:5432/application --driver-name=postgres --user-name=application --password=applicationsecretpassword
 
-jms-topic add --topic-address=linksTopic --entries=topic/links,java:jboss/exported/jms/topic/links
+jms-topic add --topic-address=backendTopic --entries=topic/backend,java:jboss/exported/jms/topic/backend
 
 stop-embedded-server

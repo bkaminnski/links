@@ -13,7 +13,7 @@ import static com.hclc.libs.events.IncomingEventProcessor.processIncomingEvent;
 
 @MessageDriven(activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
-        , @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/links")
+        , @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/backend")
         , @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'giveMeServices'")
         , @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1")
 })

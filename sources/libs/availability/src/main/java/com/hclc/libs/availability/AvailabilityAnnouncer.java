@@ -1,7 +1,7 @@
 package com.hclc.libs.availability;
 
 import com.hclc.libs.accessibility.ServiceInfo;
-import com.hclc.libs.events.LinksTopic;
+import com.hclc.libs.events.BackendTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
 
 import javax.annotation.PostConstruct;
@@ -23,7 +23,7 @@ public class AvailabilityAnnouncer {
     ServiceLogger serviceLogger;
 
     @Inject
-    LinksTopic linksTopic;
+    BackendTopic backendTopic;
 
     @Inject
     ServiceInfo serviceInfo;
@@ -40,7 +40,7 @@ public class AvailabilityAnnouncer {
                 .add("priority", serviceInfo.priority())
                 .build()
                 .toString();
-        linksTopic.sendEventWithPayload(myServiceIsAvailable, payload, serviceLogger);
+        backendTopic.sendEventWithPayload(myServiceIsAvailable, payload, serviceLogger);
     }
 
     @PreDestroy
@@ -50,6 +50,6 @@ public class AvailabilityAnnouncer {
     }
 
     public void announceServiceUnavailability() {
-        linksTopic.sendEventWithEmptyPayload(myServiceIsUnavailable, serviceLogger);
+        backendTopic.sendEventWithEmptyPayload(myServiceIsUnavailable, serviceLogger);
     }
 }

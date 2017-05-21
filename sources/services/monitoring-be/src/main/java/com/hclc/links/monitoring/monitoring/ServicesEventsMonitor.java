@@ -1,7 +1,7 @@
 package com.hclc.links.monitoring.monitoring;
 
 import com.hclc.libs.events.IncomingEvent;
-import com.hclc.libs.events.LinksTopic;
+import com.hclc.libs.events.BackendTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
 
 import javax.ejb.ActivationConfigProperty;
@@ -19,7 +19,7 @@ import static com.hclc.links.monitoring.EventsNames.uiEvent;
 @MessageDriven(activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
         , @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName <> 'uiEvent'")
-        , @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/links")
+        , @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/backend")
 })
 public class ServicesEventsMonitor implements MessageListener {
 
@@ -27,7 +27,7 @@ public class ServicesEventsMonitor implements MessageListener {
     ServiceLogger serviceLogger;
 
     @Inject
-    LinksTopic linksTopic;
+    BackendTopic backendTopic;
 
     @Override
     public void onMessage(Message message) {
@@ -45,6 +45,6 @@ public class ServicesEventsMonitor implements MessageListener {
                 .add("uiEventName", "uiEvent.topicMessage.available")
                 .add("uiEventPayload", incomingEvent.toJson())
                 .build();
-        linksTopic.sendEventWithPayload(uiEvent, monitoredEvent.toString(), serviceLogger);
+        backendTopic.sendEventWithPayload(uiEvent, monitoredEvent.toString(), serviceLogger);
     }
 }

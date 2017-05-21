@@ -1,7 +1,7 @@
 package com.hclc.links.application.services;
 
 import com.hclc.libs.events.IncomingEvent;
-import com.hclc.libs.events.LinksTopic;
+import com.hclc.libs.events.BackendTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
 import com.hclc.links.application.EventsNames;
 
@@ -19,7 +19,7 @@ import static com.hclc.links.application.EventsNames.myServiceIsUnavailable;
 
 @MessageDriven(activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
-        , @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/links")
+        , @ActivationConfigProperty(propertyName = "destination", propertyValue = "topic/backend")
         , @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "eventName = 'myServiceIsAvailable' or eventName = 'myServiceIsUnavailable' or eventName = 'wakeUp'")
         , @ActivationConfigProperty(propertyName = "maxSession", propertyValue = "1")
 })
@@ -32,7 +32,7 @@ public class ServicesEventsListener implements MessageListener {
     EventsListenerPoker poker;
 
     @Inject
-    LinksTopic linksTopic;
+    BackendTopic backendTopic;
 
     @Inject
     ServicesRegistry servicesRegistry;
@@ -41,7 +41,7 @@ public class ServicesEventsListener implements MessageListener {
     public void iAmReadyToReceiveEvents() {
         generateNewTrackingId();
         poker.iWokeUpSoStopPoking();
-        linksTopic.sendEventWithEmptyPayload(EventsNames.giveMeServices, serviceLogger);
+        backendTopic.sendEventWithEmptyPayload(EventsNames.giveMeServices, serviceLogger);
     }
 
     @Override
