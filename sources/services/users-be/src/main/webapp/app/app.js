@@ -264,8 +264,8 @@ var UsersClient = function () {
                 request.setRequestHeader("Content-type", "application/json");
                 request.setRequestHeader("Accept", "*/*");
                 request.onreadystatechange = function () {
-                    if (request.readyState == 4 && request.status == 200) {
-                        resolve(request.responseText);
+                    if (request.readyState == 4 && (request.status == 204 || request.status == 401)) {
+                        resolve(request.status);
                     }
                 };
                 request.send(JSON.stringify({
@@ -558,8 +558,10 @@ var LoginFormStore = function () {
     }, {
         key: 'login',
         value: function login() {
-            this.usersClient.login(this.formComponent.state.attributes.username.value, this.formComponent.state.attributes.password.value).then(function (response) {
-                return console.log(response);
+            this.usersClient.login(this.formComponent.state.attributes.username.value, this.formComponent.state.attributes.password.value).then(function (status) {
+                return console.log(status);
+            }).then(function () {
+                return console.log(document.cookie);
             });
         }
     }, {

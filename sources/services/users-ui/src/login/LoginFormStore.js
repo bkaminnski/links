@@ -26,7 +26,10 @@ export default class LoginFormStore {
     }
 
     login() {
-        this.usersClient.login(this.formComponent.state.attributes.username.value, this.formComponent.state.attributes.password.value).then(response => console.log(response));
+        this.usersClient
+            .login(this.formComponent.state.attributes.username.value, this.formComponent.state.attributes.password.value)
+            .then(status => console.log(status))
+            .then(() => console.log(document.cookie));
     }
 
     onChange(attributeName, attributeValue, attributeValid) {
