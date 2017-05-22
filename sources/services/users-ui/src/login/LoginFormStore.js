@@ -1,8 +1,10 @@
 import AttributesStore from './AttributesStore.js';
+import UsersClient from '../UsersClient.js';
 
 export default class LoginFormStore {
 
     constructor(formComponent) {
+        this.usersClient = new UsersClient();
         this.attributesStore = new AttributesStore(formComponent);
         this.formComponent = formComponent;
         this.formComponent.state = this.initialState();
@@ -24,6 +26,7 @@ export default class LoginFormStore {
     }
 
     login() {
+        this.usersClient.login(this.formComponent.state.attributes.username.value, this.formComponent.state.attributes.password.value).then(response => console.log(response));
     }
 
     onChange(attributeName, attributeValue, attributeValid) {
