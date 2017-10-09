@@ -118,9 +118,14 @@ var LinksClient = function () {
             var result = new Promise(function (resolve, reject) {
                 var request = new XMLHttpRequest();
                 request.open("GET", services.get('links') + '/resources/links');
+                request.withCredentials = true;
                 request.onreadystatechange = function () {
-                    if (request.readyState == 4 && request.status == 200) {
-                        resolve(JSON.parse(request.responseText));
+                    if (request.readyState == 4) {
+                        if (request.status == 200) {
+                            resolve(JSON.parse(request.responseText));
+                        } else if (request.status == 401) {
+                            PubSub.publish('uiEvent.authentication.requested');
+                        }
                     }
                 };
                 request.send();

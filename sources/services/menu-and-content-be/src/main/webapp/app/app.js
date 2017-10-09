@@ -99,6 +99,15 @@ var ApplicationLayoutEvents = function () {
     }
 
     _createClass(ApplicationLayoutEvents, [{
+        key: 'subscribeToRequested',
+        value: function subscribeToRequested() {
+            var _this = this;
+
+            this.applicationLayoutRequestedSubscriptionToken = PubSub.subscribe('uiEvent.applicationLayout.requested', function (msg) {
+                _this.publishAvailable();
+            });
+        }
+    }, {
         key: 'publishAvailable',
         value: function publishAvailable() {
             PubSub.publish('uiEvent.applicationLayout.available', React.createElement(_MenuAndContent2.default, null));
@@ -124,6 +133,7 @@ var _ApplicationLayoutEvents2 = _interopRequireDefault(_ApplicationLayoutEvents)
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var applicationLayoutEvents = new _ApplicationLayoutEvents2.default();
+applicationLayoutEvents.subscribeToRequested();
 applicationLayoutEvents.publishAvailable();
 
 /***/ }),

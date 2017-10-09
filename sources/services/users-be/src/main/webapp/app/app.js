@@ -263,9 +263,10 @@ var UsersClient = function () {
                 request.open("POST", services.get('users') + '/resources/sessions');
                 request.setRequestHeader("Content-type", "application/json");
                 request.setRequestHeader("Accept", "*/*");
+                request.withCredentials = true;
                 request.onreadystatechange = function () {
                     if (request.readyState == 4 && (request.status == 204 || request.status == 401)) {
-                        resolve(request.status);
+                        resolve(request);
                     }
                 };
                 request.send(JSON.stringify({
@@ -558,11 +559,20 @@ var LoginFormStore = function () {
     }, {
         key: 'login',
         value: function login() {
-            this.usersClient.login(this.formComponent.state.attributes.username.value, this.formComponent.state.attributes.password.value).then(function (status) {
-                return console.log(status);
-            }).then(function () {
-                return console.log(document.cookie);
+            var _this = this;
+
+            this.usersClient.login(this.formComponent.state.attributes.username.value, this.formComponent.state.attributes.password.value).then(function (response) {
+                return _this.handleLoginResponse(response);
             });
+        }
+    }, {
+        key: 'handleLoginResponse',
+        value: function handleLoginResponse(response) {
+            if (response.status == 204) {
+                PubSub.publish('uiEvent.applicationLayout.requested');
+            } else {
+                PubSub.publish('uiEvent.authentication.requested');
+            }
         }
     }, {
         key: 'onChange',
