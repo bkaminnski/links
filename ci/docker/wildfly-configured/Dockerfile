@@ -1,5 +1,5 @@
 FROM wildfly
-MAINTAINER Bartosz Kamiński, highcohesionloosecoupling.
+MAINTAINER Bartosz Kamiński, http://highcohesionloosecoupling.com
 ENV SERVICES_EXTERNAL_HOST localhost
 ENV SERVICES_EXTERNAL_PORT 8080
 RUN rm ${WILDFLY_HOME}/bin/standalone.conf \
