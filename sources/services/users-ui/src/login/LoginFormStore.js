@@ -28,8 +28,15 @@ export default class LoginFormStore {
     login() {
         this.usersClient
             .login(this.formComponent.state.attributes.username.value, this.formComponent.state.attributes.password.value)
-            .then(status => console.log(status))
-            .then(() => console.log(document.cookie));
+            .then(response => this.handleLoginResponse(response));
+    }
+
+    handleLoginResponse(response) {
+        if (response.status == 204) {
+            PubSub.publish('uiEvent.applicationLayout.requested');
+        } else {
+            PubSub.publish('uiEvent.authentication.requested');
+        }
     }
 
     onChange(attributeName, attributeValue, attributeValid) {

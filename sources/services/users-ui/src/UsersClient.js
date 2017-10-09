@@ -6,9 +6,10 @@ export default class UsersClient {
             request.open("POST", services.get('users') + '/resources/sessions');
             request.setRequestHeader("Content-type", "application/json");
             request.setRequestHeader("Accept", "*/*");
+            request.withCredentials = true;
             request.onreadystatechange = function () {
                 if (request.readyState == 4 && (request.status == 204 || request.status == 401)) {
-                    resolve(request.status);
+                    resolve(request);
                 }
             }
             request.send(JSON.stringify({
