@@ -9,16 +9,19 @@ function DockerImages() {
         return $OUT;
     }
 
-    this.build = function(folder, image, preRun) {
+    this.build = function(folder, image, parameters, preBuild, postBuild) {
         if (this.exists(image)) {
             print(image + ' image already exists');
             return;
         }
-        if (preRun != null) {
-            preRun();
+        if (preBuild != null) {
+            preBuild();
         }
         print('building ' + image + ' image...');
-        new Command('./' + folder, 'docker build -t ' + image + ' .').execute();
+        new Command('./' + folder, 'docker build ' + (parameters || '') + ' -t ' + image + ' .').execute();
+        if (postBuild != null) {
+            postBuild();
+        }
     }
 
     this.exists = function(image) {
@@ -48,7 +51,7 @@ function DockerContainers() {
 
         if (!this.exists(container)) {
             print('running ' + container + ' container...');
-            new Command('./', 'docker run --name ' + container + ' -d ' + parameters + ' ' + image).execute();
+            new Command('./', 'docker run --name ' + container + ' -d ' + (parameters || '') + ' ' + image).execute();
             return;
         }
 
@@ -81,6 +84,28 @@ function DockerContainers() {
 
     this.queryForLastLogs = function(container) {
         $EXEC('docker logs --tail=100 ' + container);
+        return $OUT + "\n" + $ERR;
+    }
+}
+
+function DockerNetworks() {
+    this.existingNetworks = loadExistingNetworks();
+
+    function loadExistingNetworks () {
+        $EXEC('docker network ls');
         return $OUT;
+    }
+
+    this.assureExisists = function(network) {
+        if (this.exists(network)) {
+            print(network + ' network already exists');
+            return;
+        }
+        print('creating ' + network + ' network...');
+        new Command('.', 'docker network create ' + network).execute();
+    }
+
+    this.exists = function(network) {
+        return this.existingNetworks.indexOf(network) >= 0;
     }
 }

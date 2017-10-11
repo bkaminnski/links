@@ -1,6 +1,6 @@
 package com.hclc.libs.events;
 
-import com.hclc.libs.accessibility.ServiceInfo;
+import com.hclc.libs.identification.ServiceInfo;
 import com.hclc.libs.monitoring.ServiceLogger;
 import com.hclc.libs.monitoring.TrackingIdHolder;
 import java.time.ZoneOffset;

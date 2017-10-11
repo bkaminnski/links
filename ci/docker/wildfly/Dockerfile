@@ -6,7 +6,8 @@ ENV WILDFLY_HOME ${INSTALL_DIR}/wildfly-${VERSION}
 ENV DEPLOYMENT_DIR ${WILDFLY_HOME}/standalone/deployments/
 ENV POSTGRES_DRIVER_NAME postgresql-9.4.1211.jar
 ENV POSTGRES_DRIVER_PATH /jdbc-drivers/${POSTGRES_DRIVER_NAME}
-RUN yum install -y unzip \
+RUN yum install -y unzip less \
+  && yum clean all \
   && curl -O http://download.jboss.org/wildfly/${VERSION}/wildfly-${VERSION}.zip \
   && unzip wildfly-${VERSION}.zip -d ${INSTALL_DIR} \
   && rm wildfly-${VERSION}.zip \

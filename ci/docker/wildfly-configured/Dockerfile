@@ -1,13 +1,12 @@
 FROM wildfly
+ARG WILDFLY_PASSWORD
 MAINTAINER Bartosz Kamiński, http://highcohesionloosecoupling.com
-ENV SERVICES_EXTERNAL_HOST localhost
-ENV SERVICES_EXTERNAL_PORT 8080
 RUN rm ${WILDFLY_HOME}/bin/standalone.conf \
-  && ${WILDFLY_HOME}/bin/add-user.sh admin adminsecretpassword --silent
+  && ${WILDFLY_HOME}/bin/add-user.sh admin ${WILDFLY_PASSWORD} --silent
 ADD standalone.conf ${WILDFLY_HOME}/bin/
 COPY docker-entrypoint-initmw.d/ /docker-entrypoint-initmw.d/
 COPY initWildfly.sh /docker-entrypoint-initmw.d/initWildfly.sh
 RUN chmod +x /docker-entrypoint-initmw.d/initWildfly.sh \
   && /docker-entrypoint-initmw.d/initWildfly.sh
-ENTRYPOINT ${WILDFLY_HOME}/bin/standalone.sh -c standalone-full.xml -b=0.0.0.0 -bmanagement=0.0.0.0 -Dservices.external.host=${SERVICES_EXTERNAL_HOST} -Dservices.external.port=${SERVICES_EXTERNAL_PORT}
+ENTRYPOINT ${WILDFLY_HOME}/bin/standalone.sh -c standalone-full.xml -b=0.0.0.0 -bmanagement=0.0.0.0
 EXPOSE 8080 8787 9990

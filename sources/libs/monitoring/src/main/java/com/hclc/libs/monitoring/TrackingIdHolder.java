@@ -3,7 +3,7 @@ package com.hclc.libs.monitoring;
 import java.util.UUID;
 
 public class TrackingIdHolder {
-
+    
     private static final ThreadLocal<String> trackingId = new ThreadLocal<>();
 
     public static void generateNewTrackingId() {

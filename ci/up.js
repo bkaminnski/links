@@ -2,12 +2,12 @@
 
 var timeStarted = new Date().getTime();
 
-load('./scripts/ups.js');
+load('./scripts/networkUp.js');
+load('./scripts/databaseUp.js');
+load('./scripts/middlewareUp.js');
 
-dbUp();
-mwUp();
-compileLibs();
-compileUisOnce();
-compileAndDeployMw();
+networkUp();
+databaseUp();
+middlewareUp();
 
 print('Script finished after ' + (new Date().getTime() - timeStarted) + ' millis');

@@ -133,4 +133,4 @@ chmod +x /etc/rc.d/rc.local
 
 
 # Run up.js script to run docker containers, compile and deploy application
-su - $OS_USER_NAME -c "cd /home/$OS_USER_NAME/links/ci/ && ./up.js"
+su - $OS_USER_NAME -c "cd /home/$OS_USER_NAME/links/ci/ && ./up.js && ./deployAll.js"

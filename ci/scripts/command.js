@@ -4,6 +4,7 @@ var Scanner = Java.type("java.util.Scanner");
 var Date =  Java.type("java.util.Date");
 var InputStreamReader =  Java.type("java.io.InputStreamReader");
 var BufferedReader =  Java.type("java.io.BufferedReader");
+var Thread =  Java.type("java.lang.Thread");
 
 function Command(workDir, cmd) {
     this.id = '';
@@ -36,11 +37,14 @@ function Command(workDir, cmd) {
     }
 
     this.systemSpecificCommand = function() {
-        var commandInterpreter = '';
         if (java.lang.System.getProperty("os.name").indexOf('Windows') >= 0) {
-            commandInterpreter = 'cmd.exe /C ';
+            if (typeof this.cmd === 'string') {
+                return 'cmd.exe /C ' + this.cmd;
+            } else {
+                return ['cmd.exe', '/C'].concat(this.cmd);
+            }
         }
-        return commandInterpreter + this.cmd;
+        return this.cmd;
     }
 
     this.consoleLog = function(stream, type) {

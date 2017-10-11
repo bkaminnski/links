@@ -1,5 +1,5 @@
 embed-server --std-out=echo --server-config=standalone-full.xml
 
-data-source add --jndi-name=java:jboss/datasources/links --name=linksDS --connection-url=jdbc:postgresql://postgres-configured:5432/links --driver-name=postgres --user-name=links --password=linkssecretpassword
+data-source add --jndi-name=java:jboss/datasources/links --name=linksDS --connection-url=jdbc:postgresql://postgres-configured:5432/links --driver-name=postgres --user-name=links --password=links
 
 stop-embedded-server

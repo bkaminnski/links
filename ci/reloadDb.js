@@ -2,16 +2,11 @@
 
 var timeStarted = new Date().getTime();
 
-load('./scripts/ups.js');
+load('./scripts/databaseUp.js');
 
-new Command('.', 'docker kill wildfly-configured').execute();
-new Command('.', 'docker rm wildfly-configured').execute();
-new Command('.', 'docker kill postgres-configured').execute();
-new Command('.', 'docker rm postgres-configured').execute();
+new Command('.', 'docker rm -f postgres-configured').execute();
 new Command('.', 'docker rmi postgres-configured').execute();
 
-dbUp();
-mwUp();
-compileAndDeployMw();
+databaseUp();
 
 print('Script finished after ' + (new Date().getTime() - timeStarted) + ' millis');

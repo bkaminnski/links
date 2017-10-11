@@ -1,10 +1,10 @@
 package com.hclc.libs.monitoring;
 
-import com.hclc.libs.accessibility.ServiceInfo;
-import static java.util.logging.Level.FINE;
-import static java.util.logging.Level.INFO;
-import static java.util.logging.Level.SEVERE;
+import com.hclc.libs.identification.ServiceInfo;
+
 import java.util.logging.Logger;
+
+import static java.util.logging.Level.*;
 
 public class ServiceLogger {
 

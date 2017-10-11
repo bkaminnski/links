@@ -1,6 +1,7 @@
 package com.hclc.libs.monitoring;
 
-import com.hclc.libs.accessibility.ServiceInfo;
+import com.hclc.libs.identification.ServiceInfo;
+
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Inject;

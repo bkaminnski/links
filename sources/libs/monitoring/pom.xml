@@ -12,7 +12,7 @@
     <dependencies>
         <dependency>
             <groupId>com.hclc.libs</groupId>
-            <artifactId>accessibility</artifactId>
+            <artifactId>identification</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
