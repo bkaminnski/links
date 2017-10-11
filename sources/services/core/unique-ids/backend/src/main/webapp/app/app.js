@@ -191,7 +191,7 @@ var UniqueIdsClient = function () {
         value: function loadUniqueIds() {
             var result = new Promise(function (resolve, reject) {
                 var request = new XMLHttpRequest();
-                request.open("GET", "http://localhost:8080/unique-ids/resources/uniqueIds");
+                request.open("GET", "/unique-ids/resources/uniqueIds");
                 request.onreadystatechange = function () {
                     if (request.readyState == 4 && request.status == 200) {
                         resolve(JSON.parse(request.responseText));
