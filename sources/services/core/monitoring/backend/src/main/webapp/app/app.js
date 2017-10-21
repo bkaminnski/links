@@ -103,14 +103,14 @@ var ContentEvents = function () {
         value: function subscribeToRequested() {
             var _this = this;
 
-            this.menuItemRequestedSubscriptionToken = PubSub.subscribe('uiEvent.content.requested.monitoring', function (msg) {
+            this.menuItemRequestedSubscriptionToken = PubSub.subscribe('uiEvent.menu-and-content.content.requested.monitoring', function (msg) {
                 _this.publishAvailable();
             });
         }
     }, {
         key: 'publishAvailable',
         value: function publishAvailable() {
-            PubSub.publish('uiEvent.content.available', React.createElement(_MonitoringPage2.default, null));
+            PubSub.publish('uiEvent.menu-and-content.content.available', React.createElement(_MonitoringPage2.default, null));
         }
     }]);
 
@@ -144,14 +144,14 @@ var MenuItemsEvents = function () {
         value: function subscribeToRequested() {
             var _this = this;
 
-            this.menuItemRequestedSubscriptionToken = PubSub.subscribe('uiEvent.menuItems.requested', function (msg) {
+            this.menuItemRequestedSubscriptionToken = PubSub.subscribe('uiEvent.menu-and-content.menuItems.requested', function (msg) {
                 _this.publishAvailable();
             });
         }
     }, {
         key: 'publishAvailable',
         value: function publishAvailable() {
-            PubSub.publish('uiEvent.menuItem.available', {
+            PubSub.publish('uiEvent.menu-and-content.menuItem.available', {
                 code: 'monitoring',
                 label: 'Monitoring',
                 priority: 5000
@@ -488,7 +488,7 @@ var TopicMessagesListStore = function () {
         value: function subscribeToEvents() {
             var _this = this;
 
-            this.topicMessageAvailableSubscriptionToken = PubSub.subscribe('uiEvent.topicMessage.available', function (msg, topicMessage) {
+            this.topicMessageAvailableSubscriptionToken = PubSub.subscribe('uiEvent.monitoring.topicMessage.available', function (msg, topicMessage) {
                 _this.addTopicMessage(topicMessage);
             });
         }

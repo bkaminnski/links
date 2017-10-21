@@ -104,14 +104,14 @@ var ContentEvents = function () {
         value: function subscribeToRequested() {
             var _this = this;
 
-            this.contentRequestedSubscriptionToken = PubSub.subscribe('uiEvent.content.requested.links', function (msg) {
+            this.contentRequestedSubscriptionToken = PubSub.subscribe('uiEvent.menu-and-content.content.requested.links', function (msg) {
                 _this.publishAvailable();
             });
         }
     }, {
         key: 'publishAvailable',
         value: function publishAvailable() {
-            PubSub.publish('uiEvent.content.available', React.createElement(_LinksPage2.default, null));
+            PubSub.publish('uiEvent.menu-and-content.content.available', React.createElement(_LinksPage2.default, null));
         }
     }]);
 
@@ -145,14 +145,14 @@ var MenuItemsEvents = function () {
         value: function subscribeToRequested() {
             var _this = this;
 
-            this.menuItemRequestedSubscriptionToken = PubSub.subscribe('uiEvent.menuItems.requested', function (msg) {
+            this.menuItemRequestedSubscriptionToken = PubSub.subscribe('uiEvent.menu-and-content.menuItems.requested', function (msg) {
                 _this.publishAvailable();
             });
         }
     }, {
         key: 'publishAvailable',
         value: function publishAvailable() {
-            PubSub.publish('uiEvent.menuItem.available', {
+            PubSub.publish('uiEvent.menu-and-content.menuItem.available', {
                 code: 'links',
                 label: 'Links',
                 priority: 100
@@ -541,7 +541,7 @@ var LinkCreationFormStore = function () {
                 HttpClient.sendPost('/links/resources/links', createLinkCommand).then(function (response) {
                     if (response.status == 204) {
                         _this.reset();
-                        PubSub.publish('uiEvent.linkCreation.linkWasCreated');
+                        PubSub.publish('uiEvent.links.linkCreation.linkWasCreated');
                     }
                 });
             });
@@ -833,14 +833,14 @@ var LinksListStore = function () {
         value: function subscribeToEvents() {
             var _this2 = this;
 
-            this.linksListSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.linksListSlice.available', function (msg, slice) {
+            this.linksListSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlice.available', function (msg, slice) {
                 _this2.slices.push(slice);
                 _this2.rebuildState();
             });
-            this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.linkCreation.linkWasCreated', function (msg) {
+            this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.linkWasCreated', function (msg) {
                 _this2.loadLinks();
             });
-            PubSub.publish('uiEvent.linksListSlices.requested');
+            PubSub.publish('uiEvent.links.linksListSlices.requested');
         }
     }, {
         key: 'rebuildState',
@@ -853,8 +853,8 @@ var LinksListStore = function () {
             this.slices.sort(function (s1, s2) {
                 return s1.priority - s2.priority;
             }).forEach(function (slice) {
-                return slice.fragments.forEach(function (fragment) {
-                    return linksMap[fragment.linkSharedId].components.push(fragment.component);
+                return slice.elements.forEach(function (element) {
+                    return linksMap[element.linkSharedId].components.push(element.component);
                 });
             });
             this.component.setState({ links: this.links });

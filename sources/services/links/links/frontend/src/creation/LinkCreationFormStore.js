@@ -28,7 +28,7 @@ export default class LinkCreationFormStore {
             HttpClient.sendPost('/links/resources/links', createLinkCommand).then((response) => {
                 if (response.status == 204) {
                     this.reset();
-                    PubSub.publish('uiEvent.linkCreation.linkWasCreated');
+                    PubSub.publish('uiEvent.links.linkCreation.linkWasCreated');
                 }
             });
         });

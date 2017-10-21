@@ -532,7 +532,7 @@ var HttpClient = function () {
                     response.jsonObject = JSON.parse(request.responseText);
                 }
             } else if (request.status == 401) {
-                PubSub.publish('uiEvent.authentication.requested');
+                PubSub.publish('uiEvent.users.authentication.requested');
             }
             resolve(response);
         }
@@ -673,6 +673,10 @@ window.HttpClient = new _HttpClient2.default(undefined);
 
 _reactDom2.default.render(React.createElement(_ApplicationPage2.default, null), document.getElementById('applicationPage'));
 
+PubSub.subscribe('uiEvent', function (msg) {
+  return console.log(msg);
+});
+
 /***/ }),
 
 /***/ 96:
@@ -701,7 +705,7 @@ var ApplicationPageStore = function () {
         value: function subscribeToEvents() {
             var _this = this;
 
-            this.applicationLayoutIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.applicationLayout.available', function (msg, layoutComponent) {
+            this.applicationLayoutIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.application.applicationLayout.available', function (msg, layoutComponent) {
                 _this.applicationPageComponent.setState({ layoutComponent: layoutComponent });
             });
         }

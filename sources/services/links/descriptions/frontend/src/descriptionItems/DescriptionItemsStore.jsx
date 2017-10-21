@@ -14,7 +14,7 @@ export default class DescriptionItemsStore {
         let slice = {
             name: 'description',
             priority: 200,
-            fragments: descriptions.map(description => ({
+            elements: descriptions.map(description => ({
                 linkSharedId: description.linkSharedId,
                 component: <DescriptionItem key={'description-' + description.linkSharedId} description={description.description} />
             }))
@@ -23,6 +23,6 @@ export default class DescriptionItemsStore {
     }
 
     publish(slice) {
-        PubSub.publish('uiEvent.linksListSlice.available', slice)
+        PubSub.publish('uiEvent.links.linksListSlice.available', slice)
     }
 }

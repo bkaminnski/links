@@ -5,7 +5,7 @@ export default class ContentContainerStore {
     }
 
     subscribeToEvents() {
-        this.contentIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.content.available', (msg, contentComponent) => {
+        this.contentIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.menu-and-content.content.available', (msg, contentComponent) => {
             this.contentContainerComponent.setState({ contentComponent: contentComponent });
         });
     }

@@ -33,9 +33,9 @@ export default class LoginFormStore {
 
     handleLoginResponse(response) {
         if (response.status == 204) {
-            PubSub.publish('uiEvent.applicationLayout.requested');
+            PubSub.publish('uiEvent.application.applicationLayout.requested');
         } else {
-            PubSub.publish('uiEvent.authentication.requested');
+            PubSub.publish('uiEvent.users.authentication.requested');
         }
     }
 

@@ -14,7 +14,7 @@ export default class KeywordsItemsStore {
         let slice = {
             name: 'keywords',
             priority: 100,
-            fragments: keywords.map(keywords => ({
+            elements: keywords.map(keywords => ({
                 linkSharedId: keywords.linkSharedId,
                 component: <KeywordsItem key={'keywords-' + keywords.linkSharedId} keywords={keywords.keywords} />
             }))
@@ -23,6 +23,6 @@ export default class KeywordsItemsStore {
     }
 
     publish(slice) {
-        PubSub.publish('uiEvent.linksListSlice.available', slice)
+        PubSub.publish('uiEvent.links.linksListSlice.available', slice)
     }
 }

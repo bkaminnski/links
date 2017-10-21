@@ -105,7 +105,7 @@ var LinksListSlicesEvents = function () {
         value: function subscribeToRequested() {
             var _this = this;
 
-            this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.linksListSlices.requested', function (msg) {
+            this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlices.requested', function (msg) {
                 _this.keywordsItemsStore.loadTransformAndPublish();
             });
         }
@@ -229,7 +229,7 @@ var KeywordsItemsStore = function () {
             var slice = {
                 name: 'keywords',
                 priority: 100,
-                fragments: keywords.map(function (keywords) {
+                elements: keywords.map(function (keywords) {
                     return {
                         linkSharedId: keywords.linkSharedId,
                         component: _react2.default.createElement(_KeywordsItem2.default, { key: 'keywords-' + keywords.linkSharedId, keywords: keywords.keywords })
@@ -241,7 +241,7 @@ var KeywordsItemsStore = function () {
     }, {
         key: 'publish',
         value: function publish(slice) {
-            PubSub.publish('uiEvent.linksListSlice.available', slice);
+            PubSub.publish('uiEvent.links.linksListSlice.available', slice);
         }
     }]);
 

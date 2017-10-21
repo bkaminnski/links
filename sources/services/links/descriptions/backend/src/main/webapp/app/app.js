@@ -105,7 +105,7 @@ var LinksListSlicesEvents = function () {
         value: function subscribeToRequested() {
             var _this = this;
 
-            this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.linksListSlices.requested', function (msg) {
+            this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlices.requested', function (msg) {
                 _this.descriptionItemsStore.loadTransformAndPublish();
             });
         }
@@ -229,7 +229,7 @@ var DescriptionItemsStore = function () {
             var slice = {
                 name: 'description',
                 priority: 200,
-                fragments: descriptions.map(function (description) {
+                elements: descriptions.map(function (description) {
                     return {
                         linkSharedId: description.linkSharedId,
                         component: _react2.default.createElement(_DescriptionItem2.default, { key: 'description-' + description.linkSharedId, description: description.description })
@@ -241,7 +241,7 @@ var DescriptionItemsStore = function () {
     }, {
         key: 'publish',
         value: function publish(slice) {
-            PubSub.publish('uiEvent.linksListSlice.available', slice);
+            PubSub.publish('uiEvent.links.linksListSlice.available', slice);
         }
     }]);
 

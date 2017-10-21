@@ -103,14 +103,14 @@ var ApplicationLayoutEvents = function () {
         value: function subscribeToRequested() {
             var _this = this;
 
-            this.applicationLayoutRequestedSubscriptionToken = PubSub.subscribe('uiEvent.applicationLayout.requested', function (msg) {
+            this.applicationLayoutRequestedSubscriptionToken = PubSub.subscribe('uiEvent.application.applicationLayout.requested', function (msg) {
                 _this.publishAvailable();
             });
         }
     }, {
         key: 'publishAvailable',
         value: function publishAvailable() {
-            PubSub.publish('uiEvent.applicationLayout.available', React.createElement(_MenuAndContent2.default, null));
+            PubSub.publish('uiEvent.application.applicationLayout.available', React.createElement(_MenuAndContent2.default, null));
         }
     }]);
 
@@ -231,7 +231,7 @@ var ContentContainerStore = function () {
         value: function subscribeToEvents() {
             var _this = this;
 
-            this.contentIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.content.available', function (msg, contentComponent) {
+            this.contentIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.menu-and-content.content.available', function (msg, contentComponent) {
                 _this.contentContainerComponent.setState({ contentComponent: contentComponent });
             });
         }
@@ -454,11 +454,11 @@ var MenuStore = function () {
         value: function subscribeToEvents() {
             var _this = this;
 
-            this.menuItemIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.menuItem.available', function (msg, menuItem) {
+            this.menuItemIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.menu-and-content.menuItem.available', function (msg, menuItem) {
                 _this.menuItemsMap.set(menuItem.code, menuItem);
                 _this.rebuildState();
             });
-            PubSub.publish('uiEvent.menuItems.requested');
+            PubSub.publish('uiEvent.menu-and-content.menuItems.requested');
         }
     }, {
         key: 'unsubscribeFromEvents',
@@ -484,7 +484,7 @@ var MenuStore = function () {
         key: 'select',
         value: function select(menuItem) {
             this.selectedMenuItem = menuItem;
-            PubSub.publish('uiEvent.content.requested.' + this.selectedMenuItem.code);
+            PubSub.publish('uiEvent.menu-and-content.content.requested.' + this.selectedMenuItem.code);
         }
     }]);
 

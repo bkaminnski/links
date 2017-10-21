@@ -7,11 +7,11 @@ export default class MenuStore {
     }
 
     subscribeToEvents() {
-        this.menuItemIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.menuItem.available', (msg, menuItem) => {
+        this.menuItemIsAvailableSubscriptionToken = PubSub.subscribe('uiEvent.menu-and-content.menuItem.available', (msg, menuItem) => {
             this.menuItemsMap.set(menuItem.code, menuItem);
             this.rebuildState();
         });
-        PubSub.publish('uiEvent.menuItems.requested');
+        PubSub.publish('uiEvent.menu-and-content.menuItems.requested');
     }
 
     unsubscribeFromEvents() {
@@ -30,6 +30,6 @@ export default class MenuStore {
 
     select(menuItem) {
         this.selectedMenuItem = menuItem;
-        PubSub.publish('uiEvent.content.requested.' + this.selectedMenuItem.code);
+        PubSub.publish('uiEvent.menu-and-content.content.requested.' + this.selectedMenuItem.code);
     }
 }

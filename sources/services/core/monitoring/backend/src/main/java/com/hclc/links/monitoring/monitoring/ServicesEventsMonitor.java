@@ -42,7 +42,7 @@ public class ServicesEventsMonitor implements MessageListener {
     private void pushToUi(IncomingEvent incomingEvent) {
         JsonObject monitoredEvent = Json
                 .createObjectBuilder()
-                .add("uiEventName", "uiEvent.topicMessage.available")
+                .add("uiEventName", "uiEvent.monitoring.topicMessage.available")
                 .add("uiEventPayload", incomingEvent.toJson())
                 .build();
         backendTopic.sendEventWithPayload(uiEvent, monitoredEvent.toString(), serviceLogger);

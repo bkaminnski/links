@@ -7,7 +7,7 @@ export default class LinksListSlicesEvents {
     }
 
     subscribeToRequested() {
-        this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.linksListSlices.requested', msg => {
+        this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlices.requested', msg => {
             this.keywordsItemsStore.loadTransformAndPublish();
         });
     }

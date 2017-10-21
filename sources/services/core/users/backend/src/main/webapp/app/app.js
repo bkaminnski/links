@@ -219,14 +219,14 @@ var AuthenticationEvents = function () {
         value: function subscribeToRequested() {
             var _this = this;
 
-            this.authenticationRequestedSubscriptionToken = PubSub.subscribe('uiEvent.authentication.requested', function (msg) {
+            this.authenticationRequestedSubscriptionToken = PubSub.subscribe('uiEvent.users.authentication.requested', function (msg) {
                 _this.publishAvailable();
             });
         }
     }, {
         key: 'publishAvailable',
         value: function publishAvailable() {
-            PubSub.publish('uiEvent.applicationLayout.available', React.createElement(_LoginPage2.default, null));
+            PubSub.publish('uiEvent.application.applicationLayout.available', React.createElement(_LoginPage2.default, null));
         }
     }]);
 
@@ -569,9 +569,9 @@ var LoginFormStore = function () {
         key: 'handleLoginResponse',
         value: function handleLoginResponse(response) {
             if (response.status == 204) {
-                PubSub.publish('uiEvent.applicationLayout.requested');
+                PubSub.publish('uiEvent.application.applicationLayout.requested');
             } else {
-                PubSub.publish('uiEvent.authentication.requested');
+                PubSub.publish('uiEvent.users.authentication.requested');
             }
         }
     }, {

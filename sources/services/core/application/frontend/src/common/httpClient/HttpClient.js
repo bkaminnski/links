@@ -61,7 +61,7 @@ export default class HttpClient {
                 response.jsonObject = JSON.parse(request.responseText);
             }
         } else if (request.status == 401) {
-            PubSub.publish('uiEvent.authentication.requested');
+            PubSub.publish('uiEvent.users.authentication.requested');
         }
         resolve(response);
     }

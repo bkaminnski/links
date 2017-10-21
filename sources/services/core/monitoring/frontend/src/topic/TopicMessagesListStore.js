@@ -8,7 +8,7 @@ export default class TopicMessagesListStore {
     }
 
     subscribeToEvents() {
-        this.topicMessageAvailableSubscriptionToken = PubSub.subscribe('uiEvent.topicMessage.available', (msg, topicMessage) => {
+        this.topicMessageAvailableSubscriptionToken = PubSub.subscribe('uiEvent.monitoring.topicMessage.available', (msg, topicMessage) => {
             this.addTopicMessage(topicMessage);
         });
     }

@@ -17,14 +17,14 @@ export default class LinksListStore {
     }
 
     subscribeToEvents() {
-        this.linksListSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.linksListSlice.available', (msg, slice) => {
+        this.linksListSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlice.available', (msg, slice) => {
             this.slices.push(slice);
             this.rebuildState();
         });
-        this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.linkCreation.linkWasCreated', (msg) => {
+        this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.linkWasCreated', (msg) => {
             this.loadLinks();
         });
-        PubSub.publish('uiEvent.linksListSlices.requested');
+        PubSub.publish('uiEvent.links.linksListSlices.requested');
     }
 
     rebuildState() {
@@ -36,8 +36,8 @@ export default class LinksListStore {
             });
         this.slices
             .sort((s1, s2) => s1.priority - s2.priority)
-            .forEach(slice => slice.fragments.forEach(
-                fragment => linksMap[fragment.linkSharedId].components.push(fragment.component)
+            .forEach(slice => slice.elements.forEach(
+                element => linksMap[element.linkSharedId].components.push(element.component)
             ));
         this.component.setState({ links: this.links });
     }
