@@ -1,10 +1,8 @@
 require('./style.scss');
+import HttpClient from './common/httpClient/HttpClient.js';
 import ReactDOM from 'react-dom';
 import ApplicationPage from './page/ApplicationPage.jsx';
 
-ReactDOM.render(<ApplicationPage />, document.getElementById('applicationPage'));
+window.HttpClient = new HttpClient(this);
 
-PubSub.subscribe('uiEvent', (msg, param1) => {
-    console.log(msg);
-    console.log(param1);
-});
+ReactDOM.render(<ApplicationPage />, document.getElementById('applicationPage'));

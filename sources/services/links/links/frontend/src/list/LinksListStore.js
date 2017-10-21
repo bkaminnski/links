@@ -1,20 +1,17 @@
-import LinksClient from '../LinksClient.js';
-
 export default class LinksListStore {
 
     constructor(linksListComponent) {
         this.component = linksListComponent;
         this.component.state = { links: [] };
-        this.linksClient = new LinksClient();
         this.links = [];
         this.slices = [];
     }
 
     loadLinks() {
-        this.linksClient
-            .loadLinks()
+        HttpClient
+            .sendGet('/links/resources/links')
             .then(links => {
-                this.links = links;
+                this.links = links.jsonObject;
                 this.rebuildState();
             });
     }

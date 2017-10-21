@@ -73,73 +73,7 @@
 module.exports = React;
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var LinksClient = function () {
-    function LinksClient() {
-        _classCallCheck(this, LinksClient);
-    }
-
-    _createClass(LinksClient, [{
-        key: "createLink",
-        value: function createLink(url, uniqueId) {
-            var result = new Promise(function (resolve, reject) {
-                var request = new XMLHttpRequest();
-                request.open("POST", '/links/resources/links');
-                request.setRequestHeader("Content-type", "application/json");
-                request.setRequestHeader("Accept", "*/*");
-                request.onreadystatechange = function () {
-                    if (request.readyState == 4 && request.status == 204) {
-                        resolve(request.status);
-                    }
-                };
-                request.send(JSON.stringify({
-                    sharedId: uniqueId,
-                    url: url
-                }));
-            });
-            return result;
-        }
-    }, {
-        key: "loadLinks",
-        value: function loadLinks() {
-            var result = new Promise(function (resolve, reject) {
-                var request = new XMLHttpRequest();
-                request.open("GET", '/links/resources/links');
-                request.withCredentials = true;
-                request.onreadystatechange = function () {
-                    if (request.readyState == 4) {
-                        if (request.status == 200) {
-                            resolve(JSON.parse(request.responseText));
-                        } else if (request.status == 401) {
-                            PubSub.publish('uiEvent.authentication.requested');
-                        }
-                    }
-                };
-                request.send();
-            });
-            return result;
-        }
-    }]);
-
-    return LinksClient;
-}();
-
-exports.default = LinksClient;
-
-/***/ }),
+/* 1 */,
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -569,10 +503,6 @@ var _AttributesStore = __webpack_require__(5);
 
 var _AttributesStore2 = _interopRequireDefault(_AttributesStore);
 
-var _LinksClient = __webpack_require__(1);
-
-var _LinksClient2 = _interopRequireDefault(_LinksClient);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -581,7 +511,6 @@ var LinkCreationFormStore = function () {
     function LinkCreationFormStore(formComponent) {
         _classCallCheck(this, LinkCreationFormStore);
 
-        this.linksClient = new _LinksClient2.default();
         this.attributesStore = new _AttributesStore2.default(formComponent);
         this.formComponent = formComponent;
         this.formComponent.state = this.initialState();
@@ -605,8 +534,12 @@ var LinkCreationFormStore = function () {
             var _this = this;
 
             uniqueIds.withNext(function (uniqueId) {
-                _this.linksClient.createLink(_this.formComponent.state.attributes.url.value, uniqueId).then(function (responseStatus) {
-                    if (responseStatus == 204) {
+                var createLinkCommand = {
+                    sharedId: uniqueId,
+                    url: _this.formComponent.state.attributes.url.value
+                };
+                HttpClient.sendPost('/links/resources/links', createLinkCommand).then(function (response) {
+                    if (response.status == 204) {
                         _this.reset();
                         PubSub.publish('uiEvent.linkCreation.linkWasCreated');
                     }
@@ -873,12 +806,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _LinksClient = __webpack_require__(1);
-
-var _LinksClient2 = _interopRequireDefault(_LinksClient);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var LinksListStore = function () {
@@ -887,7 +814,6 @@ var LinksListStore = function () {
 
         this.component = linksListComponent;
         this.component.state = { links: [] };
-        this.linksClient = new _LinksClient2.default();
         this.links = [];
         this.slices = [];
     }
@@ -897,8 +823,8 @@ var LinksListStore = function () {
         value: function loadLinks() {
             var _this = this;
 
-            this.linksClient.loadLinks().then(function (links) {
-                _this.links = links;
+            HttpClient.sendGet('/links/resources/links').then(function (links) {
+                _this.links = links.jsonObject;
                 _this.rebuildState();
             });
         }

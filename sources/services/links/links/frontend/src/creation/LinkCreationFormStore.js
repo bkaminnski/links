@@ -1,10 +1,8 @@
 import AttributesStore from './AttributesStore.js';
-import LinksClient from '../LinksClient.js';
 
 export default class LinkCreationFormStore {
 
     constructor(formComponent) {
-        this.linksClient = new LinksClient();
         this.attributesStore = new AttributesStore(formComponent);
         this.formComponent = formComponent;
         this.formComponent.state = this.initialState();
@@ -23,8 +21,12 @@ export default class LinkCreationFormStore {
 
     createLink() {
         uniqueIds.withNext(uniqueId => {
-            this.linksClient.createLink(this.formComponent.state.attributes.url.value, uniqueId).then((responseStatus) => {
-                if (responseStatus == 204) {
+            let createLinkCommand = {
+                sharedId: uniqueId,
+                url: this.formComponent.state.attributes.url.value
+            };
+            HttpClient.sendPost('/links/resources/links', createLinkCommand).then((response) => {
+                if (response.status == 204) {
                     this.reset();
                     PubSub.publish('uiEvent.linkCreation.linkWasCreated');
                 }
