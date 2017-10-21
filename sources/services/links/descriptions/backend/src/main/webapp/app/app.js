@@ -226,7 +226,7 @@ var DescriptionItemsStore = function () {
     }, {
         key: 'transformIntoSlice',
         value: function transformIntoSlice(descriptions) {
-            return {
+            var slice = {
                 name: 'description',
                 priority: 200,
                 fragments: descriptions.map(function (description) {
@@ -236,6 +236,7 @@ var DescriptionItemsStore = function () {
                     };
                 })
             };
+            return slice;
         }
     }, {
         key: 'publish',

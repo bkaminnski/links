@@ -5,13 +5,13 @@ export default class DescriptionItemsStore {
     loadTransformAndPublish() {
         HttpClient
             .sendGet('/descriptions/resources/descriptions')
-            .then(descriptions => { return descriptions.jsonObject; })
+            .then(descriptions => (descriptions.jsonObject))
             .then(this.transformIntoSlice)
             .then(this.publish);
     }
 
     transformIntoSlice(descriptions) {
-        return {
+        let slice = {
             name: 'description',
             priority: 200,
             fragments: descriptions.map(description => ({
@@ -19,6 +19,7 @@ export default class DescriptionItemsStore {
                 component: <DescriptionItem key={'description-' + description.linkSharedId} description={description.description} />
             }))
         };
+        return slice;
     }
 
     publish(slice) {
