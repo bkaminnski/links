@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "app";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -85,9 +85,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _KeywordsList = __webpack_require__(5);
+var _KeywordsItemsStore = __webpack_require__(4);
 
-var _KeywordsList2 = _interopRequireDefault(_KeywordsList);
+var _KeywordsItemsStore2 = _interopRequireDefault(_KeywordsItemsStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -97,7 +97,7 @@ var LinksListSlicesEvents = function () {
     function LinksListSlicesEvents() {
         _classCallCheck(this, LinksListSlicesEvents);
 
-        this.keywordsList = new _KeywordsList2.default();
+        this.keywordsItemsStore = new _KeywordsItemsStore2.default();
     }
 
     _createClass(LinksListSlicesEvents, [{
@@ -106,7 +106,7 @@ var LinksListSlicesEvents = function () {
             var _this = this;
 
             this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.linksListSlices.requested', function (msg) {
-                _this.keywordsList.loadTransformAndPublish();
+                _this.keywordsItemsStore.loadTransformAndPublish();
             });
         }
     }]);
@@ -123,48 +123,6 @@ exports.default = LinksListSlicesEvents;
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Client = function () {
-    function Client() {
-        _classCallCheck(this, Client);
-    }
-
-    _createClass(Client, [{
-        key: "loadKeywords",
-        value: function loadKeywords() {
-            var result = new Promise(function (resolve, reject) {
-                var request = new XMLHttpRequest();
-                request.open("GET", "/keywords/resources/keywords");
-                request.onreadystatechange = function () {
-                    if (request.readyState == 4 && request.status == 200) {
-                        resolve(JSON.parse(request.responseText));
-                    }
-                };
-                request.send();
-            });
-            return result;
-        }
-    }]);
-
-    return Client;
-}();
-
-exports.default = Client;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 var _LinksListSlicesEvents = __webpack_require__(1);
 
 var _LinksListSlicesEvents2 = _interopRequireDefault(_LinksListSlicesEvents);
@@ -175,7 +133,7 @@ var linksListSlicesEvents = new _LinksListSlicesEvents2.default();
 linksListSlicesEvents.subscribeToRequested();
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -229,7 +187,7 @@ var KeywordsItem = function (_React$Component) {
 exports.default = KeywordsItem;
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -245,34 +203,30 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _KeywordsItem = __webpack_require__(4);
+var _KeywordsItem = __webpack_require__(3);
 
 var _KeywordsItem2 = _interopRequireDefault(_KeywordsItem);
-
-var _KeywordsClient = __webpack_require__(2);
-
-var _KeywordsClient2 = _interopRequireDefault(_KeywordsClient);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var KeywordsList = function () {
-    function KeywordsList() {
-        _classCallCheck(this, KeywordsList);
-
-        this.keywordsClient = new _KeywordsClient2.default();
+var KeywordsItemsStore = function () {
+    function KeywordsItemsStore() {
+        _classCallCheck(this, KeywordsItemsStore);
     }
 
-    _createClass(KeywordsList, [{
+    _createClass(KeywordsItemsStore, [{
         key: 'loadTransformAndPublish',
         value: function loadTransformAndPublish() {
-            this.keywordsClient.loadKeywords().then(this.transformIntoSlice).then(this.publish);
+            HttpClient.sendGet('/keywords/resources/keywords').then(function (keywords) {
+                return keywords.jsonObject;
+            }).then(this.transformIntoSlice).then(this.publish);
         }
     }, {
         key: 'transformIntoSlice',
         value: function transformIntoSlice(keywords) {
-            return {
+            var slice = {
                 name: 'keywords',
                 priority: 100,
                 fragments: keywords.map(function (keywords) {
@@ -282,6 +236,7 @@ var KeywordsList = function () {
                     };
                 })
             };
+            return slice;
         }
     }, {
         key: 'publish',
@@ -290,10 +245,10 @@ var KeywordsList = function () {
         }
     }]);
 
-    return KeywordsList;
+    return KeywordsItemsStore;
 }();
 
-exports.default = KeywordsList;
+exports.default = KeywordsItemsStore;
 
 /***/ })
 /******/ ]);

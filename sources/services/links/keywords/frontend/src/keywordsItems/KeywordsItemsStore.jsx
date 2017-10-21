@@ -1,22 +1,17 @@
 import React from 'react';
 import KeywordsItem from './KeywordsItem.jsx';
-import KeywordsClient from '../KeywordsClient.js';
 
-export default class KeywordsList {
-
-    constructor() {
-        this.keywordsClient = new KeywordsClient();
-    }
-
+export default class KeywordsItemsStore {
     loadTransformAndPublish() {
-        this.keywordsClient
-            .loadKeywords()
+        HttpClient
+            .sendGet('/keywords/resources/keywords')
+            .then(keywords => keywords.jsonObject)
             .then(this.transformIntoSlice)
             .then(this.publish);
     }
 
     transformIntoSlice(keywords) {
-        return {
+        let slice = {
             name: 'keywords',
             priority: 100,
             fragments: keywords.map(keywords => ({
@@ -24,6 +19,7 @@ export default class KeywordsList {
                 component: <KeywordsItem key={'keywords-' + keywords.linkSharedId} keywords={keywords.keywords} />
             }))
         };
+        return slice;
     }
 
     publish(slice) {

@@ -1,14 +1,14 @@
-import KeywordsList from '../list/KeywordsList.jsx';
+import KeywordsItemsStore from '../keywordsItems/KeywordsItemsStore.jsx';
 
 export default class LinksListSlicesEvents {
 
     constructor() {
-        this.keywordsList = new KeywordsList();
+        this.keywordsItemsStore = new KeywordsItemsStore();
     }
 
     subscribeToRequested() {
         this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.linksListSlices.requested', msg => {
-            this.keywordsList.loadTransformAndPublish();
+            this.keywordsItemsStore.loadTransformAndPublish();
         });
     }
 }

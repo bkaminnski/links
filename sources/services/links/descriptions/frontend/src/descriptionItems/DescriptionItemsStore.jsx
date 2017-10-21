@@ -5,7 +5,7 @@ export default class DescriptionItemsStore {
     loadTransformAndPublish() {
         HttpClient
             .sendGet('/descriptions/resources/descriptions')
-            .then(descriptions => (descriptions.jsonObject))
+            .then(descriptions => descriptions.jsonObject)
             .then(this.transformIntoSlice)
             .then(this.publish);
     }
