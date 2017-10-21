@@ -6,5 +6,3 @@ import ApplicationPage from './page/ApplicationPage.jsx';
 window.HttpClient = new HttpClient(this);
 
 ReactDOM.render(<ApplicationPage />, document.getElementById('applicationPage'));
-
-PubSub.subscribe('uiEvent', msg => console.log(msg));
