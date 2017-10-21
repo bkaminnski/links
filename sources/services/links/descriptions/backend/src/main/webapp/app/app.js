@@ -85,7 +85,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _DescriptionItemsStore = __webpack_require__(4);
+var _DescriptionItemsStore = __webpack_require__(8);
 
 var _DescriptionItemsStore2 = _interopRequireDefault(_DescriptionItemsStore);
 
@@ -133,7 +133,11 @@ var linksListSlicesEvents = new _LinksListSlicesEvents2.default();
 linksListSlicesEvents.subscribeToRequested();
 
 /***/ }),
-/* 3 */
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -183,7 +187,7 @@ var DescriptionItem = function (_React$Component) {
 exports.default = DescriptionItem;
 
 /***/ }),
-/* 4 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -199,7 +203,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _DescriptionItem = __webpack_require__(3);
+var _DescriptionItem = __webpack_require__(7);
 
 var _DescriptionItem2 = _interopRequireDefault(_DescriptionItem);
 
