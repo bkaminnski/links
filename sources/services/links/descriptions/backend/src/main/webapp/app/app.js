@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "app";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -85,9 +85,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _DescriptionsList = __webpack_require__(5);
+var _DescriptionItemsStore = __webpack_require__(4);
 
-var _DescriptionsList2 = _interopRequireDefault(_DescriptionsList);
+var _DescriptionItemsStore2 = _interopRequireDefault(_DescriptionItemsStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -97,7 +97,7 @@ var LinksListSlicesEvents = function () {
     function LinksListSlicesEvents() {
         _classCallCheck(this, LinksListSlicesEvents);
 
-        this.descriptionsList = new _DescriptionsList2.default();
+        this.descriptionItemsStore = new _DescriptionItemsStore2.default();
     }
 
     _createClass(LinksListSlicesEvents, [{
@@ -106,7 +106,7 @@ var LinksListSlicesEvents = function () {
             var _this = this;
 
             this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.linksListSlices.requested', function (msg) {
-                _this.descriptionsList.loadTransformAndPublish();
+                _this.descriptionItemsStore.loadTransformAndPublish();
             });
         }
     }]);
@@ -123,48 +123,6 @@ exports.default = LinksListSlicesEvents;
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Client = function () {
-    function Client() {
-        _classCallCheck(this, Client);
-    }
-
-    _createClass(Client, [{
-        key: "loadDescriptions",
-        value: function loadDescriptions() {
-            var result = new Promise(function (resolve, reject) {
-                var request = new XMLHttpRequest();
-                request.open("GET", '/descriptions/resources/descriptions');
-                request.onreadystatechange = function () {
-                    if (request.readyState == 4 && request.status == 200) {
-                        resolve(JSON.parse(request.responseText));
-                    }
-                };
-                request.send();
-            });
-            return result;
-        }
-    }]);
-
-    return Client;
-}();
-
-exports.default = Client;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 var _LinksListSlicesEvents = __webpack_require__(1);
 
 var _LinksListSlicesEvents2 = _interopRequireDefault(_LinksListSlicesEvents);
@@ -175,7 +133,7 @@ var linksListSlicesEvents = new _LinksListSlicesEvents2.default();
 linksListSlicesEvents.subscribeToRequested();
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -225,7 +183,7 @@ var DescriptionItem = function (_React$Component) {
 exports.default = DescriptionItem;
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -241,29 +199,25 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _DescriptionItem = __webpack_require__(4);
+var _DescriptionItem = __webpack_require__(3);
 
 var _DescriptionItem2 = _interopRequireDefault(_DescriptionItem);
-
-var _DescriptionsClient = __webpack_require__(2);
-
-var _DescriptionsClient2 = _interopRequireDefault(_DescriptionsClient);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var DescriptionsList = function () {
-    function DescriptionsList() {
-        _classCallCheck(this, DescriptionsList);
-
-        this.descriptionsClient = new _DescriptionsClient2.default();
+var DescriptionItemsStore = function () {
+    function DescriptionItemsStore() {
+        _classCallCheck(this, DescriptionItemsStore);
     }
 
-    _createClass(DescriptionsList, [{
+    _createClass(DescriptionItemsStore, [{
         key: 'loadTransformAndPublish',
         value: function loadTransformAndPublish() {
-            this.descriptionsClient.loadDescriptions().then(this.transformIntoSlice).then(this.publish);
+            HttpClient.sendGet('/descriptions/resources/descriptions').then(function (descriptions) {
+                return descriptions.jsonObject;
+            }).then(this.transformIntoSlice).then(this.publish);
         }
     }, {
         key: 'transformIntoSlice',
@@ -286,10 +240,10 @@ var DescriptionsList = function () {
         }
     }]);
 
-    return DescriptionsList;
+    return DescriptionItemsStore;
 }();
 
-exports.default = DescriptionsList;
+exports.default = DescriptionItemsStore;
 
 /***/ })
 /******/ ]);

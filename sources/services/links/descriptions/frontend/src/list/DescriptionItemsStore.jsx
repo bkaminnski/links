@@ -1,16 +1,11 @@
 import React from 'react';
 import DescriptionItem from './DescriptionItem.jsx';
-import DescriptionsClient from '../DescriptionsClient.js';
 
-export default class DescriptionsList {
-
-    constructor() {
-        this.descriptionsClient = new DescriptionsClient();
-    }
-
+export default class DescriptionItemsStore {
     loadTransformAndPublish() {
-        this.descriptionsClient
-            .loadDescriptions()
+        HttpClient
+            .sendGet('/descriptions/resources/descriptions')
+            .then(descriptions => { return descriptions.jsonObject; })
             .then(this.transformIntoSlice)
             .then(this.publish);
     }
