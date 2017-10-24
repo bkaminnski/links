@@ -1,10 +1,8 @@
 import AttributesStore from './AttributesStore.js';
-import UsersClient from '../UsersClient.js';
 
 export default class LoginFormStore {
 
     constructor(formComponent) {
-        this.usersClient = new UsersClient();
         this.attributesStore = new AttributesStore(formComponent);
         this.formComponent = formComponent;
         this.formComponent.state = this.initialState();
@@ -26,17 +24,27 @@ export default class LoginFormStore {
     }
 
     login() {
-        this.usersClient
-            .login(this.formComponent.state.attributes.username.value, this.formComponent.state.attributes.password.value)
+        let newSessionRequest = {
+            username: this.formComponent.state.attributes.username.value,
+            password: this.formComponent.state.attributes.password.value
+        };
+        HttpClient
+            .sendPost('/users/resources/sessions', newSessionRequest)
             .then(response => this.handleLoginResponse(response));
     }
 
     handleLoginResponse(response) {
-        if (response.status == 204) {
+        if (response.status == 200) {
+            this.keepSessionToken(response);
             PubSub.publish('uiEvent.application.applicationLayout.requested');
         } else {
             PubSub.publish('uiEvent.users.authentication.requested');
         }
+    }
+
+    keepSessionToken(response) {
+        let cuiSessionToken = response.jsonObject.cuiSessionToken;
+        sessionStorage.setItem('cuiSessionToken', cuiSessionToken);
     }
 
     onChange(attributeName, attributeValue, attributeValid) {

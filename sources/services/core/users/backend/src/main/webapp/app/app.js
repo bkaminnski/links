@@ -236,54 +236,7 @@ var AuthenticationEvents = function () {
 exports.default = AuthenticationEvents;
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var UsersClient = function () {
-    function UsersClient() {
-        _classCallCheck(this, UsersClient);
-    }
-
-    _createClass(UsersClient, [{
-        key: "login",
-        value: function login(username, password) {
-            var result = new Promise(function (resolve, reject) {
-                var request = new XMLHttpRequest();
-                request.open("POST", '/users/resources/sessions');
-                request.setRequestHeader("Content-type", "application/json");
-                request.setRequestHeader("Accept", "*/*");
-                request.withCredentials = true;
-                request.onreadystatechange = function () {
-                    if (request.readyState == 4 && (request.status == 204 || request.status == 401)) {
-                        resolve(request);
-                    }
-                };
-                request.send(JSON.stringify({
-                    username: username,
-                    password: password
-                }));
-            });
-            return result;
-        }
-    }]);
-
-    return UsersClient;
-}();
-
-exports.default = UsersClient;
-
-/***/ }),
+/* 3 */,
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -522,10 +475,6 @@ var _AttributesStore = __webpack_require__(5);
 
 var _AttributesStore2 = _interopRequireDefault(_AttributesStore);
 
-var _UsersClient = __webpack_require__(3);
-
-var _UsersClient2 = _interopRequireDefault(_UsersClient);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -534,7 +483,6 @@ var LoginFormStore = function () {
     function LoginFormStore(formComponent) {
         _classCallCheck(this, LoginFormStore);
 
-        this.usersClient = new _UsersClient2.default();
         this.attributesStore = new _AttributesStore2.default(formComponent);
         this.formComponent = formComponent;
         this.formComponent.state = this.initialState();
@@ -561,18 +509,29 @@ var LoginFormStore = function () {
         value: function login() {
             var _this = this;
 
-            this.usersClient.login(this.formComponent.state.attributes.username.value, this.formComponent.state.attributes.password.value).then(function (response) {
+            var newSessionRequest = {
+                username: this.formComponent.state.attributes.username.value,
+                password: this.formComponent.state.attributes.password.value
+            };
+            HttpClient.sendPost('/users/resources/sessions', newSessionRequest).then(function (response) {
                 return _this.handleLoginResponse(response);
             });
         }
     }, {
         key: 'handleLoginResponse',
         value: function handleLoginResponse(response) {
-            if (response.status == 204) {
+            if (response.status == 200) {
+                this.keepSessionToken(response);
                 PubSub.publish('uiEvent.application.applicationLayout.requested');
             } else {
                 PubSub.publish('uiEvent.users.authentication.requested');
             }
+        }
+    }, {
+        key: 'keepSessionToken',
+        value: function keepSessionToken(response) {
+            var cuiSessionToken = response.jsonObject.cuiSessionToken;
+            sessionStorage.setItem('cuiSessionToken', cuiSessionToken);
         }
     }, {
         key: 'onChange',

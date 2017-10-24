@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.ejb.Stateless;
+import javax.json.Json;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -29,7 +30,7 @@ public class Sessions {
                     .compact();
 
 
-            return Response.ok().header("CUI-Session-Token", compactJws).build();
+            return Response.ok(Json.createObjectBuilder().add("cuiSessionToken", compactJws).build()).build();
         }
 
         return Response.status(Response.Status.UNAUTHORIZED).build();

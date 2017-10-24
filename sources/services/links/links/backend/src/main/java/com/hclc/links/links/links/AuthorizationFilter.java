@@ -12,10 +12,8 @@ public class AuthorizationFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        Cookie sessionCookie = requestContext.getCookies().get("cuiSessionId");
-        if (sessionCookie != null && "validId".equals(sessionCookie.getValue())) {
-            return;
-        }
+        String cuiSessionToken = requestContext.getHeaderString("CUI-Session-Token");
+        System.out.println("cuiSessionToken = " + cuiSessionToken);
 
         requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
     }
