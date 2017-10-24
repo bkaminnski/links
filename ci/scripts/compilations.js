@@ -4,10 +4,10 @@ load('./scripts/command.js');
 
 function compileLibs() {
 	new Command('../sources/libs/', 'mvn clean install').execute();
-	new Command('../sources/libs/accessibility', 'mvn clean install').execute();
+	new Command('../sources/libs/identification', 'mvn clean install').execute();
 	new Command('../sources/libs/monitoring', 'mvn clean install').execute();
 	new Command('../sources/libs/events', 'mvn clean install').execute();
-	new Command('../sources/libs/availability', 'mvn clean install').execute();
+	new Command('../sources/libs/discovery', 'mvn clean install').execute();
 }
 
 function compileAndDeployCore() {

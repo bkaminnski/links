@@ -9,6 +9,14 @@
     <artifactId>users</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
     <build>
         <finalName>users</finalName>
     </build>
