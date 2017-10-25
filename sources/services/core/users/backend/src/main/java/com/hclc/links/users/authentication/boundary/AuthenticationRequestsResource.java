@@ -22,11 +22,15 @@ public class AuthenticationRequestsResource {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public Response create(AuthenticationRequest authenticationRequest) {
+        String jwtSignature = System.getProperty("jwtSignature");
+        if (jwtSignature == null || jwtSignature.isEmpty())
+            throw new IllegalStateException("jwtSignature is missing");
+
         if ("admin".equals(authenticationRequest.getPassword()) && "admin".equals(authenticationRequest.getPassword())) {
 
             String compactJws = Jwts.builder()
                     .setSubject("Joe")
-                    .signWith(SignatureAlgorithm.HS512, "signature")
+                    .signWith(SignatureAlgorithm.HS512, jwtSignature)
                     .compact();
 
 
