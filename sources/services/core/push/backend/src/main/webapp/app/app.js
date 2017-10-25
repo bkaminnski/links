@@ -73,7 +73,8 @@
 "use strict";
 
 
-var webSocket = new WebSocket(window.location.href.split('/').slice(0, 3).join('/').replace(/^http/, 'ws') + '/push/push');
+var endpoint = window.location.href.split('/').slice(0, 3).join('/').replace(/^http/, 'ws') + '/push/push';
+var webSocket = new WebSocket(endpoint);
 webSocket.onmessage = function (event) {
     var dataObject = JSON.parse(event.data);
     var uiEventName = dataObject.uiEventName;
