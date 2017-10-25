@@ -24,12 +24,12 @@ export default class LoginFormStore {
     }
 
     login() {
-        let newSessionRequest = {
+        let authenticationRequest = {
             username: this.formComponent.state.attributes.username.value,
             password: this.formComponent.state.attributes.password.value
         };
         HttpClient
-            .sendPost('/users/resources/sessions', newSessionRequest)
+            .sendPost('/users/resources/authenticationRequests', authenticationRequest)
             .then(response => this.handleLoginResponse(response));
     }
 

@@ -1,6 +1,6 @@
-package com.hclc.links.users.sessions.entity;
+package com.hclc.links.users.authentication.entity;
 
-public class NewSessionRequest {
+public class AuthenticationRequest {
     private String username, password;
 
     public String getUsername() {

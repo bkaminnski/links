@@ -1,6 +1,6 @@
-package com.hclc.links.users.sessions.boundary;
+package com.hclc.links.users.authentication.boundary;
 
-import com.hclc.links.users.sessions.entity.NewSessionRequest;
+import com.hclc.links.users.authentication.entity.AuthenticationRequest;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -15,14 +15,14 @@ import javax.ws.rs.core.Response;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Stateless
-@Path(value = "sessions")
-public class Sessions {
+@Path(value = "authenticationRequests")
+public class AuthenticationRequestsResource {
 
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    public Response create(NewSessionRequest newSessionRequest) {
-        if ("admin".equals(newSessionRequest.getPassword()) && "admin".equals(newSessionRequest.getPassword())) {
+    public Response create(AuthenticationRequest authenticationRequest) {
+        if ("admin".equals(authenticationRequest.getPassword()) && "admin".equals(authenticationRequest.getPassword())) {
 
             String compactJws = Jwts.builder()
                     .setSubject("Joe")

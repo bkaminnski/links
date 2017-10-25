@@ -509,11 +509,11 @@ var LoginFormStore = function () {
         value: function login() {
             var _this = this;
 
-            var newSessionRequest = {
+            var authenticationRequest = {
                 username: this.formComponent.state.attributes.username.value,
                 password: this.formComponent.state.attributes.password.value
             };
-            HttpClient.sendPost('/users/resources/sessions', newSessionRequest).then(function (response) {
+            HttpClient.sendPost('/users/resources/authenticationRequests', authenticationRequest).then(function (response) {
                 return _this.handleLoginResponse(response);
             });
         }
