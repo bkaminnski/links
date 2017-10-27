@@ -28,12 +28,17 @@ class TokenParserTest {
 
     @Test
     void whenCuiAuthenticationTokenIsValid_shouldReturnValidAuthorizedUser() {
-        TokenParserParameters parameters = parameters().id("validId").email("valid@email.com").jwtParseSignature("matchingJwtSignature").signatureAlgorithm(HS512).build();
-        String cuiAuthenticationToken = createCuiAuthenticationToken(parameters);
+        TokenParserParameters validParameters = parameters()
+                .id("validId")
+                .email("valid@email.com")
+                .jwtParseSignature("matchingJwtSignature")
+                .signatureAlgorithm(HS512)
+                .build();
+        String cuiAuthenticationToken = createCuiAuthenticationToken(validParameters);
 
-        Optional<AuthorizedUser> parsingResult = tokenParser.parse(cuiAuthenticationToken, parameters.getJwtParseSignature());
+        Optional<AuthorizedUser> parsingResult = tokenParser.parse(cuiAuthenticationToken, validParameters.getJwtParseSignature());
 
-        assertThat((Object) parsingResult.get()).isEqualToComparingFieldByField(new AuthorizedUser(parameters.getId(), parameters.getEmail()));
+        assertThat((Object) parsingResult.get()).isEqualToComparingFieldByField(new AuthorizedUser(validParameters.getId(), validParameters.getEmail()));
     }
 
     @ParameterizedTest(name = "{index}. {0} ==> {1}")
