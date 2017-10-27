@@ -11,8 +11,6 @@ import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.json.Json;
 
-import static com.hclc.libs.discovery.EventsNames.myServiceIsAvailable;
-import static com.hclc.libs.discovery.EventsNames.myServiceIsUnavailable;
 import static com.hclc.libs.monitoring.TrackingIdHolder.generateNewTrackingId;
 
 @Singleton
@@ -39,7 +37,7 @@ public class AvailabilityAnnouncer {
                 .add("priority", serviceInfo.priority())
                 .build()
                 .toString();
-        backendTopic.sendEventWithPayload(myServiceIsAvailable, payload, serviceLogger);
+        backendTopic.sendEventWithPayload(EventsNames.myServiceIsAvailable, payload, serviceLogger);
     }
 
     @PreDestroy
@@ -49,6 +47,6 @@ public class AvailabilityAnnouncer {
     }
 
     public void announceServiceUnavailability() {
-        backendTopic.sendEventWithEmptyPayload(myServiceIsUnavailable, serviceLogger);
+        backendTopic.sendEventWithEmptyPayload(EventsNames.myServiceIsUnavailable, serviceLogger);
     }
 }
