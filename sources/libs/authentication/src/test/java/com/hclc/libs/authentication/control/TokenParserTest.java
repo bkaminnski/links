@@ -27,11 +27,11 @@ class TokenParserTest {
     }
 
     @Test
-    void whenCuiSessionTokenIsValid_shouldReturnValidAuthorizedUser() {
+    void whenCuiAuthenticationTokenIsValid_shouldReturnValidAuthorizedUser() {
         TokenParserParameters parameters = parameters().id("validId").email("valid@email.com").jwtParseSignature("matchingJwtSignature").signatureAlgorithm(HS512).build();
-        String cuiSessionToken = createCuiSessionToken(parameters);
+        String cuiAuthenticationToken = createCuiAuthenticationToken(parameters);
 
-        Optional<AuthorizedUser> parsingResult = tokenParser.parse(cuiSessionToken, parameters.getJwtParseSignature());
+        Optional<AuthorizedUser> parsingResult = tokenParser.parse(cuiAuthenticationToken, parameters.getJwtParseSignature());
 
         assertThat((Object) parsingResult.get()).isEqualToComparingFieldByField(new AuthorizedUser(parameters.getId(), parameters.getEmail()));
     }
@@ -39,9 +39,9 @@ class TokenParserTest {
     @ParameterizedTest(name = "{index}. {0} ==> {1}")
     @MethodSource("incorrectData")
     void whenAnyDataIsIncorrect_shouldReturnEmptyAuthorizedUser(String testExplanation, TokenParserParameters parameters) {
-        String cuiSessionToken = createCuiSessionToken(parameters);
+        String cuiAuthenticationToken = createCuiAuthenticationToken(parameters);
 
-        Optional<AuthorizedUser> parsingResult = tokenParser.parse(cuiSessionToken, parameters.getJwtParseSignature());
+        Optional<AuthorizedUser> parsingResult = tokenParser.parse(cuiAuthenticationToken, parameters.getJwtParseSignature());
 
         assertThat(parsingResult).isEmpty();
     }
@@ -69,7 +69,7 @@ class TokenParserTest {
         );
     }
 
-    private String createCuiSessionToken(TokenParserParameters parameters) {
+    private String createCuiAuthenticationToken(TokenParserParameters parameters) {
         JwtBuilder jwtBuilder = Jwts.builder()
                 .setSubject(parameters.getId())
                 .claim("email", parameters.getEmail());
