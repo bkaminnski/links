@@ -11,7 +11,7 @@ export default class PeriodicalTokenRefresher {
     }
 
     refreshToken() {
-        if (sessionStorage.getItem('cuiAuthenticationToken') != null) {
+        if (sessionStorage.getItem('cuiAuthenticationToken') != null && sessionStorage.getItem('cuiAuthenticationToken') != '') {
             HttpClient
                 .sendGet('/users/resources/authenticationToken')
                 .then(response => this.authenticationResponseHandler.handleResponse(response));

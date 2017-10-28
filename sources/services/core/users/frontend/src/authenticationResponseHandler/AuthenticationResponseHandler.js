@@ -5,6 +5,7 @@ export default class AuthenticationResponseHandler {
             this.keepAuthenticationToken(response);
             PubSub.publish('uiEvent.application.applicationLayout.requested');
         } else {
+            sessionStorage.setItem('cuiAuthenticationToken', '');
             PubSub.publish('uiEvent.users.authentication.requested');
         }
     }

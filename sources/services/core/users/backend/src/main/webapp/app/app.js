@@ -813,6 +813,7 @@ var AuthenticationResponseHandler = function () {
                 this.keepAuthenticationToken(response);
                 PubSub.publish('uiEvent.application.applicationLayout.requested');
             } else {
+                sessionStorage.setItem('cuiAuthenticationToken', '');
                 PubSub.publish('uiEvent.users.authentication.requested');
             }
         }
@@ -871,7 +872,7 @@ var PeriodicalTokenRefresher = function () {
         value: function refreshToken() {
             var _this2 = this;
 
-            if (sessionStorage.getItem('cuiAuthenticationToken') != null) {
+            if (sessionStorage.getItem('cuiAuthenticationToken') != null && sessionStorage.getItem('cuiAuthenticationToken') != '') {
                 HttpClient.sendGet('/users/resources/authenticationToken').then(function (response) {
                     return _this2.authenticationResponseHandler.handleResponse(response);
                 });
