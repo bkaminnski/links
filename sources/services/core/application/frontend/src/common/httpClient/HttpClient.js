@@ -4,7 +4,7 @@ export default class HttpClient {
             let request = new XMLHttpRequest();
             request.open("GET", url);
             request.setRequestHeader("Accept", "application/json");
-            request.setRequestHeader("CUI-Session-Token", sessionStorage.getItem('cuiSessionToken'));
+            request.setRequestHeader("CUI-Authentication-Token", sessionStorage.getItem('cuiAuthenticationToken'));
             request.onreadystatechange = () => {
                 this.handleResponse(request, resolve);
             }
@@ -19,7 +19,7 @@ export default class HttpClient {
             let request = new XMLHttpRequest();
             request.open("PUT", url);
             request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-            request.setRequestHeader("CUI-Session-Token", sessionStorage.getItem('cuiSessionToken'));
+            request.setRequestHeader("CUI-Authentication-Token", sessionStorage.getItem('cuiAuthenticationToken'));
             request.onreadystatechange = () => {
                 this.handleResponse(request, resolve);
             }
@@ -35,7 +35,7 @@ export default class HttpClient {
                 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
                 data = JSON.stringify(data)
             }
-            request.setRequestHeader("CUI-Session-Token", sessionStorage.getItem('cuiSessionToken'));
+            request.setRequestHeader("CUI-Authentication-Token", sessionStorage.getItem('cuiAuthenticationToken'));
             request.onreadystatechange = () => {
                 this.handleResponse(request, resolve, isFormData);
             }
@@ -47,7 +47,7 @@ export default class HttpClient {
         return new Promise((resolve) => {
             let request = new XMLHttpRequest();
             request.open("DELETE", url);
-            request.setRequestHeader("CUI-Session-Token", sessionStorage.getItem('cuiSessionToken'));
+            request.setRequestHeader("CUI-Authentication-Token", sessionStorage.getItem('cuiAuthenticationToken'));
             request.onreadystatechange = () => {
                 this.handleResponse(request, resolve);
             }
