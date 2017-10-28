@@ -1,8 +1,5 @@
-import UniqueIdsClient from './UniqueIdsClient.js';
-
 export default class UniqueIds {
     constructor() {
-        this.uniqueIdsClient = new UniqueIdsClient();
         this.uniqueIds = [];
         this.callbacksWhenIdsAreAvailable = [];
         this.loading = false;
@@ -12,9 +9,9 @@ export default class UniqueIds {
     loadUniqueIds() {
         if (this.loading == false) {
             this.loading = true;
-            this.uniqueIdsClient.loadUniqueIds().then(uniqueIds => {
-                this.whenLoaded(uniqueIds);
-            });
+            HttpClient
+                .sendGet('/unique-ids/resources/uniqueIds')
+                .then(uniqueIds => this.whenLoaded(uniqueIds.jsonObject));
         }
     }
 
@@ -38,7 +35,7 @@ export default class UniqueIds {
             this.loadUniqueIds();
         }
     }
-    
+
     runCallbacks() {
         while (this.uniqueIds.length > 0 && this.loading == true && this.callbacksWhenIdsAreAvailable.length > 0) {
             let callback = this.callbacksWhenIdsAreAvailable.shift();

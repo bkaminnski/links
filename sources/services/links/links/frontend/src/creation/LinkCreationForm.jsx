@@ -7,7 +7,6 @@ export default class LinkCreationForm extends React.Component {
     constructor() {
         super();
         this.store = new LinkCreationFormStore(this);
-        this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
@@ -20,7 +19,7 @@ export default class LinkCreationForm extends React.Component {
                     ref={(url) => { this.store.addAttributeComponent('url', url); }}
                     attributeName="url"
                     initialValue=""
-                    onChange={this.onChange}
+                    onChange={this.store.onChange}
                 />
                 <div className="text-right" role="group" aria-label="Add">
                     <button type="submit" className="btn btn-default">Add</button>
@@ -29,16 +28,8 @@ export default class LinkCreationForm extends React.Component {
         </div>
     }
 
-    onChange(attributeName, attributeValue, attributeValid) {
-        this.store.onChange(attributeName, attributeValue, attributeValid);
-    }
-
     onSubmit(e) {
         e.preventDefault();
-        if (this.store.allAttributesAreValid()) {
-            this.store.createLink();
-        } else {
-            this.store.focusOnFirstInvalidAttributeComponent();
-        }
+        this.store.onSubmit();
     }
 }

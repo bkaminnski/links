@@ -425,7 +425,6 @@ var LinkCreationForm = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (LinkCreationForm.__proto__ || Object.getPrototypeOf(LinkCreationForm)).call(this));
 
         _this.store = new _LinkCreationFormStore2.default(_this);
-        _this.onChange = _this.onChange.bind(_this);
         _this.onSubmit = _this.onSubmit.bind(_this);
         return _this;
     }
@@ -449,7 +448,7 @@ var LinkCreationForm = function (_React$Component) {
                         },
                         attributeName: 'url',
                         initialValue: '',
-                        onChange: this.onChange
+                        onChange: this.store.onChange
                     }),
                     _react2.default.createElement(
                         'div',
@@ -464,19 +463,10 @@ var LinkCreationForm = function (_React$Component) {
             );
         }
     }, {
-        key: 'onChange',
-        value: function onChange(attributeName, attributeValue, attributeValid) {
-            this.store.onChange(attributeName, attributeValue, attributeValid);
-        }
-    }, {
         key: 'onSubmit',
         value: function onSubmit(e) {
             e.preventDefault();
-            if (this.store.allAttributesAreValid()) {
-                this.store.createLink();
-            } else {
-                this.store.focusOnFirstInvalidAttributeComponent();
-            }
+            this.store.onSubmit();
         }
     }]);
 
@@ -513,6 +503,8 @@ var LinkCreationFormStore = function () {
         this.attributesStore = new _AttributesStore2.default(formComponent);
         this.formComponent = formComponent;
         this.formComponent.state = this.initialState();
+        this.onChange = this.onChange.bind(this);
+        this.addAttributeComponent = this.addAttributeComponent.bind(this);
     }
 
     _createClass(LinkCreationFormStore, [{
@@ -561,14 +553,13 @@ var LinkCreationFormStore = function () {
             this.attributesStore.addAttributeComponent(attributeName, attributeComponent);
         }
     }, {
-        key: 'allAttributesAreValid',
-        value: function allAttributesAreValid() {
-            return this.attributesStore.allAttributesAreValid();
-        }
-    }, {
-        key: 'focusOnFirstInvalidAttributeComponent',
-        value: function focusOnFirstInvalidAttributeComponent() {
-            this.attributesStore.focusOnFirstInvalidAttributeComponent();
+        key: 'onSubmit',
+        value: function onSubmit() {
+            if (this.attributesStore.allAttributesAreValid()) {
+                this.createLink();
+            } else {
+                this.attributesStore.focusOnFirstInvalidAttributeComponent();
+            }
         }
     }]);
 

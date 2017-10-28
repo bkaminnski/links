@@ -6,6 +6,8 @@ export default class LinkCreationFormStore {
         this.attributesStore = new AttributesStore(formComponent);
         this.formComponent = formComponent;
         this.formComponent.state = this.initialState();
+        this.onChange = this.onChange.bind(this);
+        this.addAttributeComponent = this.addAttributeComponent.bind(this);
     }
 
     initialState() {
@@ -46,11 +48,11 @@ export default class LinkCreationFormStore {
         this.attributesStore.addAttributeComponent(attributeName, attributeComponent);
     }
 
-    allAttributesAreValid() {
-        return this.attributesStore.allAttributesAreValid();
-    }
-
-    focusOnFirstInvalidAttributeComponent() {
-        this.attributesStore.focusOnFirstInvalidAttributeComponent();
+    onSubmit() {
+        if (this.attributesStore.allAttributesAreValid()) {
+            this.createLink();
+        } else {
+            this.attributesStore.focusOnFirstInvalidAttributeComponent();
+        }
     }
 }

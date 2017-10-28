@@ -540,6 +540,9 @@ var HttpClient = function () {
                     response.jsonObject = JSON.parse(request.responseText);
                 }
                 resolve(response);
+            } else if (request.status == 204) {
+                response.jsonObject = {};
+                resolve(response);
             } else if (request.status == 401) {
                 PubSub.publish('uiEvent.users.authentication.requested');
             }
