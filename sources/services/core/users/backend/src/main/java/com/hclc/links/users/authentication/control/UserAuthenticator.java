@@ -13,7 +13,7 @@ public class UserAuthenticator {
 
     public Optional<AuthenticatedUser> authenticate(AuthenticationRequest authenticationRequest) {
         if ("admin".equals(authenticationRequest.getEmail()) && "admin".equals(authenticationRequest.getPassword()))
-            return of(new AuthenticatedUser(UUID.randomUUID().toString(), authenticationRequest.getEmail()));
+            return of(new AuthenticatedUser(UUID.randomUUID().toString(), "bartosz.kaminski@zoho.com"));
 
         return empty();
     }

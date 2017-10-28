@@ -681,10 +681,6 @@ window.HttpClient = new _HttpClient2.default(undefined);
 
 _reactDom2.default.render(React.createElement(_ApplicationPage2.default, null), document.getElementById('applicationPage'));
 
-PubSub.subscribe('uiEvent', function (msg) {
-  return console.log(msg);
-});
-
 /***/ }),
 
 /***/ 96:

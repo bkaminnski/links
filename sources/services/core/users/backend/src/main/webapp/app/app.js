@@ -489,10 +489,24 @@ var LoginForm = function (_React$Component) {
                 { className: 'vertically-aligned with-shadow' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'container', style: { maxWidth: '300px' } },
+                    { className: 'container', style: { maxWidth: '450px' } },
                     _react2.default.createElement(
                         'div',
                         { className: 'well well-lg' },
+                        _react2.default.createElement(
+                            'p',
+                            { style: { color: 'rgb(128, 128, 128)', fontFamily: 'verdana', fontSize: '32px', lineHeight: '25px', paddingBottom: '25px', fontWeight: 'normal', textAlign: 'center' } },
+                            _react2.default.createElement(
+                                'span',
+                                { style: { color: 'rgb(64, 64, 64)' } },
+                                'Link'
+                            ),
+                            _react2.default.createElement(
+                                'span',
+                                { style: { fontWeight: 'bold' } },
+                                'Link'
+                            )
+                        ),
                         _react2.default.createElement(
                             'form',
                             { onSubmit: this.onSubmit },

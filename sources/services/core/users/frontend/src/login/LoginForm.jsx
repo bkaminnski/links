@@ -14,8 +14,11 @@ export default class LoginForm extends React.Component {
 
     render() {
         return <div className="vertically-aligned with-shadow">
-            <div className="container" style={{ maxWidth: '300px' }}>
+            <div className="container" style={{ maxWidth: '450px' }}>
                 <div className="well well-lg">
+                    <p style={{ color: 'rgb(128, 128, 128)', fontFamily: 'verdana', fontSize: '32px', lineHeight: '25px', paddingBottom: '25px', fontWeight: 'normal', textAlign: 'center' }}>
+                        <span style={{ color: 'rgb(64, 64, 64)' }}>Link</span><span style={{ fontWeight: 'bold' }}>Link</span>
+                    </p>
                     <form onSubmit={this.onSubmit}>
                         <Email
                             id={this.state.keyPrefix + '-email'}
