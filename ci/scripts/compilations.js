@@ -4,6 +4,7 @@ load('./scripts/command.js');
 
 function compileLibs() {
 	new Command('../sources/libs/', 'mvn clean install').execute();
+	new Command('../sources/libs/authentication', 'mvn clean install').execute();
 	new Command('../sources/libs/identification', 'mvn clean install').execute();
 	new Command('../sources/libs/monitoring', 'mvn clean install').execute();
 	new Command('../sources/libs/events', 'mvn clean install').execute();
