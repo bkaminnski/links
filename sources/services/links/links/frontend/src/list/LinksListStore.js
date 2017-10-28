@@ -37,7 +37,9 @@ export default class LinksListStore {
         this.slices
             .sort((s1, s2) => s1.priority - s2.priority)
             .forEach(slice => slice.elements.forEach(
-                element => linksMap[element.linkSharedId].components.push(element.component)
+                element => {
+                    if (linksMap[element.linkSharedId] != null) linksMap[element.linkSharedId].components.push(element.component)
+                }
             ));
         this.component.setState({ links: this.links });
     }

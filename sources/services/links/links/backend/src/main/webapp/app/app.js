@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "app";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,8 +73,7 @@
 module.exports = React;
 
 /***/ }),
-/* 1 */,
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -86,7 +85,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _LinksPage = __webpack_require__(14);
+var _LinksPage = __webpack_require__(13);
 
 var _LinksPage2 = _interopRequireDefault(_LinksPage);
 
@@ -121,7 +120,7 @@ var ContentEvents = function () {
 exports.default = ContentEvents;
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -166,17 +165,17 @@ var MenuItemsEvents = function () {
 exports.default = MenuItemsEvents;
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _MenuItemsEvents = __webpack_require__(3);
+var _MenuItemsEvents = __webpack_require__(2);
 
 var _MenuItemsEvents2 = _interopRequireDefault(_MenuItemsEvents);
 
-var _ContentEvents = __webpack_require__(2);
+var _ContentEvents = __webpack_require__(1);
 
 var _ContentEvents2 = _interopRequireDefault(_ContentEvents);
 
@@ -190,7 +189,7 @@ menuItemsEvents.subscribeToRequested();
 menuItemsEvents.publishAvailable();
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -269,7 +268,7 @@ var AttributesStore = function () {
 exports.default = AttributesStore;
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -385,7 +384,7 @@ var InputGroup = function (_React$Component) {
 exports.default = InputGroup;
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -401,11 +400,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Url = __webpack_require__(9);
+var _Url = __webpack_require__(8);
 
 var _Url2 = _interopRequireDefault(_Url);
 
-var _LinkCreationFormStore = __webpack_require__(8);
+var _LinkCreationFormStore = __webpack_require__(7);
 
 var _LinkCreationFormStore2 = _interopRequireDefault(_LinkCreationFormStore);
 
@@ -487,7 +486,7 @@ var LinkCreationForm = function (_React$Component) {
 exports.default = LinkCreationForm;
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -499,7 +498,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _AttributesStore = __webpack_require__(5);
+var _AttributesStore = __webpack_require__(4);
 
 var _AttributesStore2 = _interopRequireDefault(_AttributesStore);
 
@@ -579,7 +578,7 @@ var LinkCreationFormStore = function () {
 exports.default = LinkCreationFormStore;
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -595,7 +594,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _InputGroup = __webpack_require__(6);
+var _InputGroup = __webpack_require__(5);
 
 var _InputGroup2 = _interopRequireDefault(_InputGroup);
 
@@ -661,7 +660,7 @@ var Url = function (_React$Component) {
 exports.default = Url;
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -677,7 +676,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Url = __webpack_require__(13);
+var _Url = __webpack_require__(12);
 
 var _Url2 = _interopRequireDefault(_Url);
 
@@ -720,7 +719,7 @@ var LinkItem = function (_React$Component) {
 exports.default = LinkItem;
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -736,11 +735,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _LinksListStore = __webpack_require__(12);
+var _LinksListStore = __webpack_require__(11);
 
 var _LinksListStore2 = _interopRequireDefault(_LinksListStore);
 
-var _LinkItem = __webpack_require__(10);
+var _LinkItem = __webpack_require__(9);
 
 var _LinkItem2 = _interopRequireDefault(_LinkItem);
 
@@ -794,7 +793,7 @@ var LinksList = function (_React$Component) {
 exports.default = LinksList;
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -854,7 +853,7 @@ var LinksListStore = function () {
                 return s1.priority - s2.priority;
             }).forEach(function (slice) {
                 return slice.elements.forEach(function (element) {
-                    return linksMap[element.linkSharedId].components.push(element.component);
+                    if (linksMap[element.linkSharedId] != null) linksMap[element.linkSharedId].components.push(element.component);
                 });
             });
             this.component.setState({ links: this.links });
@@ -873,7 +872,7 @@ var LinksListStore = function () {
 exports.default = LinksListStore;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -923,7 +922,7 @@ var Url = function (_React$Component) {
 exports.default = Url;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -939,11 +938,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _LinkCreationForm = __webpack_require__(7);
+var _LinkCreationForm = __webpack_require__(6);
 
 var _LinkCreationForm2 = _interopRequireDefault(_LinkCreationForm);
 
-var _LinksList = __webpack_require__(11);
+var _LinksList = __webpack_require__(10);
 
 var _LinksList2 = _interopRequireDefault(_LinksList);
 
