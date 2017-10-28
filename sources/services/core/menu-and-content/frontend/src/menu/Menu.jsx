@@ -1,6 +1,7 @@
 import React from 'react';
 import MenuStore from './MenuStore.js'
 import MenuItem from './MenuItem.jsx'
+import UserInfoPlaceholder from './placeholders/UserInfoPlaceholder.jsx'
 
 export default class Menu extends React.Component {
 
@@ -40,6 +41,9 @@ export default class Menu extends React.Component {
                         {
                             this.state.menuItems.map(menuItem => <MenuItem key={'menuItem' + menuItem.code} menuItem={menuItem} menuItemSeletedCallback={this.menuItemSeletedCallback} />)
                         }
+                    </ul>
+                    <ul className="nav navbar-nav navbar-right">
+                        <UserInfoPlaceholder />
                     </ul>
                 </div>
             </div>

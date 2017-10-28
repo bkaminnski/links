@@ -11,8 +11,10 @@ export default class PeriodicalTokenRefresher {
     }
 
     refreshToken() {
-        HttpClient
-            .sendGet('/users/resources/authenticationToken')
-            .then(response => this.authenticationResponseHandler.handleResponse(response));
+        if (sessionStorage.getItem('cuiAuthenticationToken') != null) {
+            HttpClient
+                .sendGet('/users/resources/authenticationToken')
+                .then(response => this.authenticationResponseHandler.handleResponse(response));
+        }
     }
 }

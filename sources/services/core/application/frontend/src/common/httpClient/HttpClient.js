@@ -1,4 +1,11 @@
 export default class HttpClient {
+
+    constructor() {
+        if (sessionStorage.getItem('cuiAuthenticationToken') == null) {
+            sessionStorage.setItem('cuiAuthenticationToken', '');
+        }
+    }
+
     sendGet(url) {
         let result = new Promise((resolve, reject) => {
             let request = new XMLHttpRequest();

@@ -85,7 +85,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _MenuAndContent = __webpack_require__(8);
+var _MenuAndContent = __webpack_require__(9);
 
 var _MenuAndContent2 = _interopRequireDefault(_MenuAndContent);
 
@@ -272,6 +272,10 @@ var _MenuItem = __webpack_require__(6);
 
 var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
+var _UserInfoPlaceholder = __webpack_require__(8);
+
+var _UserInfoPlaceholder2 = _interopRequireDefault(_UserInfoPlaceholder);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -350,6 +354,11 @@ var Menu = function (_React$Component) {
                             this.state.menuItems.map(function (menuItem) {
                                 return _react2.default.createElement(_MenuItem2.default, { key: 'menuItem' + menuItem.code, menuItem: menuItem, menuItemSeletedCallback: _this2.menuItemSeletedCallback });
                             })
+                        ),
+                        _react2.default.createElement(
+                            'ul',
+                            { className: 'nav navbar-nav navbar-right' },
+                            _react2.default.createElement(_UserInfoPlaceholder2.default, null)
                         )
                     )
                 )
@@ -495,6 +504,70 @@ exports.default = MenuStore;
 
 /***/ }),
 /* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var UserInfoPlaceholder = function (_React$Component) {
+    _inherits(UserInfoPlaceholder, _React$Component);
+
+    function UserInfoPlaceholder() {
+        _classCallCheck(this, UserInfoPlaceholder);
+
+        var _this = _possibleConstructorReturn(this, (UserInfoPlaceholder.__proto__ || Object.getPrototypeOf(UserInfoPlaceholder)).call(this));
+
+        _this.state = { component: null };
+        return _this;
+    }
+
+    _createClass(UserInfoPlaceholder, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            this.userInfoRequestedSubscriptionToken = PubSub.subscribe('uiEvent.users.userInfo.available', function (msg, component) {
+                _this2.setState({ component: component });
+            });
+            PubSub.publish('uiEvent.users.userInfo.requested');
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            PubSub.unsubscribe(this.userInfoRequestedSubscriptionToken);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return this.state.component;
+        }
+    }]);
+
+    return UserInfoPlaceholder;
+}(_react2.default.Component);
+
+exports.default = UserInfoPlaceholder;
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

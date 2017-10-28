@@ -455,10 +455,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var HttpClient = function () {
     function HttpClient() {
         _classCallCheck(this, HttpClient);
+
+        if (sessionStorage.getItem('cuiAuthenticationToken') == null) {
+            sessionStorage.setItem('cuiAuthenticationToken', '');
+        }
     }
 
     _createClass(HttpClient, [{
-        key: "sendGet",
+        key: 'sendGet',
         value: function sendGet(url) {
             var _this = this;
 
@@ -476,7 +480,7 @@ var HttpClient = function () {
             return result;
         }
     }, {
-        key: "sendPut",
+        key: 'sendPut',
         value: function sendPut(url, data) {
             var _this2 = this;
 
@@ -492,7 +496,7 @@ var HttpClient = function () {
             });
         }
     }, {
-        key: "sendPost",
+        key: 'sendPost',
         value: function sendPost(url, data, isFormData) {
             var _this3 = this;
 
@@ -511,7 +515,7 @@ var HttpClient = function () {
             });
         }
     }, {
-        key: "sendDelete",
+        key: 'sendDelete',
         value: function sendDelete(url) {
             var _this4 = this;
 
@@ -526,7 +530,7 @@ var HttpClient = function () {
             });
         }
     }, {
-        key: "handleResponse",
+        key: 'handleResponse',
         value: function handleResponse(request, resolve, isFormData) {
             if (request.readyState != 4) return;
 
@@ -676,6 +680,10 @@ __webpack_require__(94);
 window.HttpClient = new _HttpClient2.default(undefined);
 
 _reactDom2.default.render(React.createElement(_ApplicationPage2.default, null), document.getElementById('applicationPage'));
+
+PubSub.subscribe('uiEvent', function (msg) {
+  return console.log(msg);
+});
 
 /***/ }),
 
