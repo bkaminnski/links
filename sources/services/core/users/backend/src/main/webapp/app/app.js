@@ -832,24 +832,24 @@ var PeriodicalTokenRefresher = function () {
         _classCallCheck(this, PeriodicalTokenRefresher);
 
         this.authenticationResponseHandler = new _AuthenticationResponseHandler2.default();
-        this.refreshToken.bind(this);
     }
 
     _createClass(PeriodicalTokenRefresher, [{
         key: 'registerPeriodicalRefresh',
         value: function registerPeriodicalRefresh() {
-            var _this2 = this;
+            var _this = this;
 
             setInterval(function () {
-                return _this2.refreshToken();
+                return _this.refreshToken();
             }, 30000);
         }
     }, {
         key: 'refreshToken',
         value: function refreshToken() {
-            var _this = this;
+            var _this2 = this;
+
             HttpClient.sendGet('/users/resources/authenticationToken').then(function (response) {
-                return _this.authenticationResponseHandler.handleResponse(response);
+                return _this2.authenticationResponseHandler.handleResponse(response);
             });
         }
     }]);
