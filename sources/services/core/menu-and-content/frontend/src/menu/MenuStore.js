@@ -1,7 +1,7 @@
 export default class MenuStore {
 
-    constructor(menuComponent) {
-        this.menuComponent = menuComponent;
+    constructor(component) {
+        this.component = component;
         this.menuItemsMap = new Map();
         this.selectedMenuItem = null;
     }
@@ -22,13 +22,16 @@ export default class MenuStore {
         let menuItems = [];
         this.menuItemsMap.forEach(value => menuItems.push(value));
         menuItems.sort((mi1, mi2) => mi1.priority - mi2.priority)
-        if (menuItems.length > 0) {
-            this.select(menuItems[0]);
-        }
-        this.menuComponent.setState({ menuItems: menuItems, selectedMenuItem: this.selectedMenuItem });
+        this.component.setState({ menuItems: menuItems, selectedMenuItem: this.selectedMenuItem }, () => this.navigateToFirstMenuItem());
     }
 
-    select(menuItem) {
+    navigateToFirstMenuItem() {
+        if (this.component.state.menuItems.length > 0) {
+            this.navigateTo(this.component.state.menuItems[0]);
+        }
+    }
+
+    navigateTo(menuItem) {
         this.selectedMenuItem = menuItem;
         PubSub.publish('uiEvent.menu-and-content.content.requested.' + this.selectedMenuItem.code);
     }

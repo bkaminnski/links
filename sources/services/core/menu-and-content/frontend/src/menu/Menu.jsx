@@ -9,7 +9,8 @@ export default class Menu extends React.Component {
         super();
         this.menuStore = new MenuStore(this);
         this.state = { menuItems: [] };
-        this.menuItemSeletedCallback = this.menuItemSeletedCallback.bind(this);
+        this.navigateToFirstMenuItem = this.navigateToFirstMenuItem.bind(this);
+        this.navigateTo = this.navigateTo.bind(this);
     }
 
     componentDidMount() {
@@ -20,8 +21,12 @@ export default class Menu extends React.Component {
         this.menuStore.unsubscribeFromEvents();
     }
 
-    menuItemSeletedCallback(menuItem) {
-        this.menuStore.select(menuItem);
+    navigateToFirstMenuItem() {
+        this.menuStore.navigateToFirstMenuItem();
+    }
+
+    navigateTo(menuItem) {
+        this.menuStore.navigateTo(menuItem);
     }
 
     render() {
@@ -34,12 +39,12 @@ export default class Menu extends React.Component {
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                     </button>
-                    <a className="navbar-brand" href="#"><span className="glyphicon glyphicon-link" aria-hidden="true"></span></a>
+                    <a className="navbar-brand" href="#" onClick={this.navigateToFirstMenuItem}><span className="glyphicon glyphicon-link" aria-hidden="true"></span></a>
                 </div>
                 <div id="navbar" className="collapse navbar-collapse">
                     <ul className="nav navbar-nav">
                         {
-                            this.state.menuItems.map(menuItem => <MenuItem key={'menuItem' + menuItem.code} menuItem={menuItem} menuItemSeletedCallback={this.menuItemSeletedCallback} />)
+                            this.state.menuItems.map(menuItem => <MenuItem key={'menuItem' + menuItem.code} menuItem={menuItem} navigateTo={this.navigateTo} />)
                         }
                     </ul>
                     <ul className="nav navbar-nav navbar-right">

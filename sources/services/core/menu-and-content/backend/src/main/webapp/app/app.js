@@ -294,7 +294,8 @@ var Menu = function (_React$Component) {
 
         _this.menuStore = new _MenuStore2.default(_this);
         _this.state = { menuItems: [] };
-        _this.menuItemSeletedCallback = _this.menuItemSeletedCallback.bind(_this);
+        _this.navigateToFirstMenuItem = _this.navigateToFirstMenuItem.bind(_this);
+        _this.navigateTo = _this.navigateTo.bind(_this);
         return _this;
     }
 
@@ -309,9 +310,14 @@ var Menu = function (_React$Component) {
             this.menuStore.unsubscribeFromEvents();
         }
     }, {
-        key: 'menuItemSeletedCallback',
-        value: function menuItemSeletedCallback(menuItem) {
-            this.menuStore.select(menuItem);
+        key: 'navigateToFirstMenuItem',
+        value: function navigateToFirstMenuItem() {
+            this.menuStore.navigateToFirstMenuItem();
+        }
+    }, {
+        key: 'navigateTo',
+        value: function navigateTo(menuItem) {
+            this.menuStore.navigateTo(menuItem);
         }
     }, {
         key: 'render',
@@ -341,7 +347,7 @@ var Menu = function (_React$Component) {
                         ),
                         _react2.default.createElement(
                             'a',
-                            { className: 'navbar-brand', href: '#' },
+                            { className: 'navbar-brand', href: '#', onClick: this.navigateToFirstMenuItem },
                             _react2.default.createElement('span', { className: 'glyphicon glyphicon-link', 'aria-hidden': 'true' })
                         )
                     ),
@@ -352,7 +358,7 @@ var Menu = function (_React$Component) {
                             'ul',
                             { className: 'nav navbar-nav' },
                             this.state.menuItems.map(function (menuItem) {
-                                return _react2.default.createElement(_MenuItem2.default, { key: 'menuItem' + menuItem.code, menuItem: menuItem, menuItemSeletedCallback: _this2.menuItemSeletedCallback });
+                                return _react2.default.createElement(_MenuItem2.default, { key: 'menuItem' + menuItem.code, menuItem: menuItem, navigateTo: _this2.navigateTo });
                             })
                         ),
                         _react2.default.createElement(
@@ -412,7 +418,7 @@ var MenuItem = function (_React$Component) {
         key: "onClick",
         value: function onClick(e) {
             e.preventDefault();
-            this.props.menuItemSeletedCallback(this.props.menuItem);
+            this.props.navigateTo(this.props.menuItem);
         }
     }, {
         key: "render",
@@ -450,10 +456,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var MenuStore = function () {
-    function MenuStore(menuComponent) {
+    function MenuStore(component) {
         _classCallCheck(this, MenuStore);
 
-        this.menuComponent = menuComponent;
+        this.component = component;
         this.menuItemsMap = new Map();
         this.selectedMenuItem = null;
     }
@@ -477,6 +483,8 @@ var MenuStore = function () {
     }, {
         key: 'rebuildState',
         value: function rebuildState() {
+            var _this2 = this;
+
             var menuItems = [];
             this.menuItemsMap.forEach(function (value) {
                 return menuItems.push(value);
@@ -484,14 +492,20 @@ var MenuStore = function () {
             menuItems.sort(function (mi1, mi2) {
                 return mi1.priority - mi2.priority;
             });
-            if (menuItems.length > 0) {
-                this.select(menuItems[0]);
-            }
-            this.menuComponent.setState({ menuItems: menuItems, selectedMenuItem: this.selectedMenuItem });
+            this.component.setState({ menuItems: menuItems, selectedMenuItem: this.selectedMenuItem }, function () {
+                return _this2.navigateToFirstMenuItem();
+            });
         }
     }, {
-        key: 'select',
-        value: function select(menuItem) {
+        key: 'navigateToFirstMenuItem',
+        value: function navigateToFirstMenuItem() {
+            if (this.component.state.menuItems.length > 0) {
+                this.navigateTo(this.component.state.menuItems[0]);
+            }
+        }
+    }, {
+        key: 'navigateTo',
+        value: function navigateTo(menuItem) {
             this.selectedMenuItem = menuItem;
             PubSub.publish('uiEvent.menu-and-content.content.requested.' + this.selectedMenuItem.code);
         }

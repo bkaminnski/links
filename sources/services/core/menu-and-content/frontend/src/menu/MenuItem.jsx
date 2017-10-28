@@ -9,7 +9,7 @@ export default class MenuItem extends React.Component {
 
     onClick(e) {
         e.preventDefault();
-        this.props.menuItemSeletedCallback(this.props.menuItem);
+        this.props.navigateTo(this.props.menuItem);
     }
 
     render() {
