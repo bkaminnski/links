@@ -1,5 +1,5 @@
 import React from 'react';
-import Username from './Username.jsx';
+import Email from './Email.jsx';
 import Password from './Password.jsx';
 import LoginFormStore from './LoginFormStore.js';
 
@@ -17,11 +17,11 @@ export default class LoginForm extends React.Component {
             <div className="container" style={{ maxWidth: '300px' }}>
                 <div className="well well-lg">
                     <form onSubmit={this.onSubmit}>
-                        <Username
-                            id={this.state.keyPrefix + '-username'}
-                            key={this.state.keyPrefix + '-username'}
-                            ref={(login) => { this.store.addAttributeComponent('username', login); }}
-                            attributeName="username"
+                        <Email
+                            id={this.state.keyPrefix + '-email'}
+                            key={this.state.keyPrefix + '-email'}
+                            ref={(login) => { this.store.addAttributeComponent('email', login); }}
+                            attributeName="email"
                             initialValue=""
                             onChange={this.onChange}
                         />

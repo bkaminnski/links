@@ -1,4 +1,5 @@
 import AttributesStore from './AttributesStore.js';
+import AuthenticationResponseHandler from '../authenticationResponseHandler/AuthenticationResponseHandler.js';
 
 export default class LoginFormStore {
 
@@ -6,12 +7,13 @@ export default class LoginFormStore {
         this.attributesStore = new AttributesStore(formComponent);
         this.formComponent = formComponent;
         this.formComponent.state = this.initialState();
+        this.authenticationResponseHandler = new AuthenticationResponseHandler();
     }
 
     initialState() {
         let initialState = this.attributesStore.initialState();
         initialState.attributes = {
-            username: {
+            email: {
                 value: '',
                 valid: false
             },
@@ -25,26 +27,12 @@ export default class LoginFormStore {
 
     login() {
         let authenticationRequest = {
-            username: this.formComponent.state.attributes.username.value,
+            email: this.formComponent.state.attributes.email.value,
             password: this.formComponent.state.attributes.password.value
         };
         HttpClient
             .sendPost('/users/resources/authenticationRequests', authenticationRequest)
-            .then(response => this.handleLoginResponse(response));
-    }
-
-    handleLoginResponse(response) {
-        if (response.status == 200) {
-            this.keepSessionToken(response);
-            PubSub.publish('uiEvent.application.applicationLayout.requested');
-        } else {
-            PubSub.publish('uiEvent.users.authentication.requested');
-        }
-    }
-
-    keepSessionToken(response) {
-        let cuiSessionToken = response.jsonObject.cuiSessionToken;
-        sessionStorage.setItem('cuiSessionToken', cuiSessionToken);
+            .then(response => this.authenticationResponseHandler.handleResponse(response));
     }
 
     onChange(attributeName, attributeValue, attributeValid) {

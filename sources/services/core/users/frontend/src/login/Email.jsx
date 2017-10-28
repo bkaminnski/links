@@ -1,7 +1,7 @@
 import React from 'react';
 import InputGroup from './InputGroup.jsx'
 
-export default class Username extends React.Component {
+export default class Email extends React.Component {
     constructor() {
         super();
         this.validate = this.validate.bind(this);
@@ -25,12 +25,12 @@ export default class Username extends React.Component {
             validate={this.validate}
             label=""
             glyphicon="glyphicon-user"
-            placeholder="Username"
+            placeholder="E-mail"
         />
     }
 
     validate(e) {
-        let username = e.target.value;
-        return username != '';
+        let email = e.target.value;
+        return email != '';
     }
 }
