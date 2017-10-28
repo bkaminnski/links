@@ -1,10 +1,10 @@
-package com.hclc.libs.authentication.boundary;
+package com.hclc.libs.authentication.boundary.fixtures;
 
 import com.hclc.libs.authentication.control.JwtSignatureProvider;
 
 import java.util.Optional;
 
-class InvalidJwtSignatureProvider extends JwtSignatureProvider {
+public class InvalidJwtSignatureProvider extends JwtSignatureProvider {
 
     @Override
     public Optional<String> provide() {

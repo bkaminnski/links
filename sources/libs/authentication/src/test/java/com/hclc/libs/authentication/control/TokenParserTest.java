@@ -1,6 +1,7 @@
 package com.hclc.libs.authentication.control;
 
-import com.hclc.libs.authentication.entity.AuthorizedUser;
+import com.hclc.libs.authentication.control.fixtures.TokenParserParameters;
+import com.hclc.libs.authentication.entity.AuthenticatedUser;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.hclc.libs.authentication.control.TokenParserParameters.parameters;
+import static com.hclc.libs.authentication.control.fixtures.TokenParserParameters.parameters;
 import static io.jsonwebtoken.SignatureAlgorithm.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.of;
@@ -27,7 +28,7 @@ class TokenParserTest {
     }
 
     @Test
-    void whenCuiAuthenticationTokenIsValid_shouldReturnValidAuthorizedUser() {
+    void whenCuiAuthenticationTokenIsValid_shouldReturnValidAuthenticatedUser() {
         TokenParserParameters validParameters = parameters()
                 .id("validId")
                 .email("valid@email.com")
@@ -36,17 +37,17 @@ class TokenParserTest {
                 .build();
         String cuiAuthenticationToken = createCuiAuthenticationToken(validParameters);
 
-        Optional<AuthorizedUser> parsingResult = tokenParser.parse(cuiAuthenticationToken, validParameters.getJwtParseSignature());
+        Optional<AuthenticatedUser> parsingResult = tokenParser.parse(cuiAuthenticationToken, validParameters.getJwtParseSignature());
 
-        assertThat((Object) parsingResult.get()).isEqualToComparingFieldByField(new AuthorizedUser(validParameters.getId(), validParameters.getEmail()));
+        assertThat((Object) parsingResult.get()).isEqualToComparingFieldByField(new AuthenticatedUser(validParameters.getId(), validParameters.getEmail()));
     }
 
     @ParameterizedTest(name = "{index}. {0} ==> {1}")
     @MethodSource("incorrectData")
-    void whenAnyDataIsIncorrect_shouldReturnEmptyAuthorizedUser(String testExplanation, TokenParserParameters parameters) {
+    void whenAnyDataIsIncorrect_shouldReturnEmptyAuthenticatedUser(String testExplanation, TokenParserParameters parameters) {
         String cuiAuthenticationToken = createCuiAuthenticationToken(parameters);
 
-        Optional<AuthorizedUser> parsingResult = tokenParser.parse(cuiAuthenticationToken, parameters.getJwtParseSignature());
+        Optional<AuthenticatedUser> parsingResult = tokenParser.parse(cuiAuthenticationToken, parameters.getJwtParseSignature());
 
         assertThat(parsingResult).isEmpty();
     }

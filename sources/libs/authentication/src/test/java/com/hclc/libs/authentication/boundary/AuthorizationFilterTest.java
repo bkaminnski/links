@@ -1,5 +1,6 @@
 package com.hclc.libs.authentication.boundary;
 
+import com.hclc.libs.authentication.boundary.fixtures.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +22,7 @@ class AuthorizationFilterTest {
 
     @Test
     void whenJwtSignatureIsInvalid_shouldAbort() throws IOException {
+        authorizationFilter.resourceInfo = new SafeEndpointResouceInfo();
         authorizationFilter.jwtSignatureProvider = new InvalidJwtSignatureProvider();
         ContainerRequestContextSpy requestContextSpy = new ContainerRequestContextSpy();
 
@@ -30,16 +32,20 @@ class AuthorizationFilterTest {
     }
 
     @Test
-    void whenJwtSignatureIsInvalid_shouldAbortImmediately() throws IOException {
+    void whenJwtSignatureIsInvalid_shouldReturnImmediately() throws IOException {
+        authorizationFilter.resourceInfo = new SafeEndpointResouceInfo();
         authorizationFilter.jwtSignatureProvider = new InvalidJwtSignatureProvider();
+        ArtificialPauseSpy artificialPause = new ArtificialPauseSpy();
+        authorizationFilter.artificialPause = artificialPause;
 
-        assertTimeout(ofMillis(100), () -> {
-            authorizationFilter.filter(new ContainerRequestContextSpy());
-        });
+        authorizationFilter.filter(new ContainerRequestContextSpy());
+
+        assertThat(artificialPause.pauseWasExecuted()).isFalse();
     }
 
     @Test
     void whenJwtSignatureIsInvalid_shouldNotTryParsingToken() throws IOException {
+        authorizationFilter.resourceInfo = new SafeEndpointResouceInfo();
         authorizationFilter.jwtSignatureProvider = new InvalidJwtSignatureProvider();
         TokenParserSpy tokenParserSpy = new TokenParserSpy();
         authorizationFilter.tokenParser = tokenParserSpy;
@@ -51,6 +57,7 @@ class AuthorizationFilterTest {
 
     @Test
     void whenJwtSignatureIsValid_shouldParseToken() throws IOException {
+        authorizationFilter.resourceInfo = new SafeEndpointResouceInfo();
         authorizationFilter.jwtSignatureProvider = new ValidJwtSignatureProvider();
         TokenParserSpy tokenParserSpy = new TokenParserSpy();
         authorizationFilter.tokenParser = tokenParserSpy;
@@ -63,6 +70,7 @@ class AuthorizationFilterTest {
 
     @Test
     void whenTokenIsInvalid_shouldAbort() throws IOException {
+        authorizationFilter.resourceInfo = new SafeEndpointResouceInfo();
         authorizationFilter.jwtSignatureProvider = new ValidJwtSignatureProvider();
         authorizationFilter.tokenParser = new InvalidTokenParser();
         authorizationFilter.artificialPause = new ArtificialPauseSpy();
@@ -75,6 +83,7 @@ class AuthorizationFilterTest {
 
     @Test
     void whenTokenIsInvalid_shouldIntroduceArtificialPause() throws IOException {
+        authorizationFilter.resourceInfo = new SafeEndpointResouceInfo();
         authorizationFilter.jwtSignatureProvider = new ValidJwtSignatureProvider();
         authorizationFilter.tokenParser = new InvalidTokenParser();
         ArtificialPauseSpy artificialPause = new ArtificialPauseSpy();
@@ -87,6 +96,7 @@ class AuthorizationFilterTest {
 
     @Test
     void whenTokenIsValid_shouldNotAbort() throws IOException {
+        authorizationFilter.resourceInfo = new SafeEndpointResouceInfo();
         authorizationFilter.jwtSignatureProvider = new ValidJwtSignatureProvider();
         authorizationFilter.tokenParser = new ValidTokenParser();
         authorizationFilter.artificialPause = new ArtificialPauseSpy();
@@ -99,6 +109,7 @@ class AuthorizationFilterTest {
 
     @Test
     void whenTokenIsValid_shouldNotIntroduceArtificialPause() throws IOException {
+        authorizationFilter.resourceInfo = new SafeEndpointResouceInfo();
         authorizationFilter.jwtSignatureProvider = new ValidJwtSignatureProvider();
         authorizationFilter.tokenParser = new ValidTokenParser();
         ArtificialPauseSpy artificialPause = new ArtificialPauseSpy();
@@ -109,6 +120,51 @@ class AuthorizationFilterTest {
         assertThat(artificialPause.pauseWasExecuted()).isFalse();
     }
 
+
+    @Test
+    void whenTokenIsValid_shouldPutAuthenticatedInSecurityContext() throws IOException {
+        authorizationFilter.resourceInfo = new SafeEndpointResouceInfo();
+        authorizationFilter.jwtSignatureProvider = new ValidJwtSignatureProvider();
+        ValidTokenParser validTokenParser = new ValidTokenParser();
+        authorizationFilter.tokenParser = validTokenParser;
+        authorizationFilter.artificialPause = new ArtificialPauseSpy();
+        ContainerRequestContextSpy requestContextSpy = new ContainerRequestContextSpy();
+
+        authorizationFilter.filter(requestContextSpy);
+
+        assertThat(requestContextSpy.getSecurityContext().getUserPrincipal()).isSameAs(validTokenParser.getAuthenticatedUser());
+    }
+
+
+    @Test
+    void whenUnsafeEndpoint_shouldNotAbort() throws IOException {
+        authorizationFilter.resourceInfo = new UnsafeEndpointResouceInfo();
+        ContainerRequestContextSpy requestContextSpy = new ContainerRequestContextSpy();
+
+        authorizationFilter.filter(requestContextSpy);
+
+        assertThat(requestContextSpy.abortedWith()).isNull();
+    }
+
+    @Test
+    void whenUnsafeEndpoint_shouldReturnImmediately() throws IOException {
+        authorizationFilter.resourceInfo = new UnsafeEndpointResouceInfo();
+
+        assertTimeout(ofMillis(200), () -> {
+            authorizationFilter.filter(new ContainerRequestContextSpy());
+        });
+    }
+
+    @Test
+    void whenUnsafeEndpoint_shouldNotTryParsingToken() throws IOException {
+        authorizationFilter.resourceInfo = new UnsafeEndpointResouceInfo();
+        TokenParserSpy tokenParserSpy = new TokenParserSpy();
+        authorizationFilter.tokenParser = tokenParserSpy;
+
+        authorizationFilter.filter(new ContainerRequestContextSpy());
+
+        assertThat(tokenParserSpy.parseWasCalled()).isFalse();
+    }
 
     private void assertThatRequestWasAborted(ContainerRequestContextSpy requestContextSpy) {
         assertThat(requestContextSpy.abortedWith().getStatus()).isEqualTo(UNAUTHORIZED.getStatusCode());

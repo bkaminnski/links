@@ -1,10 +1,12 @@
 package com.hclc.libs.authentication.entity;
 
-public class AuthorizedUser {
+import java.security.Principal;
+
+public class AuthenticatedUser implements Principal {
 
     private final String id, email;
 
-    public AuthorizedUser(String id, String email) {
+    public AuthenticatedUser(String id, String email) {
         this.id = id;
         this.email = email;
     }
@@ -14,6 +16,11 @@ public class AuthorizedUser {
     }
 
     public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public String getName() {
         return email;
     }
 }

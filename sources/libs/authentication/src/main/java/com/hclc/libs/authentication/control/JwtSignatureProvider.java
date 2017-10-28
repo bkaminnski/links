@@ -1,13 +1,11 @@
 package com.hclc.libs.authentication.control;
 
-import com.hclc.libs.authentication.boundary.AuthorizationFilter;
-
 import java.util.Optional;
 import java.util.logging.Logger;
 
 public class JwtSignatureProvider {
 
-    private static final Logger LOG = Logger.getLogger(AuthorizationFilter.class.getName());
+    private static final Logger LOG = Logger.getLogger(JwtSignatureProvider.class.getName());
 
     public Optional<String> provide() {
         String jwtSignature = System.getProperty("jwtSignature");
