@@ -17,7 +17,7 @@ export default class LoginForm extends React.Component {
             <div className="container" style={{ maxWidth: '450px' }}>
                 <div className="well well-lg">
                     <p style={{ color: 'rgb(128, 128, 128)', fontFamily: 'verdana', fontSize: '32px', lineHeight: '25px', paddingBottom: '25px', fontWeight: 'normal', textAlign: 'center' }}>
-                        <span style={{ color: 'rgb(64, 64, 64)' }}>Link</span><span style={{ fontWeight: 'bold' }}>Link</span>
+                        <span className="glyphicon glyphicon-link" aria-hidden="true"></span><span style={{ color: 'rgb(64, 64, 64)' }}>Link</span><span style={{ fontWeight: 'bold' }}>Link</span>
                     </p>
                     <form onSubmit={this.onSubmit}>
                         <Email

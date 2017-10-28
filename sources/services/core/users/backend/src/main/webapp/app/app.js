@@ -496,6 +496,7 @@ var LoginForm = function (_React$Component) {
                         _react2.default.createElement(
                             'p',
                             { style: { color: 'rgb(128, 128, 128)', fontFamily: 'verdana', fontSize: '32px', lineHeight: '25px', paddingBottom: '25px', fontWeight: 'normal', textAlign: 'center' } },
+                            _react2.default.createElement('span', { className: 'glyphicon glyphicon-link', 'aria-hidden': 'true' }),
                             _react2.default.createElement(
                                 'span',
                                 { style: { color: 'rgb(64, 64, 64)' } },
