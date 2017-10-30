@@ -11,7 +11,12 @@ export default class UniqueIds {
             this.loading = true;
             HttpClient
                 .sendGet('/unique-ids/resources/uniqueIds')
-                .then(uniqueIds => this.whenLoaded(uniqueIds.jsonObject));
+                .then(uniqueIds => {
+                    if (uniqueIds.status == 200) {
+                        this.whenLoaded(uniqueIds.jsonObject);
+                    }
+                })
+                .catch(() => this.loading = false);
         }
     }
 

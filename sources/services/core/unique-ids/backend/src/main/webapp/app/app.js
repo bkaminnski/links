@@ -100,7 +100,11 @@ var UniqueIds = function () {
             if (this.loading == false) {
                 this.loading = true;
                 HttpClient.sendGet('/unique-ids/resources/uniqueIds').then(function (uniqueIds) {
-                    return _this.whenLoaded(uniqueIds.jsonObject);
+                    if (uniqueIds.status == 200) {
+                        _this.whenLoaded(uniqueIds.jsonObject);
+                    }
+                }).catch(function () {
+                    return _this.loading = false;
                 });
             }
         }

@@ -19,6 +19,6 @@ export default class UserInfoPlaceholder extends React.Component {
     }
 
     render() {
-        return this.state.component
+        return this.state.component;
     }
 }

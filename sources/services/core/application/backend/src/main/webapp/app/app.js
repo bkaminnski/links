@@ -471,8 +471,11 @@ var HttpClient = function () {
                 request.open("GET", url);
                 request.setRequestHeader("Accept", "application/json");
                 request.setRequestHeader("CUI-Authentication-Token", sessionStorage.getItem('cuiAuthenticationToken'));
-                request.onreadystatechange = function () {
-                    _this.handleResponse(request, resolve);
+                request.onload = function () {
+                    _this.handleResponse(request, resolve, reject);
+                };
+                request.onerror = function () {
+                    _this.handleResponse(request, resolve, reject);
                 };
                 request.send();
             });
@@ -484,13 +487,16 @@ var HttpClient = function () {
         value: function sendPut(url, data) {
             var _this2 = this;
 
-            return new Promise(function (resolve) {
+            return new Promise(function (resolve, reject) {
                 var request = new XMLHttpRequest();
                 request.open("PUT", url);
                 request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
                 request.setRequestHeader("CUI-Authentication-Token", sessionStorage.getItem('cuiAuthenticationToken'));
-                request.onreadystatechange = function () {
-                    _this2.handleResponse(request, resolve);
+                request.onload = function () {
+                    _this2.handleResponse(request, resolve, reject);
+                };
+                request.onerror = function () {
+                    _this2.handleResponse(request, resolve, reject);
                 };
                 request.send(JSON.stringify(data));
             });
@@ -500,7 +506,7 @@ var HttpClient = function () {
         value: function sendPost(url, data, isFormData) {
             var _this3 = this;
 
-            return new Promise(function (resolve) {
+            return new Promise(function (resolve, reject) {
                 var request = new XMLHttpRequest();
                 request.open("POST", url);
                 if (!isFormData) {
@@ -508,8 +514,11 @@ var HttpClient = function () {
                     data = JSON.stringify(data);
                 }
                 request.setRequestHeader("CUI-Authentication-Token", sessionStorage.getItem('cuiAuthenticationToken'));
-                request.onreadystatechange = function () {
-                    _this3.handleResponse(request, resolve, isFormData);
+                request.onload = function () {
+                    _this3.handleResponse(request, resolve, reject, isFormData);
+                };
+                request.onerror = function () {
+                    _this3.handleResponse(request, resolve, reject, isFormData);
                 };
                 request.send(data);
             });
@@ -519,32 +528,40 @@ var HttpClient = function () {
         value: function sendDelete(url) {
             var _this4 = this;
 
-            return new Promise(function (resolve) {
+            return new Promise(function (resolve, reject) {
                 var request = new XMLHttpRequest();
                 request.open("DELETE", url);
                 request.setRequestHeader("CUI-Authentication-Token", sessionStorage.getItem('cuiAuthenticationToken'));
-                request.onreadystatechange = function () {
-                    _this4.handleResponse(request, resolve);
+                request.onload = function () {
+                    _this4.handleResponse(request, resolve, reject);
+                };
+                request.onerror = function () {
+                    _this4.handleResponse(request, resolve, reject);
                 };
                 request.send();
             });
         }
     }, {
         key: 'handleResponse',
-        value: function handleResponse(request, resolve, isFormData) {
+        value: function handleResponse(request, resolve, reject, isFormData) {
             if (request.readyState != 4) return;
 
-            var response = { status: request.status };
+            var response = {
+                status: request.status,
+                jsonObject: {}
+            };
             if (request.status == 200) {
                 if (request.responseText != "") {
                     response.jsonObject = JSON.parse(request.responseText);
                 }
                 resolve(response);
             } else if (request.status == 204) {
-                response.jsonObject = {};
                 resolve(response);
             } else if (request.status == 401) {
                 PubSub.publish('uiEvent.users.authentication.requested');
+                reject(response);
+            } else {
+                reject(response);
             }
         }
     }]);
