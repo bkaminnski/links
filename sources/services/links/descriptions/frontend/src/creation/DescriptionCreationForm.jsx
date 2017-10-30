@@ -22,6 +22,14 @@ export default class DescriptionCreationForm extends React.Component {
         />
     }
 
+    componentDidMount() {
+        this.store.subscribeToEvents();
+    }
+
+    componentWillUnmount() {
+        this.store.unsubscribeFromEvents();
+    }
+
     onChange(attributeName, attributeValue, attributeValid) {
         this.store.onChange(attributeName, attributeValue, attributeValid);
     }

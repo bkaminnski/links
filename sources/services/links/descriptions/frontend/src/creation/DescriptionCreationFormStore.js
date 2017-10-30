@@ -2,10 +2,10 @@ import AttributesStore from './AttributesStore.js';
 
 export default class DescriptionCreationFormStore {
 
-    constructor(formComponent) {
-        this.attributesStore = new AttributesStore(formComponent);
-        this.formComponent = formComponent;
-        this.formComponent.state = this.initialState();
+    constructor(component) {
+        this.attributesStore = new AttributesStore(component);
+        this.component = component;
+        this.component.state = this.initialState();
     }
 
     initialState() {
@@ -16,26 +16,25 @@ export default class DescriptionCreationFormStore {
                 valid: false
             }
         };
+        initialState.linkSharedId = '';
         return initialState;
     }
 
     createDescription() {
-        uniqueIds.withNext(uniqueId => {
-            let createDescriptionCommand = {
-                sharedLinkId: uniqueId,
-                description: this.formComponent.state.attributes.description.value
-            };
-            HttpClient.sendPost('/descriptions/resources/descriptions', createDescriptionCommand).then((response) => {
-                if (response.status == 204) {
-                    this.reset();
-                    PubSub.publish('uiEvent.descriptions.descriptionCreation.descriptionWasCreated');
-                }
-            });
+        let createDescriptionCommand = {
+            linkSharedId: this.component.state.linkSharedId,
+            description: this.component.state.attributes.description.value
+        };
+        HttpClient.sendPost('/descriptions/resources/descriptions', createDescriptionCommand).then((response) => {
+            if (response.status == 204) {
+                this.reset();
+                PubSub.publish('uiEvent.descriptions.descriptionCreation.descriptionWasCreated');
+            }
         });
     }
 
     reset() {
-        this.formComponent.setState(this.initialState());
+        this.component.setState(this.initialState());
     }
 
     onChange(attributeName, attributeValue, attributeValid) {
@@ -52,5 +51,16 @@ export default class DescriptionCreationFormStore {
 
     focusOnFirstInvalidAttributeComponent() {
         this.attributesStore.focusOnFirstInvalidAttributeComponent();
+    }
+
+    subscribeToEvents() {
+        this.linkCreationWasInitiatedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.initiatedWithLinkId', (msg, linkSharedId) => {
+            console.log('link creation was initiated with : ' + linkSharedId);
+            this.component.setState({ linkSharedId: linkSharedId });
+        });
+    }
+
+    unsubscribeFromEvents() {
+        PubSub.unsubscribe(this.linkCreationWasInitiatedSubscriptionToken);
     }
 }

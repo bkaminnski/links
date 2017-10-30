@@ -502,12 +502,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var LinkCreationFormStore = function () {
-    function LinkCreationFormStore(formComponent) {
+    function LinkCreationFormStore(component) {
         _classCallCheck(this, LinkCreationFormStore);
 
-        this.attributesStore = new _AttributesStore2.default(formComponent);
-        this.formComponent = formComponent;
-        this.formComponent.state = this.initialState();
+        this.attributesStore = new _AttributesStore2.default(component);
+        this.component = component;
+        this.component.state = this.initialState();
         this.onChange = this.onChange.bind(this);
         this.addAttributeComponent = this.addAttributeComponent.bind(this);
     }
@@ -522,21 +522,22 @@ var LinkCreationFormStore = function () {
                     valid: false
                 }
             };
+            initialState.sharedId = '';
             return initialState;
         }
     }, {
         key: 'createLink',
         value: function createLink() {
-            var _this = this;
+            var _this2 = this;
 
             uniqueIds.withNext(function (uniqueId) {
                 var createLinkCommand = {
                     sharedId: uniqueId,
-                    url: _this.formComponent.state.attributes.url.value
+                    url: _this2.component.state.attributes.url.value
                 };
                 HttpClient.sendPost('/links/resources/links', createLinkCommand).then(function (response) {
                     if (response.status == 204) {
-                        _this.reset();
+                        _this2.reset();
                         PubSub.publish('uiEvent.links.linkCreation.linkWasCreated');
                     }
                 });
@@ -545,12 +546,22 @@ var LinkCreationFormStore = function () {
     }, {
         key: 'reset',
         value: function reset() {
-            this.formComponent.setState(this.initialState());
+            this.component.setState(this.initialState());
         }
     }, {
         key: 'onChange',
         value: function onChange(attributeName, attributeValue, attributeValid) {
-            this.attributesStore.onChange(attributeName, attributeValue, attributeValid);
+            var _this = this;
+            if (this.component.state.sharedId == '') {
+                uniqueIds.withNext(function (uniqueId) {
+                    return _this.component.setState({ sharedId: uniqueId }, function () {
+                        PubSub.publish('uiEvent.links.linkCreation.initiatedWithLinkId', _this.component.state.sharedId);
+                        _this.attributesStore.onChange(attributeName, attributeValue, attributeValid);
+                    });
+                });
+            } else {
+                this.attributesStore.onChange(attributeName, attributeValue, attributeValid);
+            }
         }
     }, {
         key: 'addAttributeComponent',

@@ -519,6 +519,16 @@ var DescriptionCreationForm = function (_React$Component) {
             });
         }
     }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.store.subscribeToEvents();
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.store.unsubscribeFromEvents();
+        }
+    }, {
         key: 'onChange',
         value: function onChange(attributeName, attributeValue, attributeValid) {
             this.store.onChange(attributeName, attributeValue, attributeValid);
@@ -562,12 +572,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var DescriptionCreationFormStore = function () {
-    function DescriptionCreationFormStore(formComponent) {
+    function DescriptionCreationFormStore(component) {
         _classCallCheck(this, DescriptionCreationFormStore);
 
-        this.attributesStore = new _AttributesStore2.default(formComponent);
-        this.formComponent = formComponent;
-        this.formComponent.state = this.initialState();
+        this.attributesStore = new _AttributesStore2.default(component);
+        this.component = component;
+        this.component.state = this.initialState();
     }
 
     _createClass(DescriptionCreationFormStore, [{
@@ -580,6 +590,7 @@ var DescriptionCreationFormStore = function () {
                     valid: false
                 }
             };
+            initialState.linkSharedId = '';
             return initialState;
         }
     }, {
@@ -587,23 +598,21 @@ var DescriptionCreationFormStore = function () {
         value: function createDescription() {
             var _this = this;
 
-            uniqueIds.withNext(function (uniqueId) {
-                var createDescriptionCommand = {
-                    sharedLinkId: uniqueId,
-                    description: _this.formComponent.state.attributes.description.value
-                };
-                HttpClient.sendPost('/descriptions/resources/descriptions', createDescriptionCommand).then(function (response) {
-                    if (response.status == 204) {
-                        _this.reset();
-                        PubSub.publish('uiEvent.descriptions.descriptionCreation.descriptionWasCreated');
-                    }
-                });
+            var createDescriptionCommand = {
+                linkSharedId: this.component.state.linkSharedId,
+                description: this.component.state.attributes.description.value
+            };
+            HttpClient.sendPost('/descriptions/resources/descriptions', createDescriptionCommand).then(function (response) {
+                if (response.status == 204) {
+                    _this.reset();
+                    PubSub.publish('uiEvent.descriptions.descriptionCreation.descriptionWasCreated');
+                }
             });
         }
     }, {
         key: 'reset',
         value: function reset() {
-            this.formComponent.setState(this.initialState());
+            this.component.setState(this.initialState());
         }
     }, {
         key: 'onChange',
@@ -624,6 +633,21 @@ var DescriptionCreationFormStore = function () {
         key: 'focusOnFirstInvalidAttributeComponent',
         value: function focusOnFirstInvalidAttributeComponent() {
             this.attributesStore.focusOnFirstInvalidAttributeComponent();
+        }
+    }, {
+        key: 'subscribeToEvents',
+        value: function subscribeToEvents() {
+            var _this2 = this;
+
+            this.linkCreationWasInitiatedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.initiatedWithLinkId', function (msg, linkSharedId) {
+                console.log('link creation was initiated with : ' + linkSharedId);
+                _this2.component.setState({ linkSharedId: linkSharedId });
+            });
+        }
+    }, {
+        key: 'unsubscribeFromEvents',
+        value: function unsubscribeFromEvents() {
+            PubSub.unsubscribe(this.linkCreationWasInitiatedSubscriptionToken);
         }
     }]);
 
