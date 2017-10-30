@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "app";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -74,6 +74,50 @@ module.exports = React;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AuthenticationResponseHandler = function () {
+    function AuthenticationResponseHandler() {
+        _classCallCheck(this, AuthenticationResponseHandler);
+    }
+
+    _createClass(AuthenticationResponseHandler, [{
+        key: 'handleResponse',
+        value: function handleResponse(response) {
+            if (response.status == 200) {
+                this.keepAuthenticationToken(response);
+                PubSub.publish('uiEvent.application.applicationLayout.requested');
+            } else {
+                sessionStorage.setItem('cuiAuthenticationToken', '');
+                PubSub.publish('uiEvent.users.authentication.requested');
+            }
+        }
+    }, {
+        key: 'keepAuthenticationToken',
+        value: function keepAuthenticationToken(response) {
+            var cuiAuthenticationToken = response.jsonObject.cuiAuthenticationToken;
+            sessionStorage.setItem('cuiAuthenticationToken', cuiAuthenticationToken);
+        }
+    }]);
+
+    return AuthenticationResponseHandler;
+}();
+
+exports.default = AuthenticationResponseHandler;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -189,7 +233,7 @@ var InputGroup = function (_React$Component) {
 exports.default = InputGroup;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -201,7 +245,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _LoginPage = __webpack_require__(8);
+var _LoginPage = __webpack_require__(14);
 
 var _LoginPage2 = _interopRequireDefault(_LoginPage);
 
@@ -236,21 +280,241 @@ var AuthenticationEvents = function () {
 exports.default = AuthenticationEvents;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _PeriodicalTokenRefresher = __webpack_require__(11);
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _UserInfo = __webpack_require__(16);
+
+var _UserInfo2 = _interopRequireDefault(_UserInfo);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var UserInfoEvents = function () {
+    function UserInfoEvents() {
+        _classCallCheck(this, UserInfoEvents);
+
+        this.publishAvailable.bind(this);
+    }
+
+    _createClass(UserInfoEvents, [{
+        key: 'subscribeToRequested',
+        value: function subscribeToRequested() {
+            var _this = this;
+
+            this.userInfoRequestedSubscriptionToken = PubSub.subscribe('uiEvent.users.userInfo.requested', function (msg) {
+                _this.publishAvailable();
+            });
+        }
+    }, {
+        key: 'publishAvailable',
+        value: function publishAvailable() {
+            PubSub.publish('uiEvent.users.userInfo.available', React.createElement(_UserInfo2.default, null));
+        }
+    }]);
+
+    return UserInfoEvents;
+}();
+
+exports.default = UserInfoEvents;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _AuthenticationResponseHandler = __webpack_require__(1);
+
+var _AuthenticationResponseHandler2 = _interopRequireDefault(_AuthenticationResponseHandler);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PeriodicalTokenRefresher = function () {
+    function PeriodicalTokenRefresher() {
+        _classCallCheck(this, PeriodicalTokenRefresher);
+
+        this.authenticationResponseHandler = new _AuthenticationResponseHandler2.default();
+    }
+
+    _createClass(PeriodicalTokenRefresher, [{
+        key: 'registerPeriodicalRefresh',
+        value: function registerPeriodicalRefresh() {
+            var _this = this;
+
+            setInterval(function () {
+                return _this.refreshToken();
+            }, 30000);
+        }
+    }, {
+        key: 'refreshToken',
+        value: function refreshToken() {
+            var _this2 = this;
+
+            if (sessionStorage.getItem('cuiAuthenticationToken') != null && sessionStorage.getItem('cuiAuthenticationToken') != '') {
+                HttpClient.sendGet('/users/resources/authenticationToken').then(function (response) {
+                    return _this2.authenticationResponseHandler.handleResponse(response);
+                });
+            }
+        }
+    }]);
+
+    return PeriodicalTokenRefresher;
+}();
+
+exports.default = PeriodicalTokenRefresher;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+/**
+ * The code was extracted from:
+ * https://github.com/davidchambers/Base64.js
+ */
+
+var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
+function InvalidCharacterError(message) {
+  this.message = message;
+}
+
+InvalidCharacterError.prototype = new Error();
+InvalidCharacterError.prototype.name = 'InvalidCharacterError';
+
+function polyfill (input) {
+  var str = String(input).replace(/=+$/, '');
+  if (str.length % 4 == 1) {
+    throw new InvalidCharacterError("'atob' failed: The string to be decoded is not correctly encoded.");
+  }
+  for (
+    // initialize result and counters
+    var bc = 0, bs, buffer, idx = 0, output = '';
+    // get next character
+    buffer = str.charAt(idx++);
+    // character found in table? initialize bit storage and add its ascii value;
+    ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
+      // and if not first of each 4 characters,
+      // convert the first 8 bits to one ascii character
+      bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0
+  ) {
+    // try to find character in table (0-63, not found => -1)
+    buffer = chars.indexOf(buffer);
+  }
+  return output;
+}
+
+
+module.exports = typeof window !== 'undefined' && window.atob && window.atob.bind(window) || polyfill;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var atob = __webpack_require__(6);
+
+function b64DecodeUnicode(str) {
+  return decodeURIComponent(atob(str).replace(/(.)/g, function (m, p) {
+    var code = p.charCodeAt(0).toString(16).toUpperCase();
+    if (code.length < 2) {
+      code = '0' + code;
+    }
+    return '%' + code;
+  }));
+}
+
+module.exports = function(str) {
+  var output = str.replace(/-/g, "+").replace(/_/g, "/");
+  switch (output.length % 4) {
+    case 0:
+      break;
+    case 2:
+      output += "==";
+      break;
+    case 3:
+      output += "=";
+      break;
+    default:
+      throw "Illegal base64url string!";
+  }
+
+  try{
+    return b64DecodeUnicode(output);
+  } catch (err) {
+    return atob(output);
+  }
+};
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var base64_url_decode = __webpack_require__(7);
+
+function InvalidTokenError(message) {
+  this.message = message;
+}
+
+InvalidTokenError.prototype = new Error();
+InvalidTokenError.prototype.name = 'InvalidTokenError';
+
+module.exports = function (token,options) {
+  if (typeof token !== 'string') {
+    throw new InvalidTokenError('Invalid token specified');
+  }
+
+  options = options || {};
+  var pos = options.header === true ? 0 : 1;
+  try {
+    return JSON.parse(base64_url_decode(token.split('.')[pos]));
+  } catch (e) {
+    throw new InvalidTokenError('Invalid token specified: ' + e.message);
+  }
+};
+
+module.exports.InvalidTokenError = InvalidTokenError;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _PeriodicalTokenRefresher = __webpack_require__(5);
 
 var _PeriodicalTokenRefresher2 = _interopRequireDefault(_PeriodicalTokenRefresher);
 
-var _AuthenticationEvents = __webpack_require__(2);
+var _AuthenticationEvents = __webpack_require__(3);
 
 var _AuthenticationEvents2 = _interopRequireDefault(_AuthenticationEvents);
 
-var _UserInfoEvents = __webpack_require__(12);
+var _UserInfoEvents = __webpack_require__(4);
 
 var _UserInfoEvents2 = _interopRequireDefault(_UserInfoEvents);
 
@@ -267,7 +531,7 @@ userInfoEvents.subscribeToRequested();
 userInfoEvents.publishAvailable();
 
 /***/ }),
-/* 4 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -346,7 +610,7 @@ var AttributesStore = function () {
 exports.default = AttributesStore;
 
 /***/ }),
-/* 5 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -362,7 +626,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _InputGroup = __webpack_require__(1);
+var _InputGroup = __webpack_require__(2);
 
 var _InputGroup2 = _interopRequireDefault(_InputGroup);
 
@@ -429,7 +693,7 @@ var Email = function (_React$Component) {
 exports.default = Email;
 
 /***/ }),
-/* 6 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -445,15 +709,15 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Email = __webpack_require__(5);
+var _Email = __webpack_require__(11);
 
 var _Email2 = _interopRequireDefault(_Email);
 
-var _Password = __webpack_require__(9);
+var _Password = __webpack_require__(15);
 
 var _Password2 = _interopRequireDefault(_Password);
 
-var _LoginFormStore = __webpack_require__(7);
+var _LoginFormStore = __webpack_require__(13);
 
 var _LoginFormStore2 = _interopRequireDefault(_LoginFormStore);
 
@@ -568,7 +832,7 @@ var LoginForm = function (_React$Component) {
 exports.default = LoginForm;
 
 /***/ }),
-/* 7 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -580,11 +844,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _AttributesStore = __webpack_require__(4);
+var _AttributesStore = __webpack_require__(10);
 
 var _AttributesStore2 = _interopRequireDefault(_AttributesStore);
 
-var _AuthenticationResponseHandler = __webpack_require__(10);
+var _AuthenticationResponseHandler = __webpack_require__(1);
 
 var _AuthenticationResponseHandler2 = _interopRequireDefault(_AuthenticationResponseHandler);
 
@@ -659,7 +923,7 @@ var LoginFormStore = function () {
 exports.default = LoginFormStore;
 
 /***/ }),
-/* 8 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -675,7 +939,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _LoginForm = __webpack_require__(6);
+var _LoginForm = __webpack_require__(12);
 
 var _LoginForm2 = _interopRequireDefault(_LoginForm);
 
@@ -709,7 +973,7 @@ var LoginPage = function (_React$Component) {
 exports.default = LoginPage;
 
 /***/ }),
-/* 9 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -725,7 +989,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _InputGroup = __webpack_require__(1);
+var _InputGroup = __webpack_require__(2);
 
 var _InputGroup2 = _interopRequireDefault(_InputGroup);
 
@@ -787,155 +1051,7 @@ var Password = function (_React$Component) {
 exports.default = Password;
 
 /***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var AuthenticationResponseHandler = function () {
-    function AuthenticationResponseHandler() {
-        _classCallCheck(this, AuthenticationResponseHandler);
-    }
-
-    _createClass(AuthenticationResponseHandler, [{
-        key: 'handleResponse',
-        value: function handleResponse(response) {
-            if (response.status == 200) {
-                this.keepAuthenticationToken(response);
-                PubSub.publish('uiEvent.application.applicationLayout.requested');
-            } else {
-                sessionStorage.setItem('cuiAuthenticationToken', '');
-                PubSub.publish('uiEvent.users.authentication.requested');
-            }
-        }
-    }, {
-        key: 'keepAuthenticationToken',
-        value: function keepAuthenticationToken(response) {
-            var cuiAuthenticationToken = response.jsonObject.cuiAuthenticationToken;
-            sessionStorage.setItem('cuiAuthenticationToken', cuiAuthenticationToken);
-        }
-    }]);
-
-    return AuthenticationResponseHandler;
-}();
-
-exports.default = AuthenticationResponseHandler;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _AuthenticationResponseHandler = __webpack_require__(10);
-
-var _AuthenticationResponseHandler2 = _interopRequireDefault(_AuthenticationResponseHandler);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var PeriodicalTokenRefresher = function () {
-    function PeriodicalTokenRefresher() {
-        _classCallCheck(this, PeriodicalTokenRefresher);
-
-        this.authenticationResponseHandler = new _AuthenticationResponseHandler2.default();
-    }
-
-    _createClass(PeriodicalTokenRefresher, [{
-        key: 'registerPeriodicalRefresh',
-        value: function registerPeriodicalRefresh() {
-            var _this = this;
-
-            setInterval(function () {
-                return _this.refreshToken();
-            }, 30000);
-        }
-    }, {
-        key: 'refreshToken',
-        value: function refreshToken() {
-            var _this2 = this;
-
-            if (sessionStorage.getItem('cuiAuthenticationToken') != null && sessionStorage.getItem('cuiAuthenticationToken') != '') {
-                HttpClient.sendGet('/users/resources/authenticationToken').then(function (response) {
-                    return _this2.authenticationResponseHandler.handleResponse(response);
-                });
-            }
-        }
-    }]);
-
-    return PeriodicalTokenRefresher;
-}();
-
-exports.default = PeriodicalTokenRefresher;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _UserInfo = __webpack_require__(13);
-
-var _UserInfo2 = _interopRequireDefault(_UserInfo);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var UserInfoEvents = function () {
-    function UserInfoEvents() {
-        _classCallCheck(this, UserInfoEvents);
-
-        this.publishAvailable.bind(this);
-    }
-
-    _createClass(UserInfoEvents, [{
-        key: 'subscribeToRequested',
-        value: function subscribeToRequested() {
-            var _this = this;
-
-            this.userInfoRequestedSubscriptionToken = PubSub.subscribe('uiEvent.users.userInfo.requested', function (msg) {
-                _this.publishAvailable();
-            });
-        }
-    }, {
-        key: 'publishAvailable',
-        value: function publishAvailable() {
-            PubSub.publish('uiEvent.users.userInfo.available', React.createElement(_UserInfo2.default, null));
-        }
-    }]);
-
-    return UserInfoEvents;
-}();
-
-exports.default = UserInfoEvents;
-
-/***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -951,7 +1067,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _UserInfoStore = __webpack_require__(14);
+var _UserInfoStore = __webpack_require__(17);
 
 var _UserInfoStore2 = _interopRequireDefault(_UserInfoStore);
 
@@ -1032,7 +1148,7 @@ var UserInfo = function (_React$Component) {
 exports.default = UserInfo;
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1044,7 +1160,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _jwtDecode = __webpack_require__(17);
+var _jwtDecode = __webpack_require__(8);
 
 var _jwtDecode2 = _interopRequireDefault(_jwtDecode);
 
@@ -1063,8 +1179,10 @@ var InfoStore = function () {
     _createClass(InfoStore, [{
         key: 'populate',
         value: function populate() {
-            var authenticatedUser = (0, _jwtDecode2.default)(sessionStorage.getItem('cuiAuthenticationToken'));
-            this.component.setState({ email: authenticatedUser.email });
+            if (sessionStorage.getItem('cuiAuthenticationToken') != null && sessionStorage.getItem('cuiAuthenticationToken') != '') {
+                var authenticatedUser = (0, _jwtDecode2.default)(sessionStorage.getItem('cuiAuthenticationToken'));
+                this.component.setState({ email: authenticatedUser.email });
+            }
         }
     }, {
         key: 'logOut',
@@ -1078,122 +1196,6 @@ var InfoStore = function () {
 }();
 
 exports.default = InfoStore;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-/**
- * The code was extracted from:
- * https://github.com/davidchambers/Base64.js
- */
-
-var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-function InvalidCharacterError(message) {
-  this.message = message;
-}
-
-InvalidCharacterError.prototype = new Error();
-InvalidCharacterError.prototype.name = 'InvalidCharacterError';
-
-function polyfill (input) {
-  var str = String(input).replace(/=+$/, '');
-  if (str.length % 4 == 1) {
-    throw new InvalidCharacterError("'atob' failed: The string to be decoded is not correctly encoded.");
-  }
-  for (
-    // initialize result and counters
-    var bc = 0, bs, buffer, idx = 0, output = '';
-    // get next character
-    buffer = str.charAt(idx++);
-    // character found in table? initialize bit storage and add its ascii value;
-    ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer,
-      // and if not first of each 4 characters,
-      // convert the first 8 bits to one ascii character
-      bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0
-  ) {
-    // try to find character in table (0-63, not found => -1)
-    buffer = chars.indexOf(buffer);
-  }
-  return output;
-}
-
-
-module.exports = typeof window !== 'undefined' && window.atob && window.atob.bind(window) || polyfill;
-
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var atob = __webpack_require__(15);
-
-function b64DecodeUnicode(str) {
-  return decodeURIComponent(atob(str).replace(/(.)/g, function (m, p) {
-    var code = p.charCodeAt(0).toString(16).toUpperCase();
-    if (code.length < 2) {
-      code = '0' + code;
-    }
-    return '%' + code;
-  }));
-}
-
-module.exports = function(str) {
-  var output = str.replace(/-/g, "+").replace(/_/g, "/");
-  switch (output.length % 4) {
-    case 0:
-      break;
-    case 2:
-      output += "==";
-      break;
-    case 3:
-      output += "=";
-      break;
-    default:
-      throw "Illegal base64url string!";
-  }
-
-  try{
-    return b64DecodeUnicode(output);
-  } catch (err) {
-    return atob(output);
-  }
-};
-
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var base64_url_decode = __webpack_require__(16);
-
-function InvalidTokenError(message) {
-  this.message = message;
-}
-
-InvalidTokenError.prototype = new Error();
-InvalidTokenError.prototype.name = 'InvalidTokenError';
-
-module.exports = function (token,options) {
-  if (typeof token !== 'string') {
-    throw new InvalidTokenError('Invalid token specified');
-  }
-
-  options = options || {};
-  var pos = options.header === true ? 0 : 1;
-  try {
-    return JSON.parse(base64_url_decode(token.split('.')[pos]));
-  } catch (e) {
-    throw new InvalidTokenError('Invalid token specified: ' + e.message);
-  }
-};
-
-module.exports.InvalidTokenError = InvalidTokenError;
-
 
 /***/ })
 /******/ ]);

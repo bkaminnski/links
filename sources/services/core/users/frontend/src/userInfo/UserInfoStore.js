@@ -9,8 +9,10 @@ export default class InfoStore {
     }
 
     populate() {
-        let authenticatedUser = jwt_decode(sessionStorage.getItem('cuiAuthenticationToken'));
-        this.component.setState({ email: authenticatedUser.email });
+        if (sessionStorage.getItem('cuiAuthenticationToken') != null && sessionStorage.getItem('cuiAuthenticationToken') != '') {
+            let authenticatedUser = jwt_decode(sessionStorage.getItem('cuiAuthenticationToken'));
+            this.component.setState({ email: authenticatedUser.email });
+        }
     }
 
     logOut() {
