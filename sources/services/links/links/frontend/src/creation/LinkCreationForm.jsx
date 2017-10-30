@@ -1,6 +1,7 @@
 import React from 'react';
 import Url from './Url.jsx';
 import LinkCreationFormStore from './LinkCreationFormStore.js';
+import DescriptionPlaceholder from './placeholders/DescriptionPlaceholder.jsx';
 
 export default class LinkCreationForm extends React.Component {
 
@@ -21,6 +22,7 @@ export default class LinkCreationForm extends React.Component {
                     initialValue=""
                     onChange={this.store.onChange}
                 />
+                <DescriptionPlaceholder />
                 <div className="text-right" role="group" aria-label="Add">
                     <button type="submit" className="btn btn-default">Add</button>
                 </div>

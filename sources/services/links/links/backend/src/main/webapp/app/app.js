@@ -85,7 +85,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _LinksPage = __webpack_require__(13);
+var _LinksPage = __webpack_require__(14);
 
 var _LinksPage2 = _interopRequireDefault(_LinksPage);
 
@@ -408,6 +408,10 @@ var _LinkCreationFormStore = __webpack_require__(7);
 
 var _LinkCreationFormStore2 = _interopRequireDefault(_LinkCreationFormStore);
 
+var _DescriptionPlaceholder = __webpack_require__(9);
+
+var _DescriptionPlaceholder2 = _interopRequireDefault(_DescriptionPlaceholder);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -450,6 +454,7 @@ var LinkCreationForm = function (_React$Component) {
                         initialValue: '',
                         onChange: this.store.onChange
                     }),
+                    _react2.default.createElement(_DescriptionPlaceholder2.default, null),
                     _react2.default.createElement(
                         'div',
                         { className: 'text-right', role: 'group', 'aria-label': 'Add' },
@@ -667,7 +672,71 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Url = __webpack_require__(12);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DescriptionPlaceholder = function (_React$Component) {
+    _inherits(DescriptionPlaceholder, _React$Component);
+
+    function DescriptionPlaceholder() {
+        _classCallCheck(this, DescriptionPlaceholder);
+
+        var _this = _possibleConstructorReturn(this, (DescriptionPlaceholder.__proto__ || Object.getPrototypeOf(DescriptionPlaceholder)).call(this));
+
+        _this.state = { component: null };
+        return _this;
+    }
+
+    _createClass(DescriptionPlaceholder, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            this.descriptionRequestedSubscriptionToken = PubSub.subscribe('uiEvent.descriptions.description.available', function (msg, component) {
+                _this2.setState({ component: component });
+            });
+            PubSub.publish('uiEvent.descriptions.description.requested');
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            PubSub.unsubscribe(this.descriptionRequestedSubscriptionToken);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return this.state.component;
+        }
+    }]);
+
+    return DescriptionPlaceholder;
+}(_react2.default.Component);
+
+exports.default = DescriptionPlaceholder;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Url = __webpack_require__(13);
 
 var _Url2 = _interopRequireDefault(_Url);
 
@@ -710,7 +779,7 @@ var LinkItem = function (_React$Component) {
 exports.default = LinkItem;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -726,11 +795,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _LinksListStore = __webpack_require__(11);
+var _LinksListStore = __webpack_require__(12);
 
 var _LinksListStore2 = _interopRequireDefault(_LinksListStore);
 
-var _LinkItem = __webpack_require__(9);
+var _LinkItem = __webpack_require__(10);
 
 var _LinkItem2 = _interopRequireDefault(_LinkItem);
 
@@ -784,7 +853,7 @@ var LinksList = function (_React$Component) {
 exports.default = LinksList;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -863,7 +932,7 @@ var LinksListStore = function () {
 exports.default = LinksListStore;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -913,7 +982,7 @@ var Url = function (_React$Component) {
 exports.default = Url;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -933,7 +1002,7 @@ var _LinkCreationForm = __webpack_require__(6);
 
 var _LinkCreationForm2 = _interopRequireDefault(_LinkCreationForm);
 
-var _LinksList = __webpack_require__(10);
+var _LinksList = __webpack_require__(11);
 
 var _LinksList2 = _interopRequireDefault(_LinksList);
 
