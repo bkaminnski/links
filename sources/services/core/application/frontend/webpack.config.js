@@ -58,6 +58,10 @@ module.exports = {
       {
         test: require.resolve("react-dom"),
         loader: "expose-loader?ReactDOM"
+      },
+      {
+        test: require.resolve("jquery"),
+        loader: "expose-loader?$"
       }
     ]
   }

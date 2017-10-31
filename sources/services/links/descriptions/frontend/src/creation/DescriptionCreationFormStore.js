@@ -55,7 +55,7 @@ export default class DescriptionCreationFormStore {
 
     subscribeToEvents() {
         this.linkCreationWasInitiatedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.initiatedWithLinkId', (msg, linkSharedId) => {
-            console.log('link creation was initiated with : ' + linkSharedId);
+            this.collapsibleWrapper.collapse();
             this.component.setState({ linkSharedId: linkSharedId });
         });
     }

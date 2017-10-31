@@ -1,5 +1,6 @@
 import React from 'react';
 import Description from './Description.jsx';
+import CollapsibleWrapper from './CollapsibleWrapper.jsx';
 import DescriptionCreationFormStore from './DescriptionCreationFormStore.js';
 
 export default class DescriptionCreationForm extends React.Component {
@@ -12,14 +13,16 @@ export default class DescriptionCreationForm extends React.Component {
     }
 
     render() {
-        return <Description
-            id={this.state.keyPrefix + '-description'}
-            key={this.state.keyPrefix + '-description'}
-            ref={(description) => { this.store.addAttributeComponent('description', description); }}
-            attributeName="description"
-            initialValue=""
-            onChange={this.onChange}
-        />
+        return <CollapsibleWrapper ref={(collapsibleWrapper) => { this.store.collapsibleWrapper = collapsibleWrapper; }}>
+            <Description
+                id={this.state.keyPrefix + '-description'}
+                key={this.state.keyPrefix + '-description'}
+                ref={(description) => { this.store.addAttributeComponent('description', description); }}
+                attributeName="description"
+                initialValue=""
+                onChange={this.onChange}
+            />
+        </CollapsibleWrapper>
     }
 
     componentDidMount() {
