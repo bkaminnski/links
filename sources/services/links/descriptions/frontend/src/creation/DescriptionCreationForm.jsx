@@ -15,8 +15,8 @@ export default class DescriptionCreationForm extends React.Component {
     render() {
         return <CollapsibleWrapper ref={(collapsibleWrapper) => { this.store.collapsibleWrapper = collapsibleWrapper; }}>
             <Description
-                id={this.state.keyPrefix + '-description'}
-                key={this.state.keyPrefix + '-description'}
+                id={this.state.keyPrefix + '-description-creation'}
+                key={this.state.keyPrefix + '-description-creation'}
                 ref={(description) => { this.store.addAttributeComponent('description', description); }}
                 attributeName="description"
                 initialValue=""

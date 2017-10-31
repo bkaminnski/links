@@ -1,4 +1,5 @@
 import AttributesStore from './AttributesStore.js';
+import DescriptionItemsStore from '../descriptionItems/DescriptionItemsStore.jsx'
 
 export default class DescriptionCreationFormStore {
 
@@ -18,19 +19,6 @@ export default class DescriptionCreationFormStore {
         };
         initialState.linkSharedId = '';
         return initialState;
-    }
-
-    createDescription() {
-        let createDescriptionCommand = {
-            linkSharedId: this.component.state.linkSharedId,
-            description: this.component.state.attributes.description.value
-        };
-        HttpClient.sendPost('/descriptions/resources/descriptions', createDescriptionCommand).then((response) => {
-            if (response.status == 204) {
-                this.reset();
-                PubSub.publish('uiEvent.descriptions.descriptionCreation.descriptionWasCreated');
-            }
-        });
     }
 
     reset() {
@@ -55,12 +43,30 @@ export default class DescriptionCreationFormStore {
 
     subscribeToEvents() {
         this.linkCreationWasInitiatedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.initiatedWithLinkId', (msg, linkSharedId) => {
-            this.collapsibleWrapper.collapse();
+            this.collapsibleWrapper.show();
             this.component.setState({ linkSharedId: linkSharedId });
+        });
+        this.linkCreationWasFinalizedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.finalized', (msg) => {
+            this.createDescription();
+        });
+    }
+
+    createDescription() {
+        let createDescriptionCommand = {
+            linkSharedId: this.component.state.linkSharedId,
+            description: this.component.state.attributes.description.value
+        };
+        HttpClient.sendPost('/descriptions/resources/descriptions', createDescriptionCommand).then((response) => {
+            if (response.status == 204) {
+                this.reset();
+                this.collapsibleWrapper.hide();
+                new DescriptionItemsStore().loadTransformAndPublish();
+            }
         });
     }
 
     unsubscribeFromEvents() {
         PubSub.unsubscribe(this.linkCreationWasInitiatedSubscriptionToken);
+        PubSub.unsubscribe(this.linkCreationWasFinalizedSubscriptionToken);
     }
 }

@@ -1,14 +1,9 @@
 package com.hclc.links.descriptions.descriptions.entity;
 
-import java.io.Serializable;
 import javax.json.Json;
 import javax.json.JsonObjectBuilder;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 public class Description implements Serializable {
@@ -27,6 +22,14 @@ public class Description implements Serializable {
 
     @Column(name = "desc_description", length = 2000)
     private String description;
+
+    public Description() {
+    }
+
+    public Description(String linkSharedId, String description) {
+        this.linkSharedId = linkSharedId;
+        this.description = description;
+    }
 
     public JsonObjectBuilder toJson() {
         return Json

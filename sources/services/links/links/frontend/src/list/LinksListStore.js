@@ -18,6 +18,7 @@ export default class LinksListStore {
 
     subscribeToEvents() {
         this.linksListSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlice.available', (msg, slice) => {
+            this.slices = this.slices.filter(s => s.name != slice.name);
             this.slices.push(slice);
             this.rebuildState();
         });

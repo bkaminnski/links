@@ -11,7 +11,11 @@ export default class CollapsibleWrapper extends React.Component {
         </div>;
     }
 
-    collapse() {
-        $(this.collapsibleWrapper).collapse();
+    show() {
+        $(this.collapsibleWrapper).collapse('show');
+    }
+
+    hide() {
+        $(this.collapsibleWrapper).collapse('hide');
     }
 }

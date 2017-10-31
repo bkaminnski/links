@@ -530,17 +530,15 @@ var LinkCreationFormStore = function () {
         value: function createLink() {
             var _this2 = this;
 
-            uniqueIds.withNext(function (uniqueId) {
-                var createLinkCommand = {
-                    sharedId: uniqueId,
-                    url: _this2.component.state.attributes.url.value
-                };
-                HttpClient.sendPost('/links/resources/links', createLinkCommand).then(function (response) {
-                    if (response.status == 204) {
-                        _this2.reset();
-                        PubSub.publish('uiEvent.links.linkCreation.linkWasCreated');
-                    }
-                });
+            var createLinkCommand = {
+                sharedId: this.component.state.sharedId,
+                url: this.component.state.attributes.url.value
+            };
+            HttpClient.sendPost('/links/resources/links', createLinkCommand).then(function (response) {
+                if (response.status == 204) {
+                    _this2.reset();
+                    PubSub.publish('uiEvent.links.linkCreation.linkWasCreated');
+                }
             });
         }
     }, {
@@ -572,6 +570,7 @@ var LinkCreationFormStore = function () {
         key: 'onSubmit',
         value: function onSubmit() {
             if (this.attributesStore.allAttributesAreValid()) {
+                PubSub.publish('uiEvent.links.linkCreation.finalized');
                 this.createLink();
             } else {
                 this.attributesStore.focusOnFirstInvalidAttributeComponent();
@@ -904,6 +903,9 @@ var LinksListStore = function () {
             var _this2 = this;
 
             this.linksListSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlice.available', function (msg, slice) {
+                _this2.slices = _this2.slices.filter(function (s) {
+                    return s.name != slice.name;
+                });
                 _this2.slices.push(slice);
                 _this2.rebuildState();
             });

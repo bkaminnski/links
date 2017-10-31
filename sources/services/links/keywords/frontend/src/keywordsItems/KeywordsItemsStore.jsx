@@ -16,7 +16,7 @@ export default class KeywordsItemsStore {
             priority: 100,
             elements: keywords.map(keywords => ({
                 linkSharedId: keywords.linkSharedId,
-                component: <KeywordsItem key={'keywords-' + keywords.linkSharedId} keywords={keywords.keywords} />
+                component: <KeywordsItem key={'keywordsItem-' + keywords.linkSharedId} keywords={keywords.keywords} />
             }))
         };
         return slice;

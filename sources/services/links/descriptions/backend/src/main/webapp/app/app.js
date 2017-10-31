@@ -403,8 +403,8 @@ var DescriptionCreationForm = function (_React$Component) {
                         _this2.store.collapsibleWrapper = collapsibleWrapper;
                     } },
                 _react2.default.createElement(_Description2.default, {
-                    id: this.state.keyPrefix + '-description',
-                    key: this.state.keyPrefix + '-description',
+                    id: this.state.keyPrefix + '-description-creation',
+                    key: this.state.keyPrefix + '-description-creation',
                     ref: function ref(description) {
                         _this2.store.addAttributeComponent('description', description);
                     },
@@ -463,6 +463,10 @@ var _AttributesStore = __webpack_require__(4);
 
 var _AttributesStore2 = _interopRequireDefault(_AttributesStore);
 
+var _DescriptionItemsStore = __webpack_require__(10);
+
+var _DescriptionItemsStore2 = _interopRequireDefault(_DescriptionItemsStore);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -488,22 +492,6 @@ var DescriptionCreationFormStore = function () {
             };
             initialState.linkSharedId = '';
             return initialState;
-        }
-    }, {
-        key: 'createDescription',
-        value: function createDescription() {
-            var _this = this;
-
-            var createDescriptionCommand = {
-                linkSharedId: this.component.state.linkSharedId,
-                description: this.component.state.attributes.description.value
-            };
-            HttpClient.sendPost('/descriptions/resources/descriptions', createDescriptionCommand).then(function (response) {
-                if (response.status == 204) {
-                    _this.reset();
-                    PubSub.publish('uiEvent.descriptions.descriptionCreation.descriptionWasCreated');
-                }
-            });
         }
     }, {
         key: 'reset',
@@ -533,17 +521,38 @@ var DescriptionCreationFormStore = function () {
     }, {
         key: 'subscribeToEvents',
         value: function subscribeToEvents() {
-            var _this2 = this;
+            var _this = this;
 
             this.linkCreationWasInitiatedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.initiatedWithLinkId', function (msg, linkSharedId) {
-                _this2.collapsibleWrapper.collapse();
-                _this2.component.setState({ linkSharedId: linkSharedId });
+                _this.collapsibleWrapper.show();
+                _this.component.setState({ linkSharedId: linkSharedId });
+            });
+            this.linkCreationWasFinalizedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.finalized', function (msg) {
+                _this.createDescription();
+            });
+        }
+    }, {
+        key: 'createDescription',
+        value: function createDescription() {
+            var _this2 = this;
+
+            var createDescriptionCommand = {
+                linkSharedId: this.component.state.linkSharedId,
+                description: this.component.state.attributes.description.value
+            };
+            HttpClient.sendPost('/descriptions/resources/descriptions', createDescriptionCommand).then(function (response) {
+                if (response.status == 204) {
+                    _this2.reset();
+                    _this2.collapsibleWrapper.hide();
+                    new _DescriptionItemsStore2.default().loadTransformAndPublish();
+                }
             });
         }
     }, {
         key: 'unsubscribeFromEvents',
         value: function unsubscribeFromEvents() {
             PubSub.unsubscribe(this.linkCreationWasInitiatedSubscriptionToken);
+            PubSub.unsubscribe(this.linkCreationWasFinalizedSubscriptionToken);
         }
     }]);
 
@@ -764,7 +773,7 @@ var DescriptionItemsStore = function () {
                 elements: descriptions.map(function (description) {
                     return {
                         linkSharedId: description.linkSharedId,
-                        component: _react2.default.createElement(_DescriptionItem2.default, { key: 'description-' + description.linkSharedId, description: description.description })
+                        component: _react2.default.createElement(_DescriptionItem2.default, { key: 'descriptionItem-' + description.linkSharedId, description: description.description })
                     };
                 })
             };
@@ -818,22 +827,27 @@ var CollapsibleWrapper = function (_React$Component) {
     }
 
     _createClass(CollapsibleWrapper, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             var _this2 = this;
 
             return _react2.default.createElement(
-                "div",
-                { className: "collapse", ref: function ref(collapsibleWrapper) {
+                'div',
+                { className: 'collapse', ref: function ref(collapsibleWrapper) {
                         _this2.collapsibleWrapper = collapsibleWrapper;
                     } },
                 this.props.children
             );
         }
     }, {
-        key: "collapse",
-        value: function collapse() {
-            $(this.collapsibleWrapper).collapse();
+        key: 'show',
+        value: function show() {
+            $(this.collapsibleWrapper).collapse('show');
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            $(this.collapsibleWrapper).collapse('hide');
         }
     }]);
 

@@ -23,17 +23,15 @@ export default class LinkCreationFormStore {
     }
 
     createLink() {
-        uniqueIds.withNext(uniqueId => {
-            let createLinkCommand = {
-                sharedId: uniqueId,
-                url: this.component.state.attributes.url.value
-            };
-            HttpClient.sendPost('/links/resources/links', createLinkCommand).then((response) => {
-                if (response.status == 204) {
-                    this.reset();
-                    PubSub.publish('uiEvent.links.linkCreation.linkWasCreated');
-                }
-            });
+        let createLinkCommand = {
+            sharedId: this.component.state.sharedId,
+            url: this.component.state.attributes.url.value
+        };
+        HttpClient.sendPost('/links/resources/links', createLinkCommand).then((response) => {
+            if (response.status == 204) {
+                this.reset();
+                PubSub.publish('uiEvent.links.linkCreation.linkWasCreated');
+            }
         });
     }
 
@@ -64,6 +62,7 @@ export default class LinkCreationFormStore {
 
     onSubmit() {
         if (this.attributesStore.allAttributesAreValid()) {
+            PubSub.publish('uiEvent.links.linkCreation.finalized');
             this.createLink();
         } else {
             this.attributesStore.focusOnFirstInvalidAttributeComponent();

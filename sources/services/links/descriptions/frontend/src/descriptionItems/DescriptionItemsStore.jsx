@@ -16,7 +16,7 @@ export default class DescriptionItemsStore {
             priority: 200,
             elements: descriptions.map(description => ({
                 linkSharedId: description.linkSharedId,
-                component: <DescriptionItem key={'description-' + description.linkSharedId} description={description.description} />
+                component: <DescriptionItem key={'descriptionItem-' + description.linkSharedId} description={description.description} />
             }))
         };
         return slice;
