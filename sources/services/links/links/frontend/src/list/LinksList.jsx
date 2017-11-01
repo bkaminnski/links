@@ -11,7 +11,6 @@ export default class LinksList extends React.Component {
 
     componentDidMount() {
         this.linksListStore.subscribeToEvents();
-        this.linksListStore.loadLinks();
     }
 
     componentWillUnmount() {

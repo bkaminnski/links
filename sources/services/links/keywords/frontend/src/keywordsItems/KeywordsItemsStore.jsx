@@ -13,8 +13,8 @@ export default class KeywordsItemsStore {
     transformIntoSlice(keywords) {
         let slice = {
             name: 'keywords',
-            priority: 100,
-            elements: keywords.map(keywords => ({
+            priority: 200,
+            items: keywords.map(keywords => ({
                 linkSharedId: keywords.linkSharedId,
                 component: <KeywordsItem key={'keywordsItem-' + keywords.linkSharedId} keywords={keywords.keywords} />
             }))

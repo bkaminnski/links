@@ -1,7 +1,7 @@
-package com.hclc.links.links.links.boundary;
+package com.hclc.links.urls.urls.boundary;
 
-import com.hclc.links.links.links.entity.CreateLinkCommand;
-import com.hclc.links.links.links.entity.Link;
+import com.hclc.links.urls.urls.entity.CreateUrlCommand;
+import com.hclc.links.urls.urls.entity.Url;
 
 import javax.ejb.Stateless;
 import javax.json.Json;
@@ -15,20 +15,20 @@ import java.util.List;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Stateless
-@Path(value = "links")
-public class Links {
+@Path(value = "urls")
+public class Urls {
 
     @PersistenceContext
     EntityManager em;
 
     @GET
     @Produces(APPLICATION_JSON)
-    public Response links() {
+    public Response urls() {
         return Response.ok(
-                ((List<Link>) em.createQuery("select l from Link l order by l.id desc")
+                ((List<Url>) em.createQuery("select u from Url u order by u.id desc")
                         .getResultList())
                         .stream()
-                        .map(Link::toJson)
+                        .map(Url::toJson)
                         .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add)
                         .build()
         ).build();
@@ -36,8 +36,8 @@ public class Links {
 
     @POST
     @Consumes(APPLICATION_JSON)
-    public Response create(CreateLinkCommand createLinkCommand) {
-        em.persist(createLinkCommand.toLink());
+    public Response create(CreateUrlCommand createUrlCommand) {
+        em.persist(createUrlCommand.toUrl());
         return Response.noContent().build();
     }
 }

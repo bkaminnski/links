@@ -24,6 +24,7 @@ function compileAndDeployCore() {
 
 function compileAndDeployLinks() {
 	new Command('../sources/services/links/links/backend/', 'mvn clean install -P wildfly-local').execute();
+	new Command('../sources/services/links/urls/backend/', 'mvn clean install -P wildfly-local').execute();
 	new Command('../sources/services/links/descriptions/backend/', 'mvn clean install -P wildfly-local').execute();
 	new Command('../sources/services/links/keywords/backend/', 'mvn clean install -P wildfly-local').execute();
 }

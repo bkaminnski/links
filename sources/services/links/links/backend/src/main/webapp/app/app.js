@@ -746,10 +746,6 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Url = __webpack_require__(13);
-
-var _Url2 = _interopRequireDefault(_Url);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -768,15 +764,14 @@ var LinkItem = function (_React$Component) {
     }
 
     _createClass(LinkItem, [{
-        key: 'render',
+        key: "render",
         value: function render() {
             return _react2.default.createElement(
-                'div',
-                { className: 'list-group' },
+                "div",
+                { className: "list-group" },
                 _react2.default.createElement(
-                    'a',
-                    { href: this.props.link.url, className: 'list-group-item', target: '_blank' },
-                    _react2.default.createElement(_Url2.default, { url: this.props.link.url }),
+                    "a",
+                    { href: this.props.link.url, className: "list-group-item", target: "_blank" },
                     this.props.link.components
                 )
             );
@@ -837,7 +832,6 @@ var LinksList = function (_React$Component) {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.linksListStore.subscribeToEvents();
-            this.linksListStore.loadLinks();
         }
     }, {
         key: 'componentWillUnmount',
@@ -883,59 +877,57 @@ var LinksListStore = function () {
 
         this.component = linksListComponent;
         this.component.state = { links: [] };
-        this.links = [];
-        this.slices = [];
+        this.slices = {};
     }
 
     _createClass(LinksListStore, [{
-        key: 'loadLinks',
-        value: function loadLinks() {
-            var _this = this;
-
-            HttpClient.sendGet('/links/resources/links').then(function (links) {
-                _this.links = links.jsonObject;
-                _this.rebuildState();
-            });
-        }
-    }, {
         key: 'subscribeToEvents',
         value: function subscribeToEvents() {
-            var _this2 = this;
+            var _this = this;
 
             this.linksListSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlice.available', function (msg, slice) {
-                _this2.slices = _this2.slices.filter(function (s) {
-                    return s.name != slice.name;
-                });
-                _this2.slices.push(slice);
-                _this2.rebuildState();
-            });
-            this.linkWasCreatedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.linkWasCreated', function (msg) {
-                _this2.loadLinks();
+                _this.slices[slice.name] = slice;
+                _this.rebuildState();
             });
             PubSub.publish('uiEvent.links.linksListSlices.requested');
         }
     }, {
         key: 'rebuildState',
         value: function rebuildState() {
+            var _this2 = this;
+
             var linksMap = {};
-            this.links.forEach(function (link) {
-                link.components = [];
-                linksMap[link.sharedId] = link;
-            });
-            this.slices.sort(function (s1, s2) {
-                return s1.priority - s2.priority;
+            var links = [];
+            Object.keys(this.slices).map(function (k) {
+                return _this2.slices[k];
             }).forEach(function (slice) {
-                return slice.elements.forEach(function (element) {
-                    if (linksMap[element.linkSharedId] != null) linksMap[element.linkSharedId].components.push(element.component);
+                return slice.items.forEach(function (item) {
+                    if (linksMap[item.linkSharedId] == null) {
+                        var link = {
+                            sharedId: item.linkSharedId,
+                            components: []
+                        };
+                        links.push(link);
+                        linksMap[item.linkSharedId] = link;
+                    }
                 });
             });
-            this.component.setState({ links: this.links });
+
+            Object.keys(this.slices).map(function (k) {
+                return _this2.slices[k];
+            }).sort(function (s1, s2) {
+                return s1.priority - s2.priority;
+            }).forEach(function (slice) {
+                return slice.items.forEach(function (item) {
+                    linksMap[item.linkSharedId].components.push(item.component);
+                });
+            });
+            this.component.setState({ links: links });
         }
     }, {
         key: 'unsubscribeFromEvents',
         value: function unsubscribeFromEvents() {
             PubSub.unsubscribe(this.linksListSliceAvailableSubscriptionToken);
-            PubSub.unsubscribe(this.linkWasCreatedSubscriptionToken);
         }
     }]);
 
@@ -945,56 +937,7 @@ var LinksListStore = function () {
 exports.default = LinksListStore;
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Url = function (_React$Component) {
-    _inherits(Url, _React$Component);
-
-    function Url() {
-        _classCallCheck(this, Url);
-
-        return _possibleConstructorReturn(this, (Url.__proto__ || Object.getPrototypeOf(Url)).apply(this, arguments));
-    }
-
-    _createClass(Url, [{
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "h4",
-                { className: "list-group-item-heading" },
-                this.props.url
-            );
-        }
-    }]);
-
-    return Url;
-}(_react2.default.Component);
-
-exports.default = Url;
-
-/***/ }),
+/* 13 */,
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1042,7 +985,6 @@ var LinksPage = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_LinkCreationForm2.default, null),
                 _react2.default.createElement(_LinksList2.default, null)
             );
         }

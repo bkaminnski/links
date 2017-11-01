@@ -6,7 +6,6 @@ export default class LinksPage extends React.Component {
     render() {
         return (
             <div>
-                <LinkCreationForm />
                 <LinksList />
             </div>
         )

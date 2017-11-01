@@ -183,8 +183,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var linksListSlicesEvents = new _LinksListSlicesEvents2.default();
 linksListSlicesEvents.subscribeToRequested();
 
-var descriptionEvents = new _DescriptionEvents2.default();
+/*
+let descriptionEvents = new DescriptionEvents();
 descriptionEvents.subscribeToRequested();
+*/
 
 /***/ }),
 /* 4 */
@@ -769,8 +771,8 @@ var DescriptionItemsStore = function () {
         value: function transformIntoSlice(descriptions) {
             var slice = {
                 name: 'description',
-                priority: 200,
-                elements: descriptions.map(function (description) {
+                priority: 300,
+                items: descriptions.map(function (description) {
                     return {
                         linkSharedId: description.linkSharedId,
                         component: _react2.default.createElement(_DescriptionItem2.default, { key: 'descriptionItem-' + description.linkSharedId, description: description.description })
