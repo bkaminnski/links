@@ -85,7 +85,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _LinksPage = __webpack_require__(14);
+var _LinksPage = __webpack_require__(13);
 
 var _LinksPage2 = _interopRequireDefault(_LinksPage);
 
@@ -189,201 +189,8 @@ menuItemsEvents.subscribeToRequested();
 menuItemsEvents.publishAvailable();
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var AttributesStore = function () {
-    function AttributesStore(formComponent) {
-        _classCallCheck(this, AttributesStore);
-
-        this.formComponent = formComponent;
-        this.attributesComponents = {};
-        this.keyPrefix = 0;
-    }
-
-    _createClass(AttributesStore, [{
-        key: "initialState",
-        value: function initialState() {
-            this.keyPrefix++;
-            return {
-                attributes: {},
-                allValid: false,
-                keyPrefix: this.keyPrefix
-            };
-        }
-    }, {
-        key: "onChange",
-        value: function onChange(attributeName, attributeValue, attributeValid) {
-            var attributes = this.formComponent.state.attributes;
-            attributes[attributeName].value = attributeValue;
-            attributes[attributeName].valid = attributeValid;
-            this.formComponent.setState({
-                attributes: attributes,
-                allValid: this.allAttributesAreValid()
-            });
-        }
-    }, {
-        key: "allAttributesAreValid",
-        value: function allAttributesAreValid() {
-            return !Object.values(this.formComponent.state.attributes).some(function (a) {
-                return !a.valid;
-            });
-        }
-    }, {
-        key: "focusOnFirstInvalidAttributeComponent",
-        value: function focusOnFirstInvalidAttributeComponent() {
-            var _this = this;
-
-            var attributes = this.formComponent.state.attributes;
-            Object.keys(attributes).filter(function (a) {
-                return !attributes[a].valid;
-            }).map(function (a) {
-                return _this.attributesComponents[a];
-            }).some(function (ac) {
-                ac.showErrorAndFocus();
-                return true;
-            });
-        }
-    }, {
-        key: "addAttributeComponent",
-        value: function addAttributeComponent(attributeName, attributeComponent) {
-            this.attributesComponents[attributeName] = attributeComponent;
-        }
-    }]);
-
-    return AttributesStore;
-}();
-
-exports.default = AttributesStore;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var InputGroup = function (_React$Component) {
-    _inherits(InputGroup, _React$Component);
-
-    function InputGroup() {
-        _classCallCheck(this, InputGroup);
-
-        var _this = _possibleConstructorReturn(this, (InputGroup.__proto__ || Object.getPrototypeOf(InputGroup)).call(this));
-
-        _this.onChange = _this.onChange.bind(_this);
-        _this.shouldShowError = _this.shouldShowError.bind(_this);
-        _this.state = {
-            value: null,
-            valid: false,
-            touched: false
-        };
-        return _this;
-    }
-
-    _createClass(InputGroup, [{
-        key: 'focus',
-        value: function focus() {
-            this.input.focus();
-        }
-    }, {
-        key: 'showErrorAndFocus',
-        value: function showErrorAndFocus() {
-            var _this2 = this;
-
-            this.setState({ touched: true }, function () {
-                _this2.input.focus();
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this3 = this;
-
-            var inputGroupErrorClassName = this.shouldShowError() ? ' has-feedback has-error' : '';
-            var ariaDescribedBy = this.props.id + this.shouldShowError() ? '-invalid-description' : '-label';
-            var errorIcon = this.shouldShowError() ? _react2.default.createElement('span', { className: 'glyphicon glyphicon-remove form-control-feedback', 'aria-hidden': 'true' }) : null;
-            var errorDescription = this.shouldShowError() ? _react2.default.createElement(
-                'span',
-                { id: this.props.id + '-invalid-description', className: 'sr-only' },
-                'Invalid ',
-                this.props.label
-            ) : null;
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'input-group bottom-buffer' + inputGroupErrorClassName },
-                _react2.default.createElement(
-                    'span',
-                    { className: 'input-group-addon', id: this.props.id + '-label' },
-                    this.props.label
-                ),
-                _react2.default.createElement('input', {
-                    type: 'text',
-                    ref: function ref(input) {
-                        _this3.input = input;
-                    },
-                    onChange: this.onChange,
-                    value: this.state.value == null ? this.props.initialValue : this.state.value,
-                    className: 'form-control',
-                    placeholder: this.props.placeholder,
-                    'aria-describedby': ariaDescribedBy
-                }),
-                errorIcon,
-                errorDescription
-            );
-        }
-    }, {
-        key: 'shouldShowError',
-        value: function shouldShowError() {
-            return !this.state.valid && this.state.touched;
-        }
-    }, {
-        key: 'onChange',
-        value: function onChange(e) {
-            var _this4 = this;
-
-            this.setState({ value: e.target.value, valid: this.props.validate(e), touched: true }, function () {
-                _this4.props.onChange(_this4.props.attributeName, _this4.state.value, _this4.state.valid);
-            });
-        }
-    }]);
-
-    return InputGroup;
-}(_react2.default.Component);
-
-exports.default = InputGroup;
-
-/***/ }),
+/* 4 */,
+/* 5 */,
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -400,17 +207,9 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Url = __webpack_require__(8);
-
-var _Url2 = _interopRequireDefault(_Url);
-
 var _LinkCreationFormStore = __webpack_require__(7);
 
 var _LinkCreationFormStore2 = _interopRequireDefault(_LinkCreationFormStore);
-
-var _DescriptionPlaceholder = __webpack_require__(9);
-
-var _DescriptionPlaceholder2 = _interopRequireDefault(_DescriptionPlaceholder);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -434,27 +233,25 @@ var LinkCreationForm = function (_React$Component) {
     }
 
     _createClass(LinkCreationForm, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.store.subscribeToEvents();
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.store.unsubscribeFromEvents();
+        }
+    }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
             return _react2.default.createElement(
                 'div',
                 { className: 'bottom-buffer-double' },
                 _react2.default.createElement(
                     'form',
                     { onSubmit: this.onSubmit },
-                    _react2.default.createElement(_Url2.default, {
-                        id: this.state.keyPrefix + '-url',
-                        key: this.state.keyPrefix + '-url',
-                        ref: function ref(url) {
-                            _this2.store.addAttributeComponent('url', url);
-                        },
-                        attributeName: 'url',
-                        initialValue: '',
-                        onChange: this.store.onChange
-                    }),
-                    _react2.default.createElement(_DescriptionPlaceholder2.default, null),
+                    this.state.components,
                     _react2.default.createElement(
                         'div',
                         { className: 'text-right', role: 'group', 'aria-label': 'Add' },
@@ -493,89 +290,48 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _AttributesStore = __webpack_require__(4);
-
-var _AttributesStore2 = _interopRequireDefault(_AttributesStore);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var LinkCreationFormStore = function () {
     function LinkCreationFormStore(component) {
         _classCallCheck(this, LinkCreationFormStore);
 
-        this.attributesStore = new _AttributesStore2.default(component);
         this.component = component;
-        this.component.state = this.initialState();
-        this.onChange = this.onChange.bind(this);
-        this.addAttributeComponent = this.addAttributeComponent.bind(this);
+        this.component.state = { slices: [] };
+        this.slices = {};
     }
 
     _createClass(LinkCreationFormStore, [{
-        key: 'initialState',
-        value: function initialState() {
-            var initialState = this.attributesStore.initialState();
-            initialState.attributes = {
-                url: {
-                    value: '',
-                    valid: false
-                }
-            };
-            initialState.sharedId = '';
-            return initialState;
+        key: 'subscribeToEvents',
+        value: function subscribeToEvents() {
+            var _this = this;
+
+            this.linkCreationSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationSlice.available', function (msg, slice) {
+                _this.slices[slice.name] = slice;
+                _this.rebuildState();
+            });
+            PubSub.publish('uiEvent.links.linkCreationSlices.requested');
         }
     }, {
-        key: 'createLink',
-        value: function createLink() {
+        key: 'rebuildState',
+        value: function rebuildState() {
             var _this2 = this;
 
-            var createLinkCommand = {
-                sharedId: this.component.state.sharedId,
-                url: this.component.state.attributes.url.value
-            };
-            HttpClient.sendPost('/links/resources/links', createLinkCommand).then(function (response) {
-                if (response.status == 204) {
-                    _this2.reset();
-                    PubSub.publish('uiEvent.links.linkCreation.linkWasCreated');
-                }
+            var slices = Object.keys(this.slices).map(function (k) {
+                return _this2.slices[k];
+            }).sort(function (s1, s2) {
+                return s1.priority - s2.priority;
             });
+            this.component.setState({ slices: slices });
         }
     }, {
-        key: 'reset',
-        value: function reset() {
-            this.component.setState(this.initialState());
-        }
-    }, {
-        key: 'onChange',
-        value: function onChange(attributeName, attributeValue, attributeValid) {
-            var _this = this;
-            if (this.component.state.sharedId == '') {
-                uniqueIds.withNext(function (uniqueId) {
-                    return _this.component.setState({ sharedId: uniqueId }, function () {
-                        PubSub.publish('uiEvent.links.linkCreation.initiatedWithLinkId', _this.component.state.sharedId);
-                        _this.attributesStore.onChange(attributeName, attributeValue, attributeValid);
-                    });
-                });
-            } else {
-                this.attributesStore.onChange(attributeName, attributeValue, attributeValid);
-            }
-        }
-    }, {
-        key: 'addAttributeComponent',
-        value: function addAttributeComponent(attributeName, attributeComponent) {
-            this.attributesStore.addAttributeComponent(attributeName, attributeComponent);
+        key: 'unsubscribeFromEvents',
+        value: function unsubscribeFromEvents() {
+            PubSub.unsubscribe(this.linkCreationSliceAvailableSubscriptionToken);
         }
     }, {
         key: 'onSubmit',
-        value: function onSubmit() {
-            if (this.attributesStore.allAttributesAreValid()) {
-                PubSub.publish('uiEvent.links.linkCreation.finalized');
-                this.createLink();
-            } else {
-                this.attributesStore.focusOnFirstInvalidAttributeComponent();
-            }
-        }
+        value: function onSubmit() {}
     }]);
 
     return LinkCreationFormStore;
@@ -584,152 +340,8 @@ var LinkCreationFormStore = function () {
 exports.default = LinkCreationFormStore;
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _InputGroup = __webpack_require__(5);
-
-var _InputGroup2 = _interopRequireDefault(_InputGroup);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Url = function (_React$Component) {
-    _inherits(Url, _React$Component);
-
-    function Url() {
-        _classCallCheck(this, Url);
-
-        var _this = _possibleConstructorReturn(this, (Url.__proto__ || Object.getPrototypeOf(Url)).call(this));
-
-        _this.validate = _this.validate.bind(_this);
-        return _this;
-    }
-
-    _createClass(Url, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.inputGroup.focus();
-        }
-    }, {
-        key: 'showErrorAndFocus',
-        value: function showErrorAndFocus() {
-            this.inputGroup.showErrorAndFocus();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            return _react2.default.createElement(_InputGroup2.default, {
-                id: this.props.id,
-                ref: function ref(inputGroup) {
-                    _this2.inputGroup = inputGroup;
-                },
-                attributeName: this.props.attributeName,
-                initialValue: this.props.initialValue,
-                onChange: this.props.onChange,
-                validate: this.validate,
-                label: 'URL',
-                placeholder: 'http://paste-a-link-here.com'
-            });
-        }
-    }, {
-        key: 'validate',
-        value: function validate(e) {
-            var url = e.target.value;
-            return url != '' && /^.+((\.\w{2,})|(localhost)).*$/.test(url);
-        }
-    }]);
-
-    return Url;
-}(_react2.default.Component);
-
-exports.default = Url;
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var DescriptionPlaceholder = function (_React$Component) {
-    _inherits(DescriptionPlaceholder, _React$Component);
-
-    function DescriptionPlaceholder() {
-        _classCallCheck(this, DescriptionPlaceholder);
-
-        var _this = _possibleConstructorReturn(this, (DescriptionPlaceholder.__proto__ || Object.getPrototypeOf(DescriptionPlaceholder)).call(this));
-
-        _this.state = { component: null };
-        return _this;
-    }
-
-    _createClass(DescriptionPlaceholder, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            this.descriptionRequestedSubscriptionToken = PubSub.subscribe('uiEvent.descriptions.description.available', function (msg, component) {
-                _this2.setState({ component: component });
-            });
-            PubSub.publish('uiEvent.descriptions.description.requested');
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            PubSub.unsubscribe(this.descriptionRequestedSubscriptionToken);
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            return this.state.component;
-        }
-    }]);
-
-    return DescriptionPlaceholder;
-}(_react2.default.Component);
-
-exports.default = DescriptionPlaceholder;
-
-/***/ }),
+/* 8 */,
+/* 9 */,
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -770,9 +382,11 @@ var LinkItem = function (_React$Component) {
                 "div",
                 { className: "list-group" },
                 _react2.default.createElement(
-                    "a",
-                    { href: this.props.link.url, className: "list-group-item", target: "_blank" },
-                    this.props.link.components
+                    "div",
+                    { className: "list-group-item", target: "_blank" },
+                    this.props.link.itemSlices.map(function (itemSlice) {
+                        return itemSlice.component;
+                    })
                 )
             );
         }
@@ -824,19 +438,19 @@ var LinksList = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (LinksList.__proto__ || Object.getPrototypeOf(LinksList)).call(this));
 
-        _this.linksListStore = new _LinksListStore2.default(_this);
+        _this.store = new _LinksListStore2.default(_this);
         return _this;
     }
 
     _createClass(LinksList, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.linksListStore.subscribeToEvents();
+            this.store.subscribeToEvents();
         }
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
-            this.linksListStore.unsubscribeFromEvents();
+            this.store.unsubscribeFromEvents();
         }
     }, {
         key: 'render',
@@ -877,7 +491,7 @@ var LinksListStore = function () {
 
         this.component = linksListComponent;
         this.component.state = { links: [] };
-        this.slices = {};
+        this.listSlices = {};
     }
 
     _createClass(LinksListStore, [{
@@ -885,8 +499,8 @@ var LinksListStore = function () {
         value: function subscribeToEvents() {
             var _this = this;
 
-            this.linksListSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlice.available', function (msg, slice) {
-                _this.slices[slice.name] = slice;
+            this.linksListSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlice.available', function (msg, listSlice) {
+                _this.listSlices[listSlice.name] = listSlice;
                 _this.rebuildState();
             });
             PubSub.publish('uiEvent.links.linksListSlices.requested');
@@ -898,28 +512,31 @@ var LinksListStore = function () {
 
             var linksMap = {};
             var links = [];
-            Object.keys(this.slices).map(function (k) {
-                return _this2.slices[k];
-            }).forEach(function (slice) {
-                return slice.items.forEach(function (item) {
+            Object.keys(this.listSlices).map(function (k) {
+                return _this2.listSlices[k];
+            }).forEach(function (listSlice) {
+                return listSlice.items.forEach(function (item) {
                     if (linksMap[item.linkSharedId] == null) {
                         var link = {
                             sharedId: item.linkSharedId,
-                            components: []
+                            itemSlices: []
                         };
                         links.push(link);
                         linksMap[item.linkSharedId] = link;
                     }
                 });
             });
-
-            Object.keys(this.slices).map(function (k) {
-                return _this2.slices[k];
+            Object.keys(this.listSlices).map(function (k) {
+                return _this2.listSlices[k];
             }).sort(function (s1, s2) {
                 return s1.priority - s2.priority;
-            }).forEach(function (slice) {
-                return slice.items.forEach(function (item) {
-                    linksMap[item.linkSharedId].components.push(item.component);
+            }).forEach(function (listSlice) {
+                return listSlice.items.forEach(function (item) {
+                    var itemSlice = {
+                        name: listSlice.name,
+                        component: item.component
+                    };
+                    linksMap[item.linkSharedId].itemSlices.push(itemSlice);
                 });
             });
             this.component.setState({ links: links });
@@ -937,8 +554,7 @@ var LinksListStore = function () {
 exports.default = LinksListStore;
 
 /***/ }),
-/* 13 */,
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -1,4 +1,4 @@
-import UrlItemsStore from '../urlItems/UrlItemsStore.jsx';
+import UrlItemsStore from '../list/UrlItemsStore.jsx';
 
 export default class LinksListSlicesEvents {
 

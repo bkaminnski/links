@@ -6,22 +6,20 @@ export default class LinksList extends React.Component {
 
     constructor() {
         super();
-        this.linksListStore = new LinksListStore(this);
+        this.store = new LinksListStore(this);
     }
 
     componentDidMount() {
-        this.linksListStore.subscribeToEvents();
+        this.store.subscribeToEvents();
     }
 
     componentWillUnmount() {
-        this.linksListStore.unsubscribeFromEvents();
+        this.store.unsubscribeFromEvents();
     }
 
     render() {
         return <div>
-            {
-                this.state.links.map(link => <LinkItem key={link.sharedId} link={link} />)
-            }
+            {this.state.links.map(link => <LinkItem key={link.sharedId} link={link} />)}
         </div>;
     }
 }

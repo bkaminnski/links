@@ -1,4 +1,4 @@
-import DescriptionItemsStore from '../descriptionItems/DescriptionItemsStore.jsx';
+import DescriptionItemsStore from '../list/DescriptionItemsStore.jsx';
 
 export default class LinksListSlicesEvents {
 

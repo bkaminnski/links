@@ -1,71 +1,32 @@
-import AttributesStore from './AttributesStore.js';
-
 export default class LinkCreationFormStore {
 
     constructor(component) {
-        this.attributesStore = new AttributesStore(component);
         this.component = component;
-        this.component.state = this.initialState();
-        this.onChange = this.onChange.bind(this);
-        this.addAttributeComponent = this.addAttributeComponent.bind(this);
+        this.component.state = { slices: [] };
+        this.slices = {};
     }
 
-    initialState() {
-        let initialState = this.attributesStore.initialState();
-        initialState.attributes = {
-            url: {
-                value: '',
-                valid: false
-            }
-        };
-        initialState.sharedId = '';
-        return initialState;
-    }
-
-    createLink() {
-        let createLinkCommand = {
-            sharedId: this.component.state.sharedId,
-            url: this.component.state.attributes.url.value
-        };
-        HttpClient.sendPost('/links/resources/links', createLinkCommand).then((response) => {
-            if (response.status == 204) {
-                this.reset();
-                PubSub.publish('uiEvent.links.linkCreation.linkWasCreated');
-            }
+    subscribeToEvents() {
+        this.linkCreationSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationSlice.available', (msg, slice) => {
+            this.slices[slice.name] = slice;
+            this.rebuildState();
         });
+        PubSub.publish('uiEvent.links.linkCreationSlices.requested');
     }
 
-    reset() {
-        this.component.setState(this.initialState());
+    rebuildState() {
+        let slices = Object
+            .keys(this.slices)
+            .map(k => this.slices[k])
+            .sort((s1, s2) => s1.priority - s2.priority);
+        this.component.setState({ slices: slices });
     }
 
-    onChange(attributeName, attributeValue, attributeValid) {
-        var _this = this;
-        if (this.component.state.sharedId == '') {
-            uniqueIds.withNext(
-                uniqueId => _this.component.setState(
-                    { sharedId: uniqueId },
-                    () => {
-                        PubSub.publish('uiEvent.links.linkCreation.initiatedWithLinkId', _this.component.state.sharedId);
-                        _this.attributesStore.onChange(attributeName, attributeValue, attributeValid);
-                    }
-                )
-            );
-        } else {
-            this.attributesStore.onChange(attributeName, attributeValue, attributeValid);
-        }
-    }
-
-    addAttributeComponent(attributeName, attributeComponent) {
-        this.attributesStore.addAttributeComponent(attributeName, attributeComponent);
+    unsubscribeFromEvents() {
+        PubSub.unsubscribe(this.linkCreationSliceAvailableSubscriptionToken);
     }
 
     onSubmit() {
-        if (this.attributesStore.allAttributesAreValid()) {
-            PubSub.publish('uiEvent.links.linkCreation.finalized');
-            this.createLink();
-        } else {
-            this.attributesStore.focusOnFirstInvalidAttributeComponent();
-        }
+
     }
 }
