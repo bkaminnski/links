@@ -1,14 +1,14 @@
-import UrlItemsStore from '../list/UrlItemsStore.jsx';
+import UrlLinksListSlice from '../list/UrlLinksListSlice.jsx';
 
 export default class LinksListSlicesEvents {
 
     constructor() {
-        this.urlItemsStore = new UrlItemsStore();
+        this.urlLinksListSlice = new UrlLinksListSlice();
     }
 
     subscribeToRequested() {
         this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlices.requested', msg => {
-            this.urlItemsStore.loadTransformAndPublish();
+            this.urlLinksListSlice.loadTransformAndPublish();
         });
     }
 }

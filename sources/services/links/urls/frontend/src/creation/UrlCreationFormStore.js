@@ -18,19 +18,18 @@ export default class LinkCreationFormStore {
                 valid: false
             }
         };
-        initialState.sharedId = '';
+        initialState.linkSharedId = '';
         return initialState;
     }
 
-    createLink() {
-        let createLinkCommand = {
-            sharedId: this.component.state.sharedId,
+    createUrl() {
+        let createUrlCommand = {
+            linkSharedId: this.component.state.linkSharedId,
             url: this.component.state.attributes.url.value
         };
-        HttpClient.sendPost('/links/resources/links', createLinkCommand).then((response) => {
+        HttpClient.sendPost('/urls/resources/urls', createUrlCommand).then((response) => {
             if (response.status == 204) {
                 this.reset();
-                PubSub.publish('uiEvent.links.linkCreation.linkWasCreated');
             }
         });
     }
@@ -41,12 +40,12 @@ export default class LinkCreationFormStore {
 
     onChange(attributeName, attributeValue, attributeValid) {
         var _this = this;
-        if (this.component.state.sharedId == '') {
+        if (this.component.state.linkSharedId == '') {
             uniqueIds.withNext(
                 uniqueId => _this.component.setState(
-                    { sharedId: uniqueId },
+                    { linkSharedId: uniqueId },
                     () => {
-                        PubSub.publish('uiEvent.links.linkCreation.initiatedWithLinkId', _this.component.state.sharedId);
+                        PubSub.publish('uiEvent.links.linkCreation.initiatedWithLinkId', _this.component.state.linkSharedId);
                         _this.attributesStore.onChange(attributeName, attributeValue, attributeValid);
                     }
                 )
@@ -63,7 +62,7 @@ export default class LinkCreationFormStore {
     onSubmit() {
         if (this.attributesStore.allAttributesAreValid()) {
             PubSub.publish('uiEvent.links.linkCreation.finalized');
-            this.createLink();
+            this.createUrl();
         } else {
             this.attributesStore.focusOnFirstInvalidAttributeComponent();
         }

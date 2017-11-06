@@ -1,7 +1,7 @@
 import React from 'react';
 import UrlItem from './UrlItem.jsx';
 
-export default class UrlItemsStore {
+export default class UrlLinksListSlice {
     loadTransformAndPublish() {
         HttpClient
             .sendGet('/urls/resources/urls')

@@ -85,9 +85,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _UrlItemsStore = __webpack_require__(6);
+var _UrlLinksListSlice = __webpack_require__(7);
 
-var _UrlItemsStore2 = _interopRequireDefault(_UrlItemsStore);
+var _UrlLinksListSlice2 = _interopRequireDefault(_UrlLinksListSlice);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -97,7 +97,7 @@ var LinksListSlicesEvents = function () {
     function LinksListSlicesEvents() {
         _classCallCheck(this, LinksListSlicesEvents);
 
-        this.urlItemsStore = new _UrlItemsStore2.default();
+        this.urlLinksListSlice = new _UrlLinksListSlice2.default();
     }
 
     _createClass(LinksListSlicesEvents, [{
@@ -106,7 +106,7 @@ var LinksListSlicesEvents = function () {
             var _this = this;
 
             this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlices.requested', function (msg) {
-                _this.urlItemsStore.loadTransformAndPublish();
+                _this.urlLinksListSlice.loadTransformAndPublish();
             });
         }
     }]);
@@ -185,7 +185,8 @@ var UrlItem = function (_React$Component) {
 exports.default = UrlItem;
 
 /***/ }),
-/* 6 */
+/* 6 */,
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -209,12 +210,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var UrlItemsStore = function () {
-    function UrlItemsStore() {
-        _classCallCheck(this, UrlItemsStore);
+var UrlLinksListSlice = function () {
+    function UrlLinksListSlice() {
+        _classCallCheck(this, UrlLinksListSlice);
     }
 
-    _createClass(UrlItemsStore, [{
+    _createClass(UrlLinksListSlice, [{
         key: 'loadTransformAndPublish',
         value: function loadTransformAndPublish() {
             HttpClient.sendGet('/urls/resources/urls').then(function (urls) {
@@ -243,10 +244,10 @@ var UrlItemsStore = function () {
         }
     }]);
 
-    return UrlItemsStore;
+    return UrlLinksListSlice;
 }();
 
-exports.default = UrlItemsStore;
+exports.default = UrlLinksListSlice;
 
 /***/ })
 /******/ ]);
