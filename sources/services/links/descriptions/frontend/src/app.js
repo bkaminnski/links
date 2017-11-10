@@ -1,10 +1,8 @@
 import LinksListSlicesEvents from './events/LinksListSlicesEvents.jsx';
-import DescriptionEvents from './events/DescriptionEvents.jsx';
+import LinkCreationSlicesEvents from './events/LinkCreationSlicesEvents.jsx';
 
 let linksListSlicesEvents = new LinksListSlicesEvents();
 linksListSlicesEvents.subscribeToRequested();
 
-/*
-let descriptionEvents = new DescriptionEvents();
-descriptionEvents.subscribeToRequested();
-*/
+let linkCreationSlicesEvents = new LinkCreationSlicesEvents();
+linkCreationSlicesEvents.subscribeToRequested();

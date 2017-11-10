@@ -1,14 +1,14 @@
-import DescriptionCreationForm from '../creation/DescriptionCreationForm.jsx';
+import DescriptionLinkCreationSlice from '../creation/DescriptionLinkCreationSlice.jsx';
 
-export default class ContentEvents {
+export default class LinkCreationSlicesEvents {
 
-    subscribeToRequested() {
-        this.contentRequestedSubscriptionToken = PubSub.subscribe('uiEvent.descriptions.description.requested', msg => {
-            this.publishAvailable();
-        });
+    constructor() {
+        this.descriptionLinkCreationSlice = new DescriptionLinkCreationSlice();
     }
 
-    publishAvailable() {
-        PubSub.publish('uiEvent.descriptions.description.available', <DescriptionCreationForm />);
+    subscribeToRequested() {
+        this.linkCreationSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationSlices.requested', msg => {
+            this.descriptionLinkCreationSlice.prepareAndPublish();
+        });
     }
 }

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "app";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -85,11 +85,128 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _DescriptionLinksListSlice = __webpack_require__(4);
+
+var _DescriptionLinksListSlice2 = _interopRequireDefault(_DescriptionLinksListSlice);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LinksListSlicesEvents = function () {
+    function LinksListSlicesEvents() {
+        _classCallCheck(this, LinksListSlicesEvents);
+
+        this.descriptionLinksListSlice = new _DescriptionLinksListSlice2.default();
+    }
+
+    _createClass(LinksListSlicesEvents, [{
+        key: 'subscribeToRequested',
+        value: function subscribeToRequested() {
+            var _this = this;
+
+            this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlices.requested', function (msg) {
+                _this.descriptionLinksListSlice.loadTransformAndPublish();
+            });
+        }
+    }]);
+
+    return LinksListSlicesEvents;
+}();
+
+exports.default = LinksListSlicesEvents;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _LinksListSlicesEvents = __webpack_require__(1);
+
+var _LinksListSlicesEvents2 = _interopRequireDefault(_LinksListSlicesEvents);
+
+var _LinkCreationSlicesEvents = __webpack_require__(5);
+
+var _LinkCreationSlicesEvents2 = _interopRequireDefault(_LinkCreationSlicesEvents);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var linksListSlicesEvents = new _LinksListSlicesEvents2.default();
+linksListSlicesEvents.subscribeToRequested();
+
+var linkCreationSlicesEvents = new _LinkCreationSlicesEvents2.default();
+linkCreationSlicesEvents.subscribeToRequested();
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _DescriptionItem = __webpack_require__(11);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DescriptionItem = function (_React$Component) {
+    _inherits(DescriptionItem, _React$Component);
+
+    function DescriptionItem() {
+        _classCallCheck(this, DescriptionItem);
+
+        return _possibleConstructorReturn(this, (DescriptionItem.__proto__ || Object.getPrototypeOf(DescriptionItem)).apply(this, arguments));
+    }
+
+    _createClass(DescriptionItem, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "p",
+                { className: "list-group-item-text top-buffer" },
+                this.props.description
+            );
+        }
+    }]);
+
+    return DescriptionItem;
+}(_react2.default.Component);
+
+exports.default = DescriptionItem;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _DescriptionItem = __webpack_require__(3);
 
 var _DescriptionItem2 = _interopRequireDefault(_DescriptionItem);
 
@@ -97,12 +214,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var DescriptionItemsStore = function () {
-    function DescriptionItemsStore() {
-        _classCallCheck(this, DescriptionItemsStore);
+var DescriptionLinksListSlice = function () {
+    function DescriptionLinksListSlice() {
+        _classCallCheck(this, DescriptionLinksListSlice);
     }
 
-    _createClass(DescriptionItemsStore, [{
+    _createClass(DescriptionLinksListSlice, [{
         key: 'loadTransformAndPublish',
         value: function loadTransformAndPublish() {
             HttpClient.sendGet('/descriptions/resources/descriptions').then(function (descriptions) {
@@ -131,129 +248,57 @@ var DescriptionItemsStore = function () {
         }
     }]);
 
-    return DescriptionItemsStore;
+    return DescriptionLinksListSlice;
 }();
 
-exports.default = DescriptionItemsStore;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _DescriptionCreationForm = __webpack_require__(8);
-
-var _DescriptionCreationForm2 = _interopRequireDefault(_DescriptionCreationForm);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ContentEvents = function () {
-    function ContentEvents() {
-        _classCallCheck(this, ContentEvents);
-    }
-
-    _createClass(ContentEvents, [{
-        key: 'subscribeToRequested',
-        value: function subscribeToRequested() {
-            var _this = this;
-
-            this.contentRequestedSubscriptionToken = PubSub.subscribe('uiEvent.descriptions.description.requested', function (msg) {
-                _this.publishAvailable();
-            });
-        }
-    }, {
-        key: 'publishAvailable',
-        value: function publishAvailable() {
-            PubSub.publish('uiEvent.descriptions.description.available', React.createElement(_DescriptionCreationForm2.default, null));
-        }
-    }]);
-
-    return ContentEvents;
-}();
-
-exports.default = ContentEvents;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _DescriptionItemsStore = __webpack_require__(13);
-
-var _DescriptionItemsStore2 = _interopRequireDefault(_DescriptionItemsStore);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var LinksListSlicesEvents = function () {
-    function LinksListSlicesEvents() {
-        _classCallCheck(this, LinksListSlicesEvents);
-
-        this.descriptionItemsStore = new _DescriptionItemsStore2.default();
-    }
-
-    _createClass(LinksListSlicesEvents, [{
-        key: 'subscribeToRequested',
-        value: function subscribeToRequested() {
-            var _this = this;
-
-            this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlices.requested', function (msg) {
-                _this.descriptionItemsStore.loadTransformAndPublish();
-            });
-        }
-    }]);
-
-    return LinksListSlicesEvents;
-}();
-
-exports.default = LinksListSlicesEvents;
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _LinksListSlicesEvents = __webpack_require__(3);
-
-var _LinksListSlicesEvents2 = _interopRequireDefault(_LinksListSlicesEvents);
-
-var _DescriptionEvents = __webpack_require__(2);
-
-var _DescriptionEvents2 = _interopRequireDefault(_DescriptionEvents);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var linksListSlicesEvents = new _LinksListSlicesEvents2.default();
-linksListSlicesEvents.subscribeToRequested();
-
-/*
-let descriptionEvents = new DescriptionEvents();
-descriptionEvents.subscribeToRequested();
-*/
+exports.default = DescriptionLinksListSlice;
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _DescriptionLinkCreationSlice = __webpack_require__(12);
+
+var _DescriptionLinkCreationSlice2 = _interopRequireDefault(_DescriptionLinkCreationSlice);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LinkCreationSlicesEvents = function () {
+    function LinkCreationSlicesEvents() {
+        _classCallCheck(this, LinkCreationSlicesEvents);
+
+        this.descriptionLinkCreationSlice = new _DescriptionLinkCreationSlice2.default();
+    }
+
+    _createClass(LinkCreationSlicesEvents, [{
+        key: 'subscribeToRequested',
+        value: function subscribeToRequested() {
+            var _this = this;
+
+            this.linkCreationSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationSlices.requested', function (msg) {
+                _this.descriptionLinkCreationSlice.prepareAndPublish();
+            });
+        }
+    }]);
+
+    return LinkCreationSlicesEvents;
+}();
+
+exports.default = LinkCreationSlicesEvents;
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -332,7 +377,7 @@ var AttributesStore = function () {
 exports.default = AttributesStore;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -396,7 +441,7 @@ var CollapsibleWrapper = function (_React$Component) {
 exports.default = CollapsibleWrapper;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -412,7 +457,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _InputGroup = __webpack_require__(10);
+var _InputGroup = __webpack_require__(11);
 
 var _InputGroup2 = _interopRequireDefault(_InputGroup);
 
@@ -472,7 +517,7 @@ var Description = function (_React$Component) {
 exports.default = Description;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -488,15 +533,15 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Description = __webpack_require__(7);
+var _Description = __webpack_require__(8);
 
 var _Description2 = _interopRequireDefault(_Description);
 
-var _CollapsibleWrapper = __webpack_require__(6);
+var _CollapsibleWrapper = __webpack_require__(7);
 
 var _CollapsibleWrapper2 = _interopRequireDefault(_CollapsibleWrapper);
 
-var _DescriptionCreationFormStore = __webpack_require__(9);
+var _DescriptionCreationFormStore = __webpack_require__(10);
 
 var _DescriptionCreationFormStore2 = _interopRequireDefault(_DescriptionCreationFormStore);
 
@@ -517,12 +562,20 @@ var DescriptionCreationForm = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (DescriptionCreationForm.__proto__ || Object.getPrototypeOf(DescriptionCreationForm)).call(this));
 
         _this.store = new _DescriptionCreationFormStore2.default(_this);
-        _this.onChange = _this.onChange.bind(_this);
-        _this.onSubmit = _this.onSubmit.bind(_this);
         return _this;
     }
 
     _createClass(DescriptionCreationForm, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.store.subscribeToEvents();
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.store.unsubscribeFromEvents();
+        }
+    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
@@ -540,34 +593,9 @@ var DescriptionCreationForm = function (_React$Component) {
                     },
                     attributeName: 'description',
                     initialValue: '',
-                    onChange: this.onChange
+                    onChange: this.store.onChange
                 })
             );
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.store.subscribeToEvents();
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            this.store.unsubscribeFromEvents();
-        }
-    }, {
-        key: 'onChange',
-        value: function onChange(attributeName, attributeValue, attributeValid) {
-            this.store.onChange(attributeName, attributeValue, attributeValid);
-        }
-    }, {
-        key: 'onSubmit',
-        value: function onSubmit(e) {
-            e.preventDefault();
-            if (this.store.allAttributesAreValid()) {
-                this.store.createDescription();
-            } else {
-                this.store.focusOnFirstInvalidAttributeComponent();
-            }
         }
     }]);
 
@@ -577,7 +605,7 @@ var DescriptionCreationForm = function (_React$Component) {
 exports.default = DescriptionCreationForm;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -589,13 +617,13 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _AttributesStore = __webpack_require__(5);
+var _AttributesStore = __webpack_require__(6);
 
 var _AttributesStore2 = _interopRequireDefault(_AttributesStore);
 
-var _DescriptionItemsStore = __webpack_require__(1);
+var _DescriptionLinksListSlice = __webpack_require__(4);
 
-var _DescriptionItemsStore2 = _interopRequireDefault(_DescriptionItemsStore);
+var _DescriptionLinksListSlice2 = _interopRequireDefault(_DescriptionLinksListSlice);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -608,6 +636,8 @@ var DescriptionCreationFormStore = function () {
         this.attributesStore = new _AttributesStore2.default(component);
         this.component = component;
         this.component.state = this.initialState();
+        this.onChange = this.onChange.bind(this);
+        this.addAttributeComponent = this.addAttributeComponent.bind(this);
     }
 
     _createClass(DescriptionCreationFormStore, [{
@@ -654,11 +684,18 @@ var DescriptionCreationFormStore = function () {
             var _this = this;
 
             this.linkCreationWasInitiatedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.initiatedWithLinkId', function (msg, linkSharedId) {
-                _this.collapsibleWrapper.show();
-                _this.component.setState({ linkSharedId: linkSharedId });
+                _this.component.setState({ linkSharedId: linkSharedId }, function () {
+                    return _this.collapsibleWrapper.show();
+                });
             });
-            this.linkCreationWasFinalizedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.finalized', function (msg) {
+            this.linkCreationValidationRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationValidation.requested', function (msg, slice) {
+                PubSub.publish('uiEvent.links.linkCreationValidation.successfull', { name: 'description' });
+            });
+            this.linkCreationApprovedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.approved', function (msg, slice) {
                 _this.createDescription();
+            });
+            this.linkCreationDeniedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.denied', function (msg, slice) {
+                // do nothing
             });
         }
     }, {
@@ -672,9 +709,9 @@ var DescriptionCreationFormStore = function () {
             };
             HttpClient.sendPost('/descriptions/resources/descriptions', createDescriptionCommand).then(function (response) {
                 if (response.status == 204) {
-                    _this2.reset();
                     _this2.collapsibleWrapper.hide();
-                    new _DescriptionItemsStore2.default().loadTransformAndPublish();
+                    _this2.reset();
+                    new _DescriptionLinksListSlice2.default().loadTransformAndPublish();
                 }
             });
         }
@@ -682,7 +719,9 @@ var DescriptionCreationFormStore = function () {
         key: 'unsubscribeFromEvents',
         value: function unsubscribeFromEvents() {
             PubSub.unsubscribe(this.linkCreationWasInitiatedSubscriptionToken);
-            PubSub.unsubscribe(this.linkCreationWasFinalizedSubscriptionToken);
+            PubSub.unsubscribe(this.linkCreationValidationRequestedSubscriptionToken);
+            PubSub.unsubscribe(this.linkCreationApprovedSubscriptionToken);
+            PubSub.unsubscribe(this.linkCreationDeniedSubscriptionToken);
         }
     }]);
 
@@ -692,7 +731,7 @@ var DescriptionCreationFormStore = function () {
 exports.default = DescriptionCreationFormStore;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -808,56 +847,6 @@ var InputGroup = function (_React$Component) {
 exports.default = InputGroup;
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var DescriptionItem = function (_React$Component) {
-    _inherits(DescriptionItem, _React$Component);
-
-    function DescriptionItem() {
-        _classCallCheck(this, DescriptionItem);
-
-        return _possibleConstructorReturn(this, (DescriptionItem.__proto__ || Object.getPrototypeOf(DescriptionItem)).apply(this, arguments));
-    }
-
-    _createClass(DescriptionItem, [{
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "p",
-                { className: "list-group-item-text top-buffer" },
-                this.props.description
-            );
-        }
-    }]);
-
-    return DescriptionItem;
-}(_react2.default.Component);
-
-exports.default = DescriptionItem;
-
-/***/ }),
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -874,102 +863,35 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _DescriptionCreationForm = __webpack_require__(9);
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var DescriptionItem = function (_React$Component) {
-    _inherits(DescriptionItem, _React$Component);
-
-    function DescriptionItem() {
-        _classCallCheck(this, DescriptionItem);
-
-        return _possibleConstructorReturn(this, (DescriptionItem.__proto__ || Object.getPrototypeOf(DescriptionItem)).apply(this, arguments));
-    }
-
-    _createClass(DescriptionItem, [{
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "p",
-                { className: "list-group-item-text top-buffer" },
-                this.props.description
-            );
-        }
-    }]);
-
-    return DescriptionItem;
-}(_react2.default.Component);
-
-exports.default = DescriptionItem;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _DescriptionItem = __webpack_require__(12);
-
-var _DescriptionItem2 = _interopRequireDefault(_DescriptionItem);
+var _DescriptionCreationForm2 = _interopRequireDefault(_DescriptionCreationForm);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var DescriptionItemsStore = function () {
-    function DescriptionItemsStore() {
-        _classCallCheck(this, DescriptionItemsStore);
+var DescriptionLinkCreationSlice = function () {
+    function DescriptionLinkCreationSlice() {
+        _classCallCheck(this, DescriptionLinkCreationSlice);
     }
 
-    _createClass(DescriptionItemsStore, [{
-        key: 'loadTransformAndPublish',
-        value: function loadTransformAndPublish() {
-            HttpClient.sendGet('/descriptions/resources/descriptions').then(function (descriptions) {
-                return descriptions.jsonObject;
-            }).then(this.transformIntoSlice).then(this.publish);
-        }
-    }, {
-        key: 'transformIntoSlice',
-        value: function transformIntoSlice(descriptions) {
+    _createClass(DescriptionLinkCreationSlice, [{
+        key: 'prepareAndPublish',
+        value: function prepareAndPublish() {
             var slice = {
                 name: 'description',
                 priority: 300,
-                items: descriptions.map(function (description) {
-                    return {
-                        linkSharedId: description.linkSharedId,
-                        component: _react2.default.createElement(_DescriptionItem2.default, { key: 'descriptionItem-' + description.linkSharedId, description: description.description })
-                    };
-                })
+                component: _react2.default.createElement(_DescriptionCreationForm2.default, null)
             };
-            return slice;
-        }
-    }, {
-        key: 'publish',
-        value: function publish(slice) {
-            PubSub.publish('uiEvent.links.linksListSlice.available', slice);
+            PubSub.publish('uiEvent.links.linkCreationSlice.available', slice);
         }
     }]);
 
-    return DescriptionItemsStore;
+    return DescriptionLinkCreationSlice;
 }();
 
-exports.default = DescriptionItemsStore;
+exports.default = DescriptionLinkCreationSlice;
 
 /***/ })
 /******/ ]);

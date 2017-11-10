@@ -12,12 +12,12 @@ export default class LinkCreationFormStore {
             this.rebuildState();
         });
         this.linkCreationValidationSuccessfullSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationValidation.successfull', (msg, slice) => {
-            this.slices[slice.name].validationSuccessfull = true;
-            this.approveLinkCreation();
+            this.component.state.slices.filter(s => s.name == slice.name).forEach(s => s.validationSuccessful = true);
+            this.component.setState({ slices: this.component.state.slices }, () => { this.approveLinkCreation() });
         });
         this.linkCreationValidationFailedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationValidation.failed', (msg, slice) => {
-            this.slices[slice.name].validationFailed = true;
-            this.denyLinkCreation();
+            this.component.state.slices.filter(s => s.name == slice.name).forEach(s => s.validationFailed = true);
+            this.component.setState({ slices: this.component.state.slices }, () => { this.denyLinkCreation() });
         });
         PubSub.publish('uiEvent.links.linkCreationSlices.requested');
     }
@@ -27,11 +27,12 @@ export default class LinkCreationFormStore {
             .keys(this.slices)
             .map(k => this.slices[k])
             .map(slice => ({
+                name: slice.name,
                 url: slice.url,
                 priority: slice.priority,
                 component: slice.component,
                 validationRequested: false,
-                validationSuccessfull: false,
+                validationSuccessful: false,
                 validationFailed: false,
                 creationApproved: false,
                 creationDenied: false
@@ -49,11 +50,11 @@ export default class LinkCreationFormStore {
     }
 
     requestValidationForEachSlice() {
-        this.slices
+        this.component.state.slices
             .forEach(slice => {
                 if (!slice.validationRequested) {
                     slice.validationRequested = true;
-                    slice.validationSuccessfull = false;
+                    slice.validationSuccessful = false;
                     slice.validationFailed = false;
                     slice.creationApproved = false;
                     slice.creationDenied = false;
@@ -63,12 +64,12 @@ export default class LinkCreationFormStore {
     }
 
     approveLinkCreation() {
-        let allWereSuccessfullyValidated = this.slices.every(slice => slice.validationSuccessfull);
+        let allWereSuccessfullyValidated = this.component.state.slices.every(slice => slice.validationSuccessful);
         if (!allWereSuccessfullyValidated) {
             return;
         }
 
-        this.slices
+        this.component.state.slices
             .forEach(slice => {
                 if (!slice.creationApproved) {
                     slice.creationApproved = true;
@@ -78,7 +79,7 @@ export default class LinkCreationFormStore {
     }
 
     denyLinkCreation() {
-        this.slices
+        this.component.state.slices
             .forEach(slice => {
                 if (!slice.creationDenied) {
                     slice.creationDenied = true;

@@ -1,6 +1,6 @@
 import UrlLinkCreationSlice from '../creation/UrlLinkCreationSlice.jsx';
 
-export default class UrlsListSlicesEvents {
+export default class LinkCreationSlicesEvents {
 
     constructor() {
         this.urlLinkCreationSlice = new UrlLinkCreationSlice();

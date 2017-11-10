@@ -1,6 +1,6 @@
 import React from 'react';
 import LinksListStore from './LinksListStore.js';
-import LinkItem from './LinkItem.jsx';
+import LinksListItem from './LinksListItem.jsx';
 
 export default class LinksList extends React.Component {
 
@@ -19,7 +19,7 @@ export default class LinksList extends React.Component {
 
     render() {
         return <div>
-            {this.state.links.map(link => <LinkItem key={link.sharedId} link={link} />)}
+            {this.state.links.map(link => <LinksListItem key={link.sharedId} link={link} />)}
         </div>;
     }
 }
