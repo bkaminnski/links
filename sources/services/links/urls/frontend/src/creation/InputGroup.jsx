@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default class InputGroup extends React.Component {
+
     constructor() {
         super();
         this.onChange = this.onChange.bind(this);

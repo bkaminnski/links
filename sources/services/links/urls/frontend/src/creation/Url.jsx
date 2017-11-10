@@ -2,6 +2,7 @@ import React from 'react';
 import InputGroup from './InputGroup.jsx'
 
 export default class Url extends React.Component {
+    
     constructor() {
         super();
         this.validate = this.validate.bind(this);

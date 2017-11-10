@@ -9,10 +9,18 @@ export default class UrlCreationForm extends React.Component {
         this.store = new UrlCreationFormStore(this);
     }
 
+    componentDidMount() {
+        this.store.subscribeToEvents();
+    }
+
+    componentWillUnmount() {
+        this.store.unsubscribeFromEvents();
+    }
+
     render() {
         return <Url
-            id={this.state.keyPrefix + '-url'}
-            key={this.state.keyPrefix + '-url'}
+            id={this.state.keyPrefix + '-url-creation'}
+            key={this.state.keyPrefix + '-url-creation'}
             ref={(url) => { this.store.addAttributeComponent('url', url); }}
             attributeName="url"
             initialValue=""

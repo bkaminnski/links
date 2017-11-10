@@ -1,5 +1,5 @@
 import AttributesStore from './AttributesStore.js';
-import DescriptionItemsStore from '../descriptionItems/DescriptionItemsStore.jsx'
+import DescriptionLinksListSlice from '../list/DescriptionLinksListSlice.jsx'
 
 export default class DescriptionCreationFormStore {
 
@@ -7,6 +7,8 @@ export default class DescriptionCreationFormStore {
         this.attributesStore = new AttributesStore(component);
         this.component = component;
         this.component.state = this.initialState();
+        this.onChange = this.onChange.bind(this);
+        this.addAttributeComponent = this.addAttributeComponent.bind(this);
     }
 
     initialState() {
@@ -43,11 +45,16 @@ export default class DescriptionCreationFormStore {
 
     subscribeToEvents() {
         this.linkCreationWasInitiatedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.initiatedWithLinkId', (msg, linkSharedId) => {
-            this.collapsibleWrapper.show();
-            this.component.setState({ linkSharedId: linkSharedId });
+            this.component.setState({ linkSharedId: linkSharedId }, () => this.collapsibleWrapper.show());
         });
-        this.linkCreationWasFinalizedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.finalized', (msg) => {
+        this.linkCreationValidationRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationValidation.requested', (msg, slice) => {
+            PubSub.publish('uiEvent.links.linkCreationValidation.successfull', { name: 'description' });
+        });
+        this.linkCreationApprovedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.approved', (msg, slice) => {
             this.createDescription();
+        });
+        this.linkCreationDeniedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.denied', (msg, slice) => {
+            // do nothing
         });
     }
 
@@ -58,15 +65,17 @@ export default class DescriptionCreationFormStore {
         };
         HttpClient.sendPost('/descriptions/resources/descriptions', createDescriptionCommand).then((response) => {
             if (response.status == 204) {
-                this.reset();
                 this.collapsibleWrapper.hide();
-                new DescriptionItemsStore().loadTransformAndPublish();
+                this.reset();
+                new DescriptionLinksListSlice().loadTransformAndPublish();
             }
         });
     }
 
     unsubscribeFromEvents() {
         PubSub.unsubscribe(this.linkCreationWasInitiatedSubscriptionToken);
-        PubSub.unsubscribe(this.linkCreationWasFinalizedSubscriptionToken);
+        PubSub.unsubscribe(this.linkCreationValidationRequestedSubscriptionToken);
+        PubSub.unsubscribe(this.linkCreationApprovedSubscriptionToken);
+        PubSub.unsubscribe(this.linkCreationDeniedSubscriptionToken);
     }
 }

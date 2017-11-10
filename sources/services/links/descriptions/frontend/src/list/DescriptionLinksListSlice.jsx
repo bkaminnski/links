@@ -1,7 +1,8 @@
 import React from 'react';
 import DescriptionItem from './DescriptionItem.jsx';
 
-export default class DescriptionItemsStore {
+export default class DescriptionLinksListSlice {
+
     loadTransformAndPublish() {
         HttpClient
             .sendGet('/descriptions/resources/descriptions')

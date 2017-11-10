@@ -1,8 +1,14 @@
 import React from 'react';
 import UrlCreationForm from './UrlCreationForm.jsx';
 
-export default class UrlLinksListSlice {
+export default class UrlLinkCreationSlice {
+    
     prepareAndPublish() {
-        PubSub.publish('uiEvent.links.linksListSlice.available', <UrlCreationForm />)
+        let slice = {
+            name: 'url',
+            priority: 100,
+            component: <UrlCreationForm />
+        };
+        PubSub.publish('uiEvent.links.linkCreationSlice.available', slice);
     }
 }

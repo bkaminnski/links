@@ -8,21 +8,6 @@ export default class DescriptionCreationForm extends React.Component {
     constructor() {
         super();
         this.store = new DescriptionCreationFormStore(this);
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-    }
-
-    render() {
-        return <CollapsibleWrapper ref={(collapsibleWrapper) => { this.store.collapsibleWrapper = collapsibleWrapper; }}>
-            <Description
-                id={this.state.keyPrefix + '-description-creation'}
-                key={this.state.keyPrefix + '-description-creation'}
-                ref={(description) => { this.store.addAttributeComponent('description', description); }}
-                attributeName="description"
-                initialValue=""
-                onChange={this.onChange}
-            />
-        </CollapsibleWrapper>
     }
 
     componentDidMount() {
@@ -33,16 +18,16 @@ export default class DescriptionCreationForm extends React.Component {
         this.store.unsubscribeFromEvents();
     }
 
-    onChange(attributeName, attributeValue, attributeValid) {
-        this.store.onChange(attributeName, attributeValue, attributeValid);
-    }
-
-    onSubmit(e) {
-        e.preventDefault();
-        if (this.store.allAttributesAreValid()) {
-            this.store.createDescription();
-        } else {
-            this.store.focusOnFirstInvalidAttributeComponent();
-        }
+    render() {
+        return <CollapsibleWrapper ref={(collapsibleWrapper) => { this.store.collapsibleWrapper = collapsibleWrapper; }}>
+            <Description
+                id={this.state.keyPrefix + '-description-creation'}
+                key={this.state.keyPrefix + '-description-creation'}
+                ref={(description) => { this.store.addAttributeComponent('description', description); }}
+                attributeName="description"
+                initialValue=""
+                onChange={this.store.onChange}
+            />
+        </CollapsibleWrapper>
     }
 }

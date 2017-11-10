@@ -1,14 +1,14 @@
-import DescriptionItemsStore from '../list/DescriptionItemsStore.jsx';
+import DescriptionLinksListSlice from '../list/DescriptionLinksListSlice.jsx';
 
 export default class LinksListSlicesEvents {
 
     constructor() {
-        this.descriptionItemsStore = new DescriptionItemsStore();
+        this.descriptionLinksListSlice = new DescriptionLinksListSlice();
     }
 
     subscribeToRequested() {
         this.linksListSlicesRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linksListSlices.requested', msg => {
-            this.descriptionItemsStore.loadTransformAndPublish();
+            this.descriptionLinksListSlice.loadTransformAndPublish();
         });
     }
 }

@@ -20,7 +20,7 @@ export default class LinkCreationForm extends React.Component {
     render() {
         return <div className="bottom-buffer-double">
             <form onSubmit={this.onSubmit}>
-                {this.state.components}
+                {this.state.slices.map(slice => slice.component)}
                 <div className="text-right" role="group" aria-label="Add">
                     <button type="submit" className="btn btn-default">Add</button>
                 </div>

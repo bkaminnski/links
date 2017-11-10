@@ -1,4 +1,5 @@
 import AttributesStore from './AttributesStore.js';
+import UrlLinksListSlice from '../list/UrlLinksListSlice.jsx'
 
 export default class LinkCreationFormStore {
 
@@ -20,18 +21,6 @@ export default class LinkCreationFormStore {
         };
         initialState.linkSharedId = '';
         return initialState;
-    }
-
-    createUrl() {
-        let createUrlCommand = {
-            linkSharedId: this.component.state.linkSharedId,
-            url: this.component.state.attributes.url.value
-        };
-        HttpClient.sendPost('/urls/resources/urls', createUrlCommand).then((response) => {
-            if (response.status == 204) {
-                this.reset();
-            }
-        });
     }
 
     reset() {
@@ -59,12 +48,38 @@ export default class LinkCreationFormStore {
         this.attributesStore.addAttributeComponent(attributeName, attributeComponent);
     }
 
-    onSubmit() {
-        if (this.attributesStore.allAttributesAreValid()) {
-            PubSub.publish('uiEvent.links.linkCreation.finalized');
+    subscribeToEvents() {
+        this.linkCreationValidationRequestedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationValidation.requested', (msg, slice) => {
+            if (this.attributesStore.allAttributesAreValid()) {
+                PubSub.publish('uiEvent.links.linkCreationValidation.successfull', { name: 'url' });
+            } else {
+                PubSub.publish('uiEvent.links.linkCreationValidation.failed', { name: 'url' });
+            }
+        });
+        this.linkCreationApprovedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.approved', (msg, slice) => {
             this.createUrl();
-        } else {
+        });
+        this.linkCreationDeniedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreation.denied', (msg, slice) => {
             this.attributesStore.focusOnFirstInvalidAttributeComponent();
-        }
+        });
+    }
+
+    createUrl() {
+        let createUrlCommand = {
+            linkSharedId: this.component.state.linkSharedId,
+            url: this.component.state.attributes.url.value
+        };
+        HttpClient.sendPost('/urls/resources/urls', createUrlCommand).then((response) => {
+            if (response.status == 204) {
+                this.reset();
+                new UrlLinksListSlice().loadTransformAndPublish();
+            }
+        });
+    }
+
+    unsubscribeFromEvents() {
+        PubSub.unsubscribe(this.linkCreationValidationRequestedSubscriptionToken);
+        PubSub.unsubscribe(this.linkCreationApprovedSubscriptionToken);
+        PubSub.unsubscribe(this.linkCreationDeniedSubscriptionToken);
     }
 }
