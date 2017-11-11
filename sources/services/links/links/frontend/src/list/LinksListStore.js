@@ -15,24 +15,31 @@ export default class LinksListStore {
     }
 
     rebuildState() {
-        let linksMap = {};
-        let links = [];
+        let linkIdToLinkListItemMap = this.distinctLinkListItemsForAllListSlices();
+        this.fillInItemSlicesIn(linkIdToLinkListItemMap);
+        this.component.setState({ links: this.flatten(linkIdToLinkListItemMap) });
+    }
+
+    distinctLinkListItemsForAllListSlices() {
+        let linkIdToLinkListItemMap = {};
         Object
             .keys(this.listSlices)
             .map(k => this.listSlices[k])
             .forEach(listSlice => listSlice.items
                 .forEach(item => {
-                    if (linksMap[item.linkSharedId] == null) {
-                        let link = {
+                    if (linkIdToLinkListItemMap[item.linkSharedId] == null) {
+                        let linkListItem = {
                             sharedId: item.linkSharedId,
-                            itemSlicesMap: {},
                             itemSlices: []
                         };
-                        links.push(link);
-                        linksMap[item.linkSharedId] = link;
+                        linkIdToLinkListItemMap[item.linkSharedId] = linkListItem;
                     }
                 })
             );
+        return linkIdToLinkListItemMap;
+    }
+
+    fillInItemSlicesIn(linkIdToLinkListItemMap) {
         Object
             .keys(this.listSlices)
             .map(k => this.listSlices[k])
@@ -44,15 +51,29 @@ export default class LinksListStore {
                         component: item.component,
                         key: item.key
                     }
-                    linksMap[item.linkSharedId].itemSlicesMap[listSlice.name] = itemSlice;
-                    linksMap[item.linkSharedId].itemSlices = [];
-                    Object
-                        .keys(linksMap[item.linkSharedId].itemSlicesMap)
-                        .map(k => linksMap[item.linkSharedId].itemSlicesMap[k])
-                        .forEach(is => linksMap[item.linkSharedId].itemSlices.push(is));
-                }
-                ));
-        this.component.setState({ links: links });
+                    this.addOrReplaceItemSliceInLinkListItem(itemSlice, linkIdToLinkListItemMap[item.linkSharedId]);
+                })
+            );
+    }
+
+    addOrReplaceItemSliceInLinkListItem(itemSlice, linkListItem) {
+        let itemSlicesMap = {};
+        linkListItem.itemSlices.forEach(is => itemSlicesMap[is.name] = is);
+        itemSlicesMap[itemSlice.name] = itemSlice;
+        linkListItem.itemSlices = [];
+        Object
+            .keys(itemSlicesMap)
+            .map(k => itemSlicesMap[k])
+            .forEach(is => linkListItem.itemSlices.push(is));
+    }
+
+    flatten(linkIdToLinkListItemMap) {
+        let linkListItems = [];
+        Object
+            .keys(linkIdToLinkListItemMap)
+            .map(k => linkIdToLinkListItemMap[k])
+            .forEach(linkListItem => linkListItems.push(linkListItem));
+        return linkListItems;
     }
 
     unsubscribeFromEvents() {

@@ -530,27 +530,38 @@ var LinksListStore = function () {
     }, {
         key: 'rebuildState',
         value: function rebuildState() {
+            var linkIdToLinkListItemMap = this.distinctLinkListItemsForAllListSlices();
+            this.fillInItemSlicesIn(linkIdToLinkListItemMap);
+            this.component.setState({ links: this.flatten(linkIdToLinkListItemMap) });
+        }
+    }, {
+        key: 'distinctLinkListItemsForAllListSlices',
+        value: function distinctLinkListItemsForAllListSlices() {
             var _this2 = this;
 
-            var linksMap = {};
-            var links = [];
+            var linkIdToLinkListItemMap = {};
             Object.keys(this.listSlices).map(function (k) {
                 return _this2.listSlices[k];
             }).forEach(function (listSlice) {
                 return listSlice.items.forEach(function (item) {
-                    if (linksMap[item.linkSharedId] == null) {
-                        var link = {
+                    if (linkIdToLinkListItemMap[item.linkSharedId] == null) {
+                        var linkListItem = {
                             sharedId: item.linkSharedId,
-                            itemSlicesMap: {},
                             itemSlices: []
                         };
-                        links.push(link);
-                        linksMap[item.linkSharedId] = link;
+                        linkIdToLinkListItemMap[item.linkSharedId] = linkListItem;
                     }
                 });
             });
+            return linkIdToLinkListItemMap;
+        }
+    }, {
+        key: 'fillInItemSlicesIn',
+        value: function fillInItemSlicesIn(linkIdToLinkListItemMap) {
+            var _this3 = this;
+
             Object.keys(this.listSlices).map(function (k) {
-                return _this2.listSlices[k];
+                return _this3.listSlices[k];
             }).sort(function (s1, s2) {
                 return s1.priority - s2.priority;
             }).forEach(function (listSlice) {
@@ -560,16 +571,35 @@ var LinksListStore = function () {
                         component: item.component,
                         key: item.key
                     };
-                    linksMap[item.linkSharedId].itemSlicesMap[listSlice.name] = itemSlice;
-                    linksMap[item.linkSharedId].itemSlices = [];
-                    Object.keys(linksMap[item.linkSharedId].itemSlicesMap).map(function (k) {
-                        return linksMap[item.linkSharedId].itemSlicesMap[k];
-                    }).forEach(function (is) {
-                        return linksMap[item.linkSharedId].itemSlices.push(is);
-                    });
+                    _this3.addOrReplaceItemSliceInLinkListItem(itemSlice, linkIdToLinkListItemMap[item.linkSharedId]);
                 });
             });
-            this.component.setState({ links: links });
+        }
+    }, {
+        key: 'addOrReplaceItemSliceInLinkListItem',
+        value: function addOrReplaceItemSliceInLinkListItem(itemSlice, linkListItem) {
+            var itemSlicesMap = {};
+            linkListItem.itemSlices.forEach(function (is) {
+                return itemSlicesMap[is.name] = is;
+            });
+            itemSlicesMap[itemSlice.name] = itemSlice;
+            linkListItem.itemSlices = [];
+            Object.keys(itemSlicesMap).map(function (k) {
+                return itemSlicesMap[k];
+            }).forEach(function (is) {
+                return linkListItem.itemSlices.push(is);
+            });
+        }
+    }, {
+        key: 'flatten',
+        value: function flatten(linkIdToLinkListItemMap) {
+            var linkListItems = [];
+            Object.keys(linkIdToLinkListItemMap).map(function (k) {
+                return linkIdToLinkListItemMap[k];
+            }).forEach(function (linkListItem) {
+                return linkListItems.push(linkListItem);
+            });
+            return linkListItems;
         }
     }, {
         key: 'unsubscribeFromEvents',
