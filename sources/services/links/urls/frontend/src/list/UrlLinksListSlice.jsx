@@ -2,7 +2,7 @@ import React from 'react';
 import UrlItem from './UrlItem.jsx';
 
 export default class UrlLinksListSlice {
-    
+
     loadTransformAndPublish() {
         HttpClient
             .sendGet('/urls/resources/urls')
@@ -17,7 +17,8 @@ export default class UrlLinksListSlice {
             priority: 100,
             items: urls.map(url => ({
                 linkSharedId: url.linkSharedId,
-                component: <UrlItem key={'urlItem-' + url.linkSharedId} url={url.url} />
+                key: 'urlItem-' + url.linkSharedId,
+                component: <UrlItem url={url.url} />
             }))
         };
         return slice;

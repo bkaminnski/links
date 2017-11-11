@@ -235,7 +235,8 @@ var DescriptionLinksListSlice = function () {
                 items: descriptions.map(function (description) {
                     return {
                         linkSharedId: description.linkSharedId,
-                        component: _react2.default.createElement(_DescriptionItem2.default, { key: 'descriptionItem-' + description.linkSharedId, description: description.description })
+                        key: 'descriptionItem-' + description.linkSharedId,
+                        component: _react2.default.createElement(_DescriptionItem2.default, { description: description.description })
                     };
                 })
             };

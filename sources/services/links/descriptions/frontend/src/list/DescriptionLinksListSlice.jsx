@@ -17,7 +17,8 @@ export default class DescriptionLinksListSlice {
             priority: 300,
             items: descriptions.map(description => ({
                 linkSharedId: description.linkSharedId,
-                component: <DescriptionItem key={'descriptionItem-' + description.linkSharedId} description={description.description} />
+                key: 'descriptionItem-' + description.linkSharedId,
+                component: <DescriptionItem description={description.description} />
             }))
         };
         return slice;

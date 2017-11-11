@@ -118,7 +118,8 @@ var UrlLinksListSlice = function () {
                 items: urls.map(function (url) {
                     return {
                         linkSharedId: url.linkSharedId,
-                        component: _react2.default.createElement(_UrlItem2.default, { key: 'urlItem-' + url.linkSharedId, url: url.url })
+                        key: 'urlItem-' + url.linkSharedId,
+                        component: _react2.default.createElement(_UrlItem2.default, { url: url.url })
                     };
                 })
             };

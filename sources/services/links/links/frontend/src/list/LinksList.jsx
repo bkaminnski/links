@@ -19,7 +19,7 @@ export default class LinksList extends React.Component {
 
     render() {
         return <div>
-            {this.state.links.map(link => <LinksListItem key={link.sharedId} link={link} />)}
+            {this.state.links.map(link => <LinksListItem key={'linksListItem-' + link.sharedId} link={link} />)}
         </div>;
     }
 }

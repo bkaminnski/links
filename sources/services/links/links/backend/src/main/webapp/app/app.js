@@ -481,7 +481,7 @@ var LinksList = function (_React$Component) {
                 'div',
                 null,
                 this.state.links.map(function (link) {
-                    return _react2.default.createElement(_LinksListItem2.default, { key: link.sharedId, link: link });
+                    return _react2.default.createElement(_LinksListItem2.default, { key: 'linksListItem-' + link.sharedId, link: link });
                 })
             );
         }
@@ -541,6 +541,7 @@ var LinksListStore = function () {
                     if (linksMap[item.linkSharedId] == null) {
                         var link = {
                             sharedId: item.linkSharedId,
+                            itemSlicesMap: {},
                             itemSlices: []
                         };
                         links.push(link);
@@ -556,9 +557,16 @@ var LinksListStore = function () {
                 return listSlice.items.forEach(function (item) {
                     var itemSlice = {
                         name: listSlice.name,
-                        component: item.component
+                        component: item.component,
+                        key: item.key
                     };
-                    linksMap[item.linkSharedId].itemSlices.push(itemSlice);
+                    linksMap[item.linkSharedId].itemSlicesMap[listSlice.name] = itemSlice;
+                    linksMap[item.linkSharedId].itemSlices = [];
+                    Object.keys(linksMap[item.linkSharedId].itemSlicesMap).map(function (k) {
+                        return linksMap[item.linkSharedId].itemSlicesMap[k];
+                    }).forEach(function (is) {
+                        return linksMap[item.linkSharedId].itemSlices.push(is);
+                    });
                 });
             });
             this.component.setState({ links: links });
@@ -653,6 +661,10 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _LinksListItemSlice = __webpack_require__(14);
+
+var _LinksListItemSlice2 = _interopRequireDefault(_LinksListItemSlice);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -671,16 +683,16 @@ var LinkListItem = function (_React$Component) {
     }
 
     _createClass(LinkListItem, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             return _react2.default.createElement(
-                "div",
-                { className: "list-group" },
+                'div',
+                { className: 'list-group' },
                 _react2.default.createElement(
-                    "div",
-                    { className: "list-group-item" },
+                    'div',
+                    { className: 'list-group-item' },
                     this.props.link.itemSlices.map(function (itemSlice) {
-                        return itemSlice.component;
+                        return _react2.default.createElement(_LinksListItemSlice2.default, { key: itemSlice.key, slice: itemSlice });
                     })
                 )
             );
@@ -735,6 +747,50 @@ var LinkCreationFormItem = function (_React$Component) {
 }(React.Component);
 
 exports.default = LinkCreationFormItem;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LinksListItemSlice = function (_React$Component) {
+    _inherits(LinksListItemSlice, _React$Component);
+
+    function LinksListItemSlice() {
+        _classCallCheck(this, LinksListItemSlice);
+
+        return _possibleConstructorReturn(this, (LinksListItemSlice.__proto__ || Object.getPrototypeOf(LinksListItemSlice)).call(this));
+    }
+
+    _createClass(LinksListItemSlice, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                null,
+                this.props.slice.component
+            );
+        }
+    }]);
+
+    return LinksListItemSlice;
+}(React.Component);
+
+exports.default = LinksListItemSlice;
 
 /***/ })
 /******/ ]);

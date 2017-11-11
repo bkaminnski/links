@@ -25,6 +25,7 @@ export default class LinksListStore {
                     if (linksMap[item.linkSharedId] == null) {
                         let link = {
                             sharedId: item.linkSharedId,
+                            itemSlicesMap: {},
                             itemSlices: []
                         };
                         links.push(link);
@@ -40,9 +41,15 @@ export default class LinksListStore {
                 .forEach(item => {
                     let itemSlice = {
                         name: listSlice.name,
-                        component: item.component
+                        component: item.component,
+                        key: item.key
                     }
-                    linksMap[item.linkSharedId].itemSlices.push(itemSlice)
+                    linksMap[item.linkSharedId].itemSlicesMap[listSlice.name] = itemSlice;
+                    linksMap[item.linkSharedId].itemSlices = [];
+                    Object
+                        .keys(linksMap[item.linkSharedId].itemSlicesMap)
+                        .map(k => linksMap[item.linkSharedId].itemSlicesMap[k])
+                        .forEach(is => linksMap[item.linkSharedId].itemSlices.push(is));
                 }
                 ));
         this.component.setState({ links: links });
