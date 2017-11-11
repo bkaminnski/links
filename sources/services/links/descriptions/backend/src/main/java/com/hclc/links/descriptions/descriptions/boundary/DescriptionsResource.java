@@ -1,7 +1,7 @@
-package com.hclc.links.urls.urls.boundary;
+package com.hclc.links.descriptions.descriptions.boundary;
 
-import com.hclc.links.urls.urls.entity.CreateUrlCommand;
-import com.hclc.links.urls.urls.entity.Url;
+import com.hclc.links.descriptions.descriptions.entity.CreateDescriptionCommand;
+import com.hclc.links.descriptions.descriptions.entity.Description;
 
 import javax.ejb.Stateless;
 import javax.json.Json;
@@ -9,26 +9,27 @@ import javax.json.JsonArrayBuilder;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 
 @Stateless
-@Path(value = "urls")
-public class Urls {
+@Path(value = "descriptions")
+public class DescriptionsResource {
 
     @PersistenceContext
     EntityManager em;
 
     @GET
-    @Produces(APPLICATION_JSON)
-    public Response urls() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response descriptions() {
         return Response.ok(
-                ((List<Url>) em.createQuery("select u from Url u order by u.id desc")
+                ((List<Description>) em.createQuery("select d from Description d order by d.id desc")
                         .getResultList())
                         .stream()
-                        .map(Url::toJson)
+                        .map(Description::toJson)
                         .collect(Json::createArrayBuilder, JsonArrayBuilder::add, JsonArrayBuilder::add)
                         .build()
         ).build();
@@ -36,8 +37,8 @@ public class Urls {
 
     @POST
     @Consumes(APPLICATION_JSON)
-    public Response create(CreateUrlCommand createUrlCommand) {
-        em.persist(createUrlCommand.toUrl());
+    public Response create(CreateDescriptionCommand createDescriptionCommand) {
+        em.persist(createDescriptionCommand.toDescription());
         return Response.noContent().build();
     }
 }

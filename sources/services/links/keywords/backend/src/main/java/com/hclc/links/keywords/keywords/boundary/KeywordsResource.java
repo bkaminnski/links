@@ -14,7 +14,7 @@ import java.util.List;
 
 @Stateless
 @Path(value = "keywords")
-public class Keywords {
+public class KeywordsResource {
 
     @PersistenceContext
     EntityManager em;
@@ -23,7 +23,7 @@ public class Keywords {
     @Produces(MediaType.APPLICATION_JSON)
     public Response keywords() {
         return Response.ok(
-                ((List<com.hclc.links.keywords.keywords.entity.Keywords>) em.createQuery("select l from com.hclc.links.keywords.keywords.entity.Keywords l")
+                ((List<com.hclc.links.keywords.keywords.entity.Keywords>) em.createQuery("select k from Keywords k order by k.id desc")
                         .getResultList())
                         .stream()
                         .map(com.hclc.links.keywords.keywords.entity.Keywords::toJson)
