@@ -701,7 +701,7 @@ window.HttpClient = new _HttpClient2.default(undefined);
 
 _reactDom2.default.render(React.createElement(_ApplicationPage2.default, null), document.getElementById('applicationPage'));
 
-// PubSub.subscribe('uiEvent', (msg) => console.log(msg));
+// PubSub.subscribe('uiEvent', (msg, obj) => { console.log(msg); console.log(obj); });
 
 /***/ }),
 

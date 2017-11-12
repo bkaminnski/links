@@ -7,4 +7,4 @@ window.HttpClient = new HttpClient(this);
 
 ReactDOM.render(<ApplicationPage />, document.getElementById('applicationPage'));
 
-// PubSub.subscribe('uiEvent', (msg) => console.log(msg));
+// PubSub.subscribe('uiEvent', (msg, obj) => { console.log(msg); console.log(obj); });
