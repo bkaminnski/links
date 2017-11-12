@@ -97,7 +97,6 @@ var AuthenticationResponseHandler = function () {
         value: function handleResponse(response) {
             if (response.status == 200) {
                 this.keepAuthenticationToken(response);
-                PubSub.publish('uiEvent.application.applicationLayout.requested');
             } else {
                 sessionStorage.setItem('cuiAuthenticationToken', '');
                 PubSub.publish('uiEvent.users.authentication.requested');
@@ -892,7 +891,10 @@ var LoginFormStore = function () {
                 password: this.formComponent.state.attributes.password.value
             };
             HttpClient.sendPost('/users/resources/authenticationRequests', authenticationRequest).then(function (response) {
-                return _this.authenticationResponseHandler.handleResponse(response);
+                _this.authenticationResponseHandler.handleResponse(response);
+                if (response.status == 200) {
+                    PubSub.publish('uiEvent.application.applicationLayout.requested');
+                }
             });
         }
     }, {

@@ -32,7 +32,12 @@ export default class LoginFormStore {
         };
         HttpClient
             .sendPost('/users/resources/authenticationRequests', authenticationRequest)
-            .then(response => this.authenticationResponseHandler.handleResponse(response));
+            .then(response => {
+                this.authenticationResponseHandler.handleResponse(response);
+                if (response.status == 200) {
+                    PubSub.publish('uiEvent.application.applicationLayout.requested');
+                }
+            });
     }
 
     onChange(attributeName, attributeValue, attributeValid) {
