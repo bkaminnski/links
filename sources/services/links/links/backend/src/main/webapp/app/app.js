@@ -294,6 +294,12 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _LinkCreationWorkflow = __webpack_require__(15);
+
+var _LinkCreationWorkflow2 = _interopRequireDefault(_LinkCreationWorkflow);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var LinkCreationFormStore = function () {
@@ -303,6 +309,7 @@ var LinkCreationFormStore = function () {
         this.component = component;
         this.component.state = { slices: [] };
         this.slices = {};
+        this.linkCreationWorkflow = new _LinkCreationWorkflow2.default();
     }
 
     _createClass(LinkCreationFormStore, [{
@@ -310,29 +317,11 @@ var LinkCreationFormStore = function () {
         value: function subscribeToEvents() {
             var _this = this;
 
+            this.linkCreationWorkflow.subscribeToEvents();
             this.linkCreationSliceAvailableSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationSlice.available', function (msg, slice) {
                 _this.slices[slice.name] = slice;
+                _this.linkCreationWorkflow.registerSliceWith(slice.name);
                 _this.rebuildState();
-            });
-            this.linkCreationValidationSuccessfullSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationValidation.successfull', function (msg, slice) {
-                _this.component.state.slices.filter(function (s) {
-                    return s.name == slice.name;
-                }).forEach(function (s) {
-                    return s.validationSuccessful = true;
-                });
-                _this.component.setState({ slices: _this.component.state.slices }, function () {
-                    _this.approveLinkCreation();
-                });
-            });
-            this.linkCreationValidationFailedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationValidation.failed', function (msg, slice) {
-                _this.component.state.slices.filter(function (s) {
-                    return s.name == slice.name;
-                }).forEach(function (s) {
-                    return s.validationFailed = true;
-                });
-                _this.component.setState({ slices: _this.component.state.slices }, function () {
-                    _this.denyLinkCreation();
-                });
             });
             PubSub.publish('uiEvent.links.linkCreationSlices.requested');
         }
@@ -348,12 +337,7 @@ var LinkCreationFormStore = function () {
                     name: slice.name,
                     url: slice.url,
                     priority: slice.priority,
-                    component: slice.component,
-                    validationRequested: false,
-                    validationSuccessful: false,
-                    validationFailed: false,
-                    creationApproved: false,
-                    creationDenied: false
+                    component: slice.component
                 };
             }).sort(function (s1, s2) {
                 return s1.priority - s2.priority;
@@ -363,53 +347,13 @@ var LinkCreationFormStore = function () {
     }, {
         key: 'unsubscribeFromEvents',
         value: function unsubscribeFromEvents() {
+            this.linkCreationWorkflow.unsubscribeFromEvents();
             PubSub.unsubscribe(this.linkCreationSliceAvailableSubscriptionToken);
         }
     }, {
         key: 'onSubmit',
         value: function onSubmit() {
-            this.requestValidationForEachSlice();
-        }
-    }, {
-        key: 'requestValidationForEachSlice',
-        value: function requestValidationForEachSlice() {
-            this.component.state.slices.forEach(function (slice) {
-                if (!slice.validationRequested) {
-                    slice.validationRequested = true;
-                    slice.validationSuccessful = false;
-                    slice.validationFailed = false;
-                    slice.creationApproved = false;
-                    slice.creationDenied = false;
-                    PubSub.publish('uiEvent.links.linkCreationValidation.requested');
-                }
-            });
-        }
-    }, {
-        key: 'approveLinkCreation',
-        value: function approveLinkCreation() {
-            var allWereSuccessfullyValidated = this.component.state.slices.every(function (slice) {
-                return slice.validationSuccessful;
-            });
-            if (!allWereSuccessfullyValidated) {
-                return;
-            }
-
-            this.component.state.slices.forEach(function (slice) {
-                if (!slice.creationApproved) {
-                    slice.creationApproved = true;
-                    PubSub.publish('uiEvent.links.linkCreation.approved');
-                }
-            });
-        }
-    }, {
-        key: 'denyLinkCreation',
-        value: function denyLinkCreation() {
-            this.component.state.slices.forEach(function (slice) {
-                if (!slice.creationDenied) {
-                    slice.creationDenied = true;
-                    PubSub.publish('uiEvent.links.linkCreation.denied');
-                }
-            });
+            this.linkCreationWorkflow.start();
         }
     }]);
 
@@ -821,6 +765,196 @@ var LinksListItemSlice = function (_React$Component) {
 }(React.Component);
 
 exports.default = LinksListItemSlice;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LinkCreationWorkflow = function () {
+    function LinkCreationWorkflow() {
+        _classCallCheck(this, LinkCreationWorkflow);
+
+        this.slices = {};
+    }
+
+    _createClass(LinkCreationWorkflow, [{
+        key: 'subscribeToEvents',
+        value: function subscribeToEvents() {
+            var _this = this;
+
+            this.linkCreationValidationSuccessfullSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationValidation.successfull', function (msg, slice) {
+                _this.slices[slice.name].validationSuccessful = true;
+                _this.approveOrDeny();
+            });
+            this.linkCreationValidationFailedSubscriptionToken = PubSub.subscribe('uiEvent.links.linkCreationValidation.failed', function (msg, slice) {
+                _this.slices[slice.name].validationFailed = true;
+                _this.approveOrDeny();
+            });
+        }
+    }, {
+        key: 'unsubscribeFromEvents',
+        value: function unsubscribeFromEvents() {
+            PubSub.unsubscribe(this.linkCreationValidationSuccessfullSubscriptionToken);
+            PubSub.unsubscribe(this.linkCreationValidationFailedSubscriptionToken);
+        }
+    }, {
+        key: 'registerSliceWith',
+        value: function registerSliceWith(name) {
+            this.slices[name] = {
+                validationRequested: false,
+                validationSuccessful: false,
+                validationFailed: false,
+                creationApproved: false,
+                creationDenied: false
+            };
+        }
+    }, {
+        key: 'start',
+        value: function start() {
+            if (!this.workflowWasStarted() || this.workflowIsFinished()) {
+                this.resetWorkflow();
+                this.requestValidation();
+            }
+        }
+    }, {
+        key: 'workflowWasStarted',
+        value: function workflowWasStarted() {
+            return this.numberOfValidationRequests() > 0;
+        }
+    }, {
+        key: 'workflowIsFinished',
+        value: function workflowIsFinished() {
+            return this.numberOfValidationRequests() > 0 && this.validationIsFinished() && this.numberOfValidationRequests() == this.numberOfCreationDecisions();
+        }
+    }, {
+        key: 'validationIsFinished',
+        value: function validationIsFinished() {
+            return this.numberOfValidationRequests() == this.numberOfValidationResponses();
+        }
+    }, {
+        key: 'numberOfValidationRequests',
+        value: function numberOfValidationRequests() {
+            var _this2 = this;
+
+            return Object.keys(this.slices).map(function (k) {
+                return _this2.slices[k];
+            }).filter(function (s) {
+                return s.validationRequested;
+            }).length;
+        }
+    }, {
+        key: 'numberOfValidationResponses',
+        value: function numberOfValidationResponses() {
+            var _this3 = this;
+
+            return Object.keys(this.slices).map(function (k) {
+                return _this3.slices[k];
+            }).filter(function (s) {
+                return s.validationSuccessful || s.validationFailed;
+            }).length;
+        }
+    }, {
+        key: 'numberOfCreationDecisions',
+        value: function numberOfCreationDecisions() {
+            var _this4 = this;
+
+            return Object.keys(this.slices).map(function (k) {
+                return _this4.slices[k];
+            }).filter(function (s) {
+                return s.creationApproved || s.creationDenied;
+            }).length;
+        }
+    }, {
+        key: 'resetWorkflow',
+        value: function resetWorkflow() {
+            var _this5 = this;
+
+            Object.keys(this.slices).map(function (k) {
+                return _this5.slices[k];
+            }).forEach(function (s) {
+                s.validationRequested = false;
+                s.validationSuccessful = false;
+                s.validationFailed = false;
+                s.creationApproved = false;
+                s.creationDenied = false;
+            });
+        }
+    }, {
+        key: 'requestValidation',
+        value: function requestValidation() {
+            var _this6 = this;
+
+            Object.keys(this.slices).map(function (k) {
+                return _this6.slices[k];
+            }).forEach(function (s) {
+                s.validationRequested = true;
+            });
+            PubSub.publish('uiEvent.links.linkCreationValidation.requested');
+        }
+    }, {
+        key: 'approveOrDeny',
+        value: function approveOrDeny() {
+            if (this.allWereSuccessfullyValidated()) {
+                this.approveLinkCreation();
+            } else if (this.validationIsFinished()) {
+                this.denyLinkCreation();
+            }
+        }
+    }, {
+        key: 'allWereSuccessfullyValidated',
+        value: function allWereSuccessfullyValidated() {
+            var _this7 = this;
+
+            var allValid = Object.keys(this.slices).map(function (k) {
+                return _this7.slices[k];
+            }).every(function (s) {
+                return s.validationSuccessful;
+            });
+            console.log('allValid: ' + allValid);
+            console.log(this.slices);
+            return allValid;
+        }
+    }, {
+        key: 'approveLinkCreation',
+        value: function approveLinkCreation() {
+            var _this8 = this;
+
+            Object.keys(this.slices).map(function (k) {
+                return _this8.slices[k];
+            }).forEach(function (s) {
+                s.creationApproved = true;
+            });
+            PubSub.publish('uiEvent.links.linkCreation.approved');
+        }
+    }, {
+        key: 'denyLinkCreation',
+        value: function denyLinkCreation() {
+            var _this9 = this;
+
+            Object.keys(this.slices).map(function (k) {
+                return _this9.slices[k];
+            }).forEach(function (s) {
+                s.creationDenied = true;
+            });
+            PubSub.publish('uiEvent.links.linkCreation.denied');
+        }
+    }]);
+
+    return LinkCreationWorkflow;
+}();
+
+exports.default = LinkCreationWorkflow;
 
 /***/ })
 /******/ ]);
