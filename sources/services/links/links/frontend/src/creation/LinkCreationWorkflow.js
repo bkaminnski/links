@@ -107,13 +107,10 @@ export default class LinkCreationWorkflow {
     }
 
     allWereSuccessfullyValidated() {
-        let allValid = Object
+        return Object
             .keys(this.slices)
             .map(k => this.slices[k])
             .every(s => s.validationSuccessful);
-        console.log('allValid: ' + allValid);
-        console.log(this.slices);
-        return allValid;
     }
 
     approveLinkCreation() {

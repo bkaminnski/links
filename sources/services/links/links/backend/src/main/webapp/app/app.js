@@ -916,14 +916,11 @@ var LinkCreationWorkflow = function () {
         value: function allWereSuccessfullyValidated() {
             var _this7 = this;
 
-            var allValid = Object.keys(this.slices).map(function (k) {
+            return Object.keys(this.slices).map(function (k) {
                 return _this7.slices[k];
             }).every(function (s) {
                 return s.validationSuccessful;
             });
-            console.log('allValid: ' + allValid);
-            console.log(this.slices);
-            return allValid;
         }
     }, {
         key: 'approveLinkCreation',

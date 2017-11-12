@@ -23,6 +23,14 @@ public class Keywords implements Serializable {
     @Column(name = "keyw_keywords", length = 2000)
     private String keywords;
 
+    public Keywords() {
+    }
+
+    public Keywords(String linkSharedId, String keywords) {
+        this.linkSharedId = linkSharedId;
+        this.keywords = keywords;
+    }
+
     public JsonObjectBuilder toJson() {
         return Json
                 .createObjectBuilder()

@@ -1,7 +1,8 @@
 import React from 'react';
 import KeywordsItem from './KeywordsItem.jsx';
 
-export default class KeywordsItemsStore {
+export default class KeywordsLinksListSlice {
+
     loadTransformAndPublish() {
         HttpClient
             .sendGet('/keywords/resources/keywords')
@@ -16,7 +17,8 @@ export default class KeywordsItemsStore {
             priority: 200,
             items: keywords.map(keywords => ({
                 linkSharedId: keywords.linkSharedId,
-                component: <KeywordsItem key={'keywordsItem-' + keywords.linkSharedId} keywords={keywords.keywords} />
+                key: 'keywordsItem-' + keywords.linkSharedId,
+                component: <KeywordsItem keywords={keywords.keywords} />
             }))
         };
         return slice;
