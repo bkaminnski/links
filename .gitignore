@@ -9,3 +9,5 @@ nbproject
 .idea
 .settings
 target
+.project
+.classpath
