@@ -3,7 +3,7 @@ var path = require('path');
 module.exports = {
   entry: './src/app.js',
   output: {
-    path: path.join(__dirname, '../backend/src/main/webapp/app/'),
+    path: path.join(__dirname, '../service/src/main/webapp/app/'),
     filename: 'app.js',
     publicPath: 'app',
     libraryTarget: "var",

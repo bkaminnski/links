@@ -1,0 +1,120 @@
+version: '3'
+
+networks:
+  links_network:
+
+services:
+
+  postgres:
+    container_name: postgres
+    image: bkaminnski/postgres-initializable
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      # Databases to initialize separated by space. For each database "db user"="db name"="SERVICE_NAME". Format: SERVICE1_NAME;DB1_PASSWORD SERVICE2_NAME;DB2_PASSWORD ...
+      - INITIAL_DATABASES=urls;urls descriptions;descriptions keywords;keywords
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+      # netcat state check port
+      - "8333"
+    command: postgres
+    networks:
+      links_network:
+        aliases:
+          - urls-database
+          - descriptions-database
+          - keywords-database
+
+  urls-flyway:
+    build: ../sources/services/links/urls/flyway
+    container_name: urls-flyway
+    image: urls-flyway
+    environment:
+      # Databases to migrate with flyway. For each database "db user"="db name"="SERVICE_NAME". Format: SERVICE1_NAME;DB1_HOST;DB1_PORT;DB1_PASSWORD SERVICE2_NAME;DB2_HOST;DB2_PORT;DB2_PASSWORD ...
+      - DATABASES=urls;urls-database;5432;urls
+      # Waiting for each of the hosts to respond with expected string on given port. Format: HOST1;PORT1;EXPECTED_STRING1 HOST2;PORT2;EXPECTED_STRING2 ...
+      - WAIT_FOR=urls-database;8333;READY
+    expose:
+      # netcat state check port
+      - "8333"
+    command: migrateAll
+    networks:
+      links_network:
+        aliases:
+          - urls-flyway
+    depends_on:
+      - postgres
+
+  descriptions-flyway:
+    build: ../sources/services/links/descriptions/flyway
+    container_name: descriptions-flyway
+    image: descriptions-flyway
+    environment:
+      # Databases to migrate with flyway. For each database "db user"="db name"="SERVICE_NAME". Format: SERVICE1_NAME;DB1_HOST;DB1_PORT;DB1_PASSWORD SERVICE2_NAME;DB2_HOST;DB2_PORT;DB2_PASSWORD ...
+      - DATABASES=descriptions;descriptions-database;5432;descriptions
+      # Waiting for each of the hosts to respond with expected string on given port. Format: HOST1;PORT1;EXPECTED_STRING1 HOST2;PORT2;EXPECTED_STRING2 ...
+      - WAIT_FOR=descriptions-database;8333;READY
+    expose:
+      # netcat state check port
+      - "8333"
+    command: migrateAll
+    networks:
+      links_network:
+        aliases:
+          - descriptions-flyway
+    depends_on:
+      - postgres
+
+  keywords-flyway:
+    build: ../sources/services/links/keywords/flyway
+    container_name: keywords-flyway
+    image: keywords-flyway
+    environment:
+      # Databases to migrate with flyway. For each database "db user"="db name"="SERVICE_NAME". Format: SERVICE1_NAME;DB1_HOST;DB1_PORT;DB1_PASSWORD SERVICE2_NAME;DB2_HOST;DB2_PORT;DB2_PASSWORD ...
+      - DATABASES=keywords;keywords-database;5432;keywords
+      # Waiting for each of the hosts to respond with expected string on given port. Format: HOST1;PORT1;EXPECTED_STRING1 HOST2;PORT2;EXPECTED_STRING2 ...
+      - WAIT_FOR=keywords-database;8333;READY
+    expose:
+      # netcat state check port
+      - "8333"
+    command: migrateAll
+    networks:
+      links_network:
+        aliases:
+          - keywords-flyway
+    depends_on:
+      - postgres
+
+  wildfly-services:
+    build: ../sources/services
+    container_name: wildfly-services
+    image: wildfly-services
+    environment:
+      - WILDFLY_PASSWORD=admin
+      # PostgreSQL datasources to initialize separated by space. Format: HOST1;PORT1;SERVICE1_NAME;DB1_PASSWORD HOST2;PORT2;SERVICE2_NAME;DB2_PASSWORD ...
+      - POSTGRES_DATASOURCES=urls-database;5432;urls;urls descriptions-database;5432;descriptions;descriptions keywords-database;5432;keywords;keywords
+      # JMS topics to initialize separated by space. Format: ADDRESS1;ENTRIES2 ADDRESS2;ENTRIES2 ...
+      - JMS_TOPICS=backendTopic;topic/backend,java:jboss/exported/jms/topic/backend
+      - JWT_SIGNATURE=test_signature
+      - MEMORY_SETTINGS=-Xms1024m -Xmx2048m
+      # Debug is exposed on 8787
+      - DEBUG_ENABLED=true
+      # JMX is exposed on 8788
+      - JMX_ENABLED=true
+      # Waiting for each of the hosts to respond with expected string on given port. Format: HOST1;PORT1;EXPECTED_STRING1 HOST2;PORT2;EXPECTED_STRING2 ...
+      - WAIT_FOR=urls-flyway;8333;READY descriptions-flyway;8333;READY keywords-flyway;8333;READY
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+      - "8787:8787"
+      - "8788:8788"
+    command: wildfly
+    networks:
+      links_network:
+        aliases:
+          - wildfly-services
+    depends_on:
+      - urls-flyway
+      - descriptions-flyway
+      - keywords-flyway

@@ -4,7 +4,7 @@ var timeStarted = new Date().getTime();
 
 load('./scripts/command.js');
 
-var containers = 'postgres urls-flyway descriptions-flyway keywords-flyway';
+var containers = 'urls-flyway descriptions-flyway keywords-flyway';
 
 new Command('.', 'docker-compose kill ' + containers).execute();
 new Command('.', 'docker-compose rm -f ' + containers).execute();

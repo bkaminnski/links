@@ -1,1 +1,1 @@
-docker exec -it wildfly-configured /bin/bash
+docker exec -it wildfly-services /bin/bash
