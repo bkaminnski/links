@@ -1,8 +1,8 @@
-let endpoint = window.location.href.split('/').slice(0, 3).join('/').replace(/^http/, 'ws') + '/push/push';
-let webSocket = new WebSocket(endpoint);
-webSocket.onmessage = function (event) {
-    let dataObject = JSON.parse(event.data);
-    let uiEventName = dataObject.uiEventName;
-    let uiEventPayload = dataObject.uiEventPayload;
-    PubSub.publish(uiEventName, uiEventPayload);
-};
+
+import Push from './push/Push.js';
+import AuthenticationEvents from './events/AuthenticationEvents.jsx';
+
+let push = new Push();
+let authenticationEvents = new AuthenticationEvents(push);
+authenticationEvents.subscribeToRequested();
+push.register();

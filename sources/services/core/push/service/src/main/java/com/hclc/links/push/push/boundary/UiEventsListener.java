@@ -6,11 +6,11 @@ import com.hclc.libs.monitoring.ServiceLogger;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
 import javax.inject.Inject;
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
 import static com.hclc.libs.events.IncomingEventProcessor.processIncomingEvent;
+
 
 @MessageDriven(activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic")
@@ -30,8 +30,8 @@ public class UiEventsListener implements MessageListener {
     public void onMessage(Message message) {
         try {
             IncomingEvent incomingEvent = processIncomingEvent(message, serviceLogger);
-            pushEndpoint.notifyAllClients(incomingEvent.getPayload());
-        } catch (JMSException ex) {
+            pushEndpoint.notify(incomingEvent.getAuthenticatedUser(), incomingEvent.getPayload());
+        } catch (Exception ex) {
             serviceLogger.severe(ex);
         }
     }

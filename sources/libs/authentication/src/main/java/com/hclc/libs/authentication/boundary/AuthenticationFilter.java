@@ -23,7 +23,7 @@ import static javax.ws.rs.core.Response.status;
 
 @Provider
 @Priority(AUTHENTICATION)
-public class AuthorizationFilter implements ContainerRequestFilter {
+public class AuthenticationFilter implements ContainerRequestFilter {
 
     @Inject
     JwtSignatureProvider jwtSignatureProvider;

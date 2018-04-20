@@ -1,10 +1,13 @@
 package com.hclc.libs.events;
 
+import com.hclc.libs.authentication.entity.AuthenticatedUser;
 import com.hclc.libs.monitoring.ServiceLogger;
 import com.hclc.libs.monitoring.TrackingIdHolder;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.json.Json;
+import java.io.StringReader;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -19,7 +22,13 @@ public class IncomingEventProcessor {
         IncomingEvent incomingEvent = incomingEvent()
                 .withEventName(message.getStringProperty("eventName"))
                 .withMessageId(UUID.randomUUID().toString())
-                .withTrackingId(message.getStringProperty("trackingId"))
+                .withAuthenticatedUser(
+                        new AuthenticatedUser(
+                                Json.createReader(
+                                        new StringReader(message.getStringProperty("authenticatedUser"))
+                                ).readObject()
+                        )
+                ).withTrackingId(message.getStringProperty("trackingId"))
                 .withCreatingServiceName(message.getStringProperty("creatingServiceName"))
                 .withCreationTimestamp(message.getStringProperty("creationTimestamp"))
                 .withReceptionTimestamp(receptionTimestamp)

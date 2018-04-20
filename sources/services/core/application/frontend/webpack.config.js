@@ -4,7 +4,7 @@ var path = require('path');
 module.exports = {
   entry: {
     app: "./src/app.js",
-    vendor: ["react", "react-dom", "pubsub-js", "jquery", "bootstrap-sass"],
+    vendor: ["react", "react-dom", "pubsub-js", "jquery", "bootstrap-sass", "moment"],
   },
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({ name: "vendor", filename: "vendor.bundle.js" }),
@@ -24,7 +24,7 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react']
+          presets: ['env', 'react']
         }
       },
       {
@@ -62,6 +62,10 @@ module.exports = {
       {
         test: require.resolve("jquery"),
         loader: "expose-loader?$"
+      },
+      {
+        test: require.resolve("moment"),
+        loader: "expose-loader?moment"
       }
     ]
   }

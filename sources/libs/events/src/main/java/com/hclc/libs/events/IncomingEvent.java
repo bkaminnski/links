@@ -1,5 +1,7 @@
 package com.hclc.libs.events;
 
+import com.hclc.libs.authentication.entity.AuthenticatedUser;
+
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -12,13 +14,16 @@ public class IncomingEvent {
 
     private final String messageId, trackingId, creatingServiceName, payload;
 
+    private final AuthenticatedUser authenticatedUser;
+
     private JsonObject payloadAsJsonObject;
 
     private final ZonedDateTime creationTimestamp, receptionTimestamp;
 
-    private IncomingEvent(final String eventName, String messageId, String trackingId, String creatingServiceName, String creationTimestamp, ZonedDateTime receptionTimestamp, String payload) {
+    private IncomingEvent(final String eventName, String messageId, AuthenticatedUser authenticatedUser, String trackingId, String creatingServiceName, String creationTimestamp, ZonedDateTime receptionTimestamp, String payload) {
         this.eventName = new EventName(eventName);
         this.messageId = messageId;
+        this.authenticatedUser = authenticatedUser;
         this.trackingId = trackingId;
         this.creatingServiceName = creatingServiceName;
         this.creationTimestamp = ZonedDateTime.parse(creationTimestamp);
@@ -28,6 +33,10 @@ public class IncomingEvent {
 
     public EventName getEventName() {
         return eventName;
+    }
+
+    public AuthenticatedUser getAuthenticatedUser() {
+        return authenticatedUser;
     }
 
     public String getTrackingId() {
@@ -66,7 +75,7 @@ public class IncomingEvent {
     }
 
     public static IncomingEventBuilder incomingEvent() {
-        return eventName -> messageId -> trackingId -> creatingServiceName -> creationTimestamp -> receptionTimestamp -> payload -> new IncomingEvent(eventName, messageId, trackingId, creatingServiceName, creationTimestamp, receptionTimestamp, payload);
+        return eventName -> messageId -> authenticatedUser -> trackingId -> creatingServiceName -> creationTimestamp -> receptionTimestamp -> payload -> new IncomingEvent(eventName, messageId, authenticatedUser, trackingId, creatingServiceName, creationTimestamp, receptionTimestamp, payload);
     }
 
     public JsonObjectBuilder toJson() {
@@ -74,6 +83,7 @@ public class IncomingEvent {
                 .createObjectBuilder()
                 .add("eventName", eventName.toString())
                 .add("messageId", messageId)
+                .add("authenticatedUser", authenticatedUser.toJson())
                 .add("trackingId", trackingId)
                 .add("creatingServiceName", creatingServiceName)
                 .add("creationTimestamp", creationTimestamp.toString())
@@ -88,7 +98,12 @@ public class IncomingEvent {
 
     interface MessageId {
 
-        TrackingId withMessageId(String messageId);
+        AuthenticatedUserBuilder withMessageId(String messageId);
+    }
+
+    interface AuthenticatedUserBuilder {
+
+        TrackingId withAuthenticatedUser(AuthenticatedUser authenticatedUser);
     }
 
     interface TrackingId {

@@ -3,15 +3,15 @@ export default class AttributesStore {
     constructor(formComponent) {
         this.formComponent = formComponent;
         this.attributesComponents = {};
-        this.keyPrefix = 0;
+        this.uniqueKey = 0;
     }
 
     initialState() {
-        this.keyPrefix++;
+        this.uniqueKey++;
         return {
             attributes: {},
             allValid: false,
-            keyPrefix: this.keyPrefix
+            uniqueKey: this.uniqueKey
         };
     }
 

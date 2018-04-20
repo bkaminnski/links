@@ -31,7 +31,8 @@ export default class InputGroup extends React.Component {
         return <div className={'input-group bottom-buffer' + inputGroupErrorClassName}>
             <span className={'input-group-addon' + (this.props.glyphicon != '' ? ' glyphicon ' + this.props.glyphicon : '')} id={this.props.id + '-label'}>{this.props.label}</span>
             <input
-                type="text"
+                id={this.props.id}
+                type={this.props.type}
                 ref={(input) => { this.input = input; }}
                 onChange={this.onChange}
                 value={this.state.value == null ? this.props.initialValue : this.state.value}

@@ -26,6 +26,7 @@ export default class Email extends React.Component {
             label=""
             glyphicon="glyphicon-user"
             placeholder="E-mail"
+            type="text"
         />
     }
 

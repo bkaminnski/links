@@ -22,6 +22,7 @@ export default class Password extends React.Component {
             label=""
             glyphicon="glyphicon-lock"
             placeholder="Password"
+            type="password"
         />
     }
 

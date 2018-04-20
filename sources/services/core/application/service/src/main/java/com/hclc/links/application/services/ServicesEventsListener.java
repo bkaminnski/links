@@ -1,5 +1,6 @@
 package com.hclc.links.application.services;
 
+import com.hclc.libs.authentication.entity.AuthenticatedUser;
 import com.hclc.libs.events.BackendTopic;
 import com.hclc.libs.events.IncomingEvent;
 import com.hclc.libs.monitoring.ServiceLogger;
@@ -12,6 +13,7 @@ import javax.inject.Inject;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
+import static com.hclc.libs.authentication.entity.AuthenticatedUser.SYSTEM_USER;
 import static com.hclc.libs.events.IncomingEventProcessor.processIncomingEvent;
 import static com.hclc.libs.monitoring.TrackingIdHolder.generateNewTrackingId;
 import static com.hclc.links.application.EventsNames.myServiceIsAvailable;
@@ -41,7 +43,7 @@ public class ServicesEventsListener implements MessageListener {
     public void iAmReadyToReceiveEvents() {
         generateNewTrackingId();
         poker.iWokeUpSoStopPoking();
-        backendTopic.sendEventWithEmptyPayload(EventsNames.giveMeServices, serviceLogger);
+        backendTopic.newBackendEvent(EventsNames.giveMeServices, SYSTEM_USER, serviceLogger).send();
     }
 
     @Override

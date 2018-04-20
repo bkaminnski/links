@@ -1,7 +1,7 @@
 package com.hclc.links.monitoring.monitoring;
 
-import com.hclc.libs.events.IncomingEvent;
 import com.hclc.libs.events.BackendTopic;
+import com.hclc.libs.events.IncomingEvent;
 import com.hclc.libs.monitoring.ServiceLogger;
 
 import javax.ejb.ActivationConfigProperty;
@@ -13,6 +13,7 @@ import javax.jms.MessageListener;
 import javax.json.Json;
 import javax.json.JsonObject;
 
+import static com.hclc.libs.authentication.entity.AuthenticatedUser.SYSTEM_USER;
 import static com.hclc.libs.events.IncomingEventProcessor.processIncomingEvent;
 import static com.hclc.links.monitoring.EventsNames.uiEvent;
 
@@ -45,6 +46,6 @@ public class ServicesEventsMonitor implements MessageListener {
                 .add("uiEventName", "uiEvent.monitoring.topicMessage.available")
                 .add("uiEventPayload", incomingEvent.toJson())
                 .build();
-        backendTopic.sendEventWithPayload(uiEvent, monitoredEvent.toString(), serviceLogger);
+        backendTopic.newBackendEvent(uiEvent, SYSTEM_USER, serviceLogger).withPayload(monitoredEvent).send();
     }
 }

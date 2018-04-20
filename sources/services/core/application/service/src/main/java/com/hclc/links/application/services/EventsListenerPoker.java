@@ -1,8 +1,10 @@
 package com.hclc.links.application.services;
 
+import com.hclc.libs.authentication.entity.AuthenticatedUser;
 import com.hclc.libs.events.BackendTopic;
 import com.hclc.libs.monitoring.ServiceLogger;
 
+import static com.hclc.libs.authentication.entity.AuthenticatedUser.SYSTEM_USER;
 import static com.hclc.links.application.EventsNames.wakeUp;
 import static java.lang.Thread.sleep;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -50,7 +52,7 @@ public class EventsListenerPoker {
 
     @TransactionAttribute(REQUIRES_NEW)
     public void poke() {
-        backendTopic.sendEventWithEmptyPayload(wakeUp, serviceLogger);
+        backendTopic.newBackendEvent(wakeUp, SYSTEM_USER, serviceLogger).send();
     }
 
     public void iWokeUpSoStopPoking() {
